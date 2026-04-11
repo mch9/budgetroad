@@ -42,20 +42,49 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+    needs: [lint, build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    env:
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install --frozen-lockfile
+      - name: Deploy to Vercel
+        run: |
+          bun add -g vercel
+          vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+          DEPLOY_URL=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "DEPLOY_URL=$DEPLOY_URL" >> $GITHUB_ENV
+      - name: Slack 알림 - Deploy
+        if: always()
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          text: "Deploy ${{ job.status == 'success' && '✅ 완료' || '❌ 실패' }} ${{ env.DEPLOY_URL }}"
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
   notify-complete:
     name: 전체 완료 알림
     runs-on: ubuntu-latest
-    needs: [lint, build]
+    needs: [lint, build, deploy]
     if: always()
     steps:
       - name: Slack 최종 알림
         uses: 8398a7/action-slack@v3
         with:
-          status: ${{ needs.build.result }}
+          status: ${{ needs.deploy.result || needs.build.result }}
           text: |
-            CI 파이프라인 완료
+            CI/CD 파이프라인 완료
             Lint: ${{ needs.lint.result }}
             Build: ${{ needs.build.result }}
+            Deploy: ${{ needs.deploy.result || 'skipped' }}
             PR: ${{ github.event.pull_request.html_url || 'direct push' }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
