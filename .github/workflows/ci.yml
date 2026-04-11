@@ -21,7 +21,8 @@ jobs:
         with:
           status: ${{ job.status }}
           text: "Lint ${{ job.status == 'success' && '✅ 통과' || '❌ 실패' }}"
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   build:
     name: Build
@@ -38,7 +39,8 @@ jobs:
         with:
           status: ${{ job.status }}
           text: "Build ${{ job.status == 'success' && '✅ 성공' || '❌ 실패' }}"
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
   notify-complete:
     name: 전체 완료 알림
@@ -55,4 +57,5 @@ jobs:
             Lint: ${{ needs.lint.result }}
             Build: ${{ needs.build.result }}
             PR: ${{ github.event.pull_request.html_url || 'direct push' }}
-          webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

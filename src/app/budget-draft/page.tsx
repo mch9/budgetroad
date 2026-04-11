@@ -262,13 +262,14 @@ function ResultPhase({
   const itemSummary = results.map((r) => r.label).join(' + ');
 
   // Donut chart calculations
-  let cumulativeDeg = 0;
-  const segments = results.map((r, i) => {
+  const segments = results.reduce<
+    Array<BudgetResult & { pct: number; startDeg: number; color: string }>
+  >((acc, r, i) => {
     const pct = totalAmount > 0 ? r.amount / totalAmount : 0;
-    const startDeg = cumulativeDeg;
-    cumulativeDeg += pct * 360;
-    return { ...r, pct, startDeg, color: CHART_COLORS[i % CHART_COLORS.length] };
-  });
+    const startDeg = acc.length > 0 ? acc[acc.length - 1].startDeg + acc[acc.length - 1].pct * 360 : 0;
+    acc.push({ ...r, pct, startDeg, color: CHART_COLORS[i % CHART_COLORS.length] });
+    return acc;
+  }, []);
 
   const conicGradient = segments
     .map((s) => `${s.color} ${s.startDeg}deg ${s.startDeg + s.pct * 360}deg`)
