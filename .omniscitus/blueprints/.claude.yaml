@@ -19,79 +19,79 @@ files:
     change_count: 1
   - path: .claude/skills/0-local-setup/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "로컬 개발 환경 설정 스킬"
     change_count: 1
   - path: .claude/skills/1-claude-md-setup/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "CLAUDE.md 초기 설정 스킬"
     change_count: 1
   - path: .claude/skills/2-directory-structure-setup/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "프로젝트 디렉토리 구조 생성 스킬"
     change_count: 1
   - path: .claude/skills/3-mcp-setup/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "MCP 서버 연동 설정 스킬"
     change_count: 1
   - path: .claude/skills/4-critical-ground-rule-setup/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "코딩 컨벤션 및 기본 규칙 설정 스킬"
     change_count: 1
   - path: .claude/skills/5-detail-prd/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "상세 PRD 작성 스킬"
     change_count: 1
   - path: .claude/skills/6-prototype/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "프로토타입 생성 스킬"
     change_count: 1
   - path: .claude/skills/7-implement-by-claude-teams/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "Claude 팀 기반 구현 스킬"
     change_count: 1
   - path: .claude/skills/8-github-ci-cd-setup/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "GitHub CI/CD 파이프라인 설정 스킬"
     change_count: 1
   - path: .claude/skills/9-deploy/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "Vercel 배포 스킬"
     change_count: 1
   - path: .claude/skills/10-confirm/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "작업 완료 확인 스킬"
     change_count: 1
   - path: .claude/skills/bootstrap-packages/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "패키지 부트스트랩 스킬"
     change_count: 1
   - path: .claude/skills/claude-basic/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "Claude 기본 사용법 가이드 스킬"
     change_count: 1
@@ -121,7 +121,7 @@ files:
     change_count: 1
   - path: .claude/skills/plugin-guide/SKILL.md
     source: auto:omniscitus
-    status: active
+    status: deleted
     created: "2026-04-11"
     purpose: "플러그인 사용 가이드 스킬"
     change_count: 1

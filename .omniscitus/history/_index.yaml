@@ -21,5 +21,13 @@ units:
     status: open
     created: 2026-04-11
     last_updated: 2026-04-11
-    session_count: 1
+    session_count: 2
     title: "예산 초안 생성 기능 프론트엔드 구현"
+  - id: cicd-deployment-setup
+    file: devops/2026-04-11-cicd-deployment-setup.md
+    domain: devops
+    status: open
+    created: 2026-04-11
+    last_updated: 2026-04-11
+    session_count: 1
+    title: "CI/CD 파이프라인 및 Vercel 배포 설정"

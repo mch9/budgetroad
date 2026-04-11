@@ -28,8 +28,8 @@ wedding-budget 프로젝트의 Next.js + TypeScript + Tailwind + shadcn/ui + Pri
 
 ## Pending
 - [ ] `/3-mcp-setup` 완료 (Playwright, Slack, Pencil MCP 연결)
-- [ ] `/4-critical-ground-rule-setup` 진행
-- [ ] CLAUDE.md 코딩 컨벤션 섹션 구체화
+- [x] `/4-critical-ground-rule-setup` 진행 — ESLint+Prettier 설정, CLAUDE.md 협업규칙 추가 완료
+- [x] CLAUDE.md 코딩 컨벤션 섹션 구체화
 
 ## Notes
 - starter 경로: `/Users/mch/Documents/GitHub/claude-starter`
