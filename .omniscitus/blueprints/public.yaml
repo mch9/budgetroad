@@ -1,0 +1,37 @@
+files:
+  - path: public/file.svg
+    source: auto:create-next-app
+    status: active
+    created: "2026-04-11"
+    purpose: "Next.js 기본 파일 아이콘 SVG"
+    change_count: 1
+  - path: public/globe.svg
+    source: auto:create-next-app
+    status: active
+    created: "2026-04-11"
+    purpose: "Next.js 기본 글로브 아이콘 SVG"
+    change_count: 1
+  - path: public/next.svg
+    source: auto:create-next-app
+    status: active
+    created: "2026-04-11"
+    purpose: "Next.js 로고 SVG"
+    change_count: 1
+  - path: public/vercel.svg
+    source: auto:create-next-app
+    status: active
+    created: "2026-04-11"
+    purpose: "Vercel 로고 SVG"
+    change_count: 1
+  - path: public/window.svg
+    source: auto:create-next-app
+    status: active
+    created: "2026-04-11"
+    purpose: "Next.js 기본 윈도우 아이콘 SVG"
+    change_count: 1
+  - path: public/robots.txt
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "SEO 크롤러 허용 정책 파일"
+    change_count: 1

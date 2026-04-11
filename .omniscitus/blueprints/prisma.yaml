@@ -1,0 +1,4 @@
+files:
+  - path: prisma/schema.prisma
+    source: claude
+    purpose: "Prisma DB 스키마 — SQLite(로컬)/Neon Postgres(배포) 데이터 모델 정의"

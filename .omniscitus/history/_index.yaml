@@ -1,0 +1,25 @@
+units:
+  - id: project-scaffold-setup
+    file: devops/2026-04-11-project-scaffold-setup.md
+    domain: devops
+    status: open
+    created: 2026-04-11
+    last_updated: 2026-04-11
+    session_count: 1
+    title: "프로젝트 스캐폴딩 및 초기 설정"
+  - id: budget-draft-prd
+    file: product/2026-04-11-budget-draft-prd.md
+    domain: product
+    status: open
+    created: 2026-04-11
+    last_updated: 2026-04-11
+    session_count: 1
+    title: "예산 초안 생성 기능 PRD"
+  - id: budget-draft-implementation
+    file: web/2026-04-11-budget-draft-implementation.md
+    domain: web
+    status: open
+    created: 2026-04-11
+    last_updated: 2026-04-11
+    session_count: 1
+    title: "예산 초안 생성 기능 프론트엔드 구현"

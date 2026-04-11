@@ -1,0 +1,73 @@
+files:
+  - path: src/app/layout.tsx
+    source: auto:create-next-app
+    purpose: "루트 레이아웃 — HTML 구조, 폰트, 메타데이터 정의"
+  - path: src/app/page.tsx
+    source: auto:create-next-app
+    purpose: "메인 페이지 컴포넌트 (/ 경로)"
+  - path: src/app/globals.css
+    source: auto:shadcn
+    purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
+  - path: src/app/favicon.ico
+    source: auto:create-next-app
+    purpose: "브라우저 탭 아이콘"
+  - path: src/components/ui/button.tsx
+    source: auto:shadcn
+    purpose: "shadcn/ui Button 컴포넌트 — 다양한 variant/size 지원"
+  - path: src/lib/utils.ts
+    source: auto:shadcn
+    purpose: "cn() 유틸리티 — clsx + tailwind-merge로 클래스 안전 병합"
+  - path: src/app/api/.gitkeep
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "API 라우트 디렉토리 유지용 빈 파일"
+    change_count: 1
+  - path: src/components/common/.gitkeep
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "공통 컴포넌트 디렉토리 유지용 빈 파일"
+    change_count: 1
+  - path: src/components/layout/.gitkeep
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "레이아웃 컴포넌트 디렉토리 유지용 빈 파일"
+    change_count: 1
+  - path: src/components/ui/.gitkeep
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "UI 컴포넌트 디렉토리 유지용 빈 파일"
+    change_count: 1
+  - path: src/hooks/.gitkeep
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "커스텀 훅 디렉토리 유지용 빈 파일"
+    change_count: 1
+  - path: src/types/.gitkeep
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "TypeScript 타입 정의 디렉토리 유지용 빈 파일"
+    change_count: 1
+  - path: src/app/budget-draft/page.tsx
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "예산 생성 페이지 — 지역/항목 선택 입력 + 테이블/도넛차트 결과 표시"
+    change_count: 1
+  - path: src/app/sitemap.ts
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "SEO sitemap.xml 자동 생성"
+    change_count: 1
+  - path: src/lib/budget-data.ts
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "결혼 예산 통계 데이터 정의 및 계산 로직 (지역/항목/세부조건별 평균 금액)"
+    change_count: 1

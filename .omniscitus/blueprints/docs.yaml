@@ -1,0 +1,13 @@
+files:
+  - path: docs/prd/ROADMAP.md
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "경험 로드맵 — 3개 경험(MVP/Phase2/Phase3) 분해 및 PRD 진행 상태 추적"
+    change_count: 1
+  - path: docs/prd/budget-builder/budget-draft-v0.md
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "budget-draft 상세 PRD — 12단계 워크플로우 (요구사항~하이파이 디자인)"
+    change_count: 1

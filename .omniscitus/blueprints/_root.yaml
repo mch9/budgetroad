@@ -1,0 +1,43 @@
+files:
+  - path: CLAUDE.md
+    source: user:mincheol.kim
+    purpose: "프로젝트 설계도 — Claude가 참조하는 프로젝트 개요, 기술 스택, 구조, 작업 원칙 정의"
+  - path: AGENTS.md
+    source: auto:create-next-app
+    purpose: "Next.js가 자동 생성한 에이전트 설정 파일"
+  - path: README.md
+    source: auto:create-next-app
+    purpose: "프로젝트 소개 및 시작 가이드"
+  - path: package.json
+    source: auto:create-next-app
+    purpose: "프로젝트 의존성 및 스크립트 정의 (검증된 helper 버전으로 덮어씀)"
+  - path: bun.lock
+    source: auto:bun
+    purpose: "의존성 버전 잠금 파일"
+  - path: tsconfig.json
+    source: auto:create-next-app
+    purpose: "TypeScript 컴파일러 설정"
+  - path: next.config.ts
+    source: auto:create-next-app
+    purpose: "Next.js 프레임워크 설정"
+  - path: postcss.config.mjs
+    source: auto:create-next-app
+    purpose: "PostCSS 설정 (Tailwind CSS 처리)"
+  - path: eslint.config.mjs
+    source: auto:create-next-app
+    purpose: "ESLint 코드 품질 검사 설정"
+  - path: components.json
+    source: auto:shadcn
+    purpose: "shadcn/ui 컴포넌트 설정 (경로, 스타일, 별칭)"
+  - path: .gitignore
+    source: auto:create-next-app
+    status: active
+    created: "2026-04-11"
+    purpose: "Git 추적 제외 패턴 정의"
+    change_count: 1
+  - path: .prettierrc
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "Prettier 코드 포맷팅 설정 (세미콜론, 싱글쿼트, 2칸 들여쓰기)"
+    change_count: 1

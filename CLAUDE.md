@@ -39,17 +39,59 @@ Entered → Input Started → Result Viewed → Intent Created (Save/Share) → 
 ```
 wedding-budget/
 ├── src/
-│   ├── app/          # Next.js App Router
-│   ├── components/   # UI 컴포넌트
-│   ├── lib/          # 유틸리티
-│   └── ...
-├── prisma/           # DB 스키마
-├── public/           # 정적 파일
+│   ├── app/              # Next.js App Router (페이지 + 레이아웃)
+│   │   ├── api/          # API 라우트
+│   │   ├── layout.tsx    # 루트 레이아웃
+│   │   ├── page.tsx      # 메인 페이지
+│   │   └── globals.css   # 글로벌 스타일
+│   ├── components/       # UI 컴포넌트
+│   │   ├── ui/           # shadcn/ui 기본 컴포넌트
+│   │   ├── layout/       # 레이아웃 컴포넌트
+│   │   └── common/       # 공통 컴포넌트
+│   ├── hooks/            # 커스텀 React 훅
+│   ├── lib/              # 유틸리티 (utils.ts 등)
+│   └── types/            # TypeScript 타입 정의
+├── prisma/               # Prisma 스키마 (SQLite 로컬 / Neon 배포)
+├── public/               # 정적 파일 (이미지, 아이콘)
 └── ...
 ```
 
 ## 코딩 컨벤션
-- /4-critical-ground-rule-setup 에서 상세 설정 예정
+- ESLint: `eslint.config.mjs` (Next.js 기본 + TypeScript + Prettier 연동)
+- Prettier: `.prettierrc` (세미콜론, 싱글쿼트, 2칸 들여쓰기, trailing comma)
+
+## Claude 협업 규칙
+
+### 응답 언어
+- 설명/대화는 한국어, 코드/커밋 메시지/변수명은 영어
+
+### 코드 스타일
+- 간결하게: 필요한 코드만 작성, 주석 최소화
+- 자명한 코드에 불필요한 주석 달지 않기
+
+### 작업 방식
+- 기능 하나씩 작은 단위로 만들고 확인하면서 진행
+- 작업 전 계획을 먼저 공유하고 확인 후 진행
+- 파일 수정 전 반드시 해당 파일을 먼저 읽을 것
+- 한 번에 너무 많은 파일을 수정하지 말 것
+
+## 프로젝트 운영 규칙
+
+### Git 브랜치 전략
+- `main`: 배포되는 브랜치 (직접 푸시 금지)
+- `develop`: 개발 브랜치
+- `feature/{기능명}`: 기능 개발 브랜치
+- `fix/{버그명}`: 버그 수정 브랜치
+
+### 커밋 메시지 규칙
+- feat: 새 기능
+- fix: 버그 수정
+- docs: 문서 수정
+- style: 코드 스타일 변경
+- refactor: 리팩토링
+
+### 배포 정책
+- develop → main PR 후 Vercel 자동 배포
 
 ## 작업 원칙 (필수)
 
@@ -67,6 +109,21 @@ wedding-budget/
 - 가설이 맞으면 수정, 틀리면 다음 가설로 넘어간다
 - 한 번에 여러 가설을 동시에 테스트하지 않는다 (1가설 1검증)
 
+## 화면 및 URL 구조
+- `/` — 랜딩 페이지 (서비스 소개 + CTA)
+- `/budget-draft` — 예산 생성 페이지 (입력 → 결과, 한 페이지 상태 전환)
+
+## 데이터 구조 (통계 기반)
+- 지역: 서울 / 경기 / 지방
+- 항목: 식장, 스드메, 혼수, 예물, 예단, 신혼여행, 한복, 폐백음식, 청첩장, 답례품
+- 세부 조건: 식장(호텔/웨딩홀/스몰웨딩/야외), 신혼여행(국내/동남아/유럽/기타)
+- 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
+
+## 디자인 시스템
+- Primary: #FF8400
+- 폰트: Geist (본문), Geist Mono (금액 숫자)
+- 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
+
 ## 제외 범위 (이번에는 안 만듦)
 - 예산 항목별 금액 직접 수정/관리 기능 (이후 버전)
 - 양방향 전환: 예산 → 유형 추천 (이후 버전)
@@ -75,4 +132,4 @@ wedding-budget/
 - 업체 추천/연결
 
 ## 다음 단계
-- `/2-directory-structure-setup` 으로 프로젝트 폴더 구조를 생성하세요
+- `/6-prototype` 으로 프로토타입을 만드세요
