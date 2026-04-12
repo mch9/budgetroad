@@ -26,10 +26,18 @@ GitHub 리포 생성, GitHub Actions CI/CD 파이프라인(lint→build→deploy
 
 **Learned**: action-slack@v3의 webhook_url은 `with`가 아닌 `env.SLACK_WEBHOOK_URL`로 전달해야 함
 
+### 2026-04-12
+**Focus**: Vercel 환경변수 설정 및 프로덕션 재배포
+- Vercel 대시보드에 `NEXT_PUBLIC_GA_ID` 환경변수 추가
+- `vercel --prod`로 프로덕션 재배포 2회 (OG 이미지 반영 + GA ID 수정)
+- GA4 실시간 보고서에서 데이터 수신 정상 확인
+
+**Learned**: `NEXT_PUBLIC_*` 환경변수는 빌드 타임에 번들에 포함되므로, Vercel에 환경변수 추가 후 반드시 재배포 필요
+
 ## Pending
-- [ ] GitHub 리포에 Vercel Git 연결 (대시보드에서 수동 연결 필요)
-- [ ] GA 측정 ID 환경변수 설정 (`NEXT_PUBLIC_GA_ID`)
-- [ ] OG 이미지 제작 및 추가
+- [x] GitHub 리포에 Vercel Git 연결 (대시보드에서 수동 연결 완료)
+- [x] GA 측정 ID 환경변수 설정 (`NEXT_PUBLIC_GA_ID`)
+- [x] OG 이미지 제작 및 추가
 - [ ] 커스텀 도메인 연결 (필요 시)
 
 ## Notes
