@@ -1,0 +1,7 @@
+files:
+  - path: .github/workflows/ci.yml
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "GitHub Actions CI/CD — lint→build→deploy(Vercel)→Slack 알림 파이프라인"
+    change_count: 3

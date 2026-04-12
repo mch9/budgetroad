@@ -20,6 +20,7 @@ const siteDescription =
   '결혼 유형만 선택하면 통계 기반으로 항목별 예산 초안을 자동으로 만들어드려요. 시세 조사 없이, 3분이면 전체 예산 감을 잡을 수 있어요.';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://wedding-budget-chi.vercel.app'),
   title: {
     default: siteTitle,
     template: '%s | 웨딩버젯',
