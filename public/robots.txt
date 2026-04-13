@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://wedding-budget-chi.vercel.app/sitemap.xml
