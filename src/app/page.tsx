@@ -1,8 +1,11 @@
 import Link from 'next/link';
+import TrackPageEnter from '@/components/common/TrackPageEnter';
+import { CtaLink } from './cta-link';
 
 export default function Home() {
   return (
     <div className="flex flex-1 flex-col items-center justify-center bg-gradient-to-b from-white to-orange-50/60 px-6 py-20 text-center">
+      <TrackPageEnter eventName="service_entered" />
       <h1 className="max-w-lg text-4xl font-extrabold tracking-tight text-foreground sm:text-5xl">
         내 결혼, 대략 얼마나 들까?
       </h1>
@@ -14,12 +17,7 @@ export default function Home() {
         시세 조사 없이, 3분이면 전체 예산 감을 잡을 수 있어요.
       </p>
 
-      <Link
-        href="/budget-draft"
-        className="mt-10 inline-flex h-14 items-center rounded-xl bg-primary px-10 text-lg font-semibold text-primary-foreground shadow-[0_4px_12px_rgba(255,132,0,0.2)] transition-all hover:brightness-110 active:scale-[0.98]"
-      >
-        내 결혼 예산 만들기
-      </Link>
+      <CtaLink />
 
       <div className="mt-8 flex items-center gap-5 text-sm text-muted-foreground">
         <span>📊 통계 기반</span>
