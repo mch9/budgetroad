@@ -42,6 +42,12 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  verification: {
+    google: 'YmGt-wjc-lhqTmMKL9zX1HZg2rpatK_60Qbd032_ZJo',
+    other: {
+      'naver-site-verification': ['202f5be82fbae028ff3ec54293cdd336b906894c'],
+    },
+  },
 };
 
 export default function RootLayout({
