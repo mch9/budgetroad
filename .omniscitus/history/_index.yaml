@@ -18,7 +18,7 @@ units:
   - id: budget-draft-implementation
     file: web/2026-04-11-budget-draft-implementation.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-11
     last_updated: 2026-04-11
     session_count: 1

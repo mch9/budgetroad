@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 import {
   type Region,
   type ItemId,
@@ -25,7 +26,23 @@ export default function BudgetDraftPage() {
   const [honeymoonType, setHoneymoonType] = useState('southeast-asia');
   const [results, setResults] = useState<BudgetResult[]>([]);
 
+  const enteredAt = useRef<number>(0);
+  const inputStarted = useRef(false);
+
+  useEffect(() => {
+    enteredAt.current = Date.now();
+    trackEvent('budget_draft_entered');
+  }, []);
+
+  function trackFirstInput() {
+    if (inputStarted.current) return;
+    inputStarted.current = true;
+    const elapsed = Math.round((Date.now() - enteredAt.current) / 1000);
+    trackEvent('input_started', { time_to_start_sec: elapsed });
+  }
+
   function toggleItem(id: ItemId) {
+    trackFirstInput();
     setSelectedIds((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
@@ -47,6 +64,12 @@ export default function BudgetDraftPage() {
         : undefined,
     }));
     const budgetResults = calculateBudget(region, items);
+    const totalAmount = budgetResults.reduce((sum, r) => sum + r.amount, 0);
+    trackEvent('result_viewed', {
+      region,
+      item_count: budgetResults.length,
+      total_amount: totalAmount,
+    });
     setResults(budgetResults);
     setPhase('result');
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -79,7 +102,10 @@ export default function BudgetDraftPage() {
         {phase === 'input' ? (
           <InputPhase
             region={region}
-            onRegionChange={setRegion}
+            onRegionChange={(r) => {
+              trackFirstInput();
+              setRegion(r);
+            }}
             selectedIds={selectedIds}
             onToggleItem={toggleItem}
             venueType={venueType}
