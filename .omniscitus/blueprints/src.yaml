@@ -10,7 +10,44 @@ files:
     purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
   - path: src/app/favicon.ico
     source: auto:create-next-app
-    purpose: "브라우저 탭 아이콘"
+    status: deleted
+    purpose: "브라우저 탭 아이콘 (icon.tsx로 대체됨)"
+  - path: src/app/icon.tsx
+    source: claude
+    status: active
+    created: "2026-04-13"
+    purpose: "동적 파비콘 생성 — next/og ImageResponse 기반"
+    change_count: 1
+  - path: src/app/opengraph-image.tsx
+    source: claude
+    status: active
+    created: "2026-04-13"
+    purpose: "OG 이미지 동적 생성 — SNS 공유 미리보기 카드용 (1200x630)"
+    change_count: 1
+  - path: src/app/cta-link.tsx
+    source: claude
+    status: active
+    created: "2026-04-13"
+    purpose: "랜딩 페이지 CTA 버튼 클라이언트 컴포넌트 — GA 이벤트 트래킹 포함"
+    change_count: 1
+  - path: src/components/common/TrackPageEnter.tsx
+    source: claude
+    status: active
+    created: "2026-04-13"
+    purpose: "페이지 진입 시 GA page_view 이벤트 자동 전송 컴포넌트"
+    change_count: 1
+  - path: src/lib/gtag.ts
+    source: claude
+    status: active
+    created: "2026-04-13"
+    purpose: "Google Analytics gtag 헬퍼 — pageview/event 전송 함수"
+    change_count: 1
+  - path: src/types/gtag.d.ts
+    source: claude
+    status: active
+    created: "2026-04-13"
+    purpose: "gtag 글로벌 타입 선언"
+    change_count: 1
   - path: src/components/ui/button.tsx
     source: auto:shadcn
     purpose: "shadcn/ui Button 컴포넌트 — 다양한 variant/size 지원"

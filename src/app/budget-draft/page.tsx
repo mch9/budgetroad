@@ -86,7 +86,7 @@ export default function BudgetDraftPage() {
     <div className="flex min-h-full flex-col">
       <header className="sticky top-0 z-10 flex h-16 items-center justify-between border-b border-border/50 bg-white/80 px-6 backdrop-blur-sm sm:px-10">
         <Link href="/" className="text-lg font-extrabold text-primary">
-          웨딩버젯
+          버젯로드
         </Link>
         {phase === 'result' && (
           <button
