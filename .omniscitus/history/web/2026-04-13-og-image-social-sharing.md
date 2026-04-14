@@ -22,7 +22,7 @@ SNS 공유 시 미리보기 카드에 표시될 OG 이미지를 코드 기반으
 **Learned**: Next.js App Router에서 opengraph-image.tsx를 app/ 루트에 두면 사이트 전체 기본 OG 이미지가 자동 적용됨; 하위 폴더에 별도 파일을 두면 페이지별 맞춤 OG도 가능
 
 ## Pending
-- [ ] 커스텀 도메인 확정 후 metadataBase URL 업데이트
+- [x] 커스텀 도메인 확정 후 metadataBase URL 업데이트 ✔️ 2026-04-14 (budgetroad.vercel.app)
 - [ ] 배포 사이트에서 SNS 공유 미리보기 실제 테스트 (카카오톡, 슬랙 등)
 
 ## Notes

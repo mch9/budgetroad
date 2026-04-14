@@ -31,6 +31,30 @@ units:
     last_updated: 2026-04-13
     session_count: 1
     title: "OG 이미지 및 소셜 공유 최적화"
+  - id: rebrand-budgetroad
+    file: devops/2026-04-14-rebrand-budgetroad.md
+    domain: devops
+    status: open
+    created: 2026-04-14
+    last_updated: 2026-04-14
+    session_count: 1
+    title: "버젯로드 리브랜딩 및 도메인 변경"
+  - id: step-flow-rebuild
+    file: web/2026-04-14-step-flow-rebuild.md
+    domain: web
+    status: open
+    created: 2026-04-14
+    last_updated: 2026-04-14
+    session_count: 1
+    title: "예산 초안 6단계 STEP 플로우 재구축"
+  - id: landing-page-redesign
+    file: web/2026-04-14-landing-page-redesign.md
+    domain: web
+    status: open
+    created: 2026-04-14
+    last_updated: 2026-04-14
+    session_count: 1
+    title: "랜딩 페이지 공감형 재구성"
 
 weekly_summaries:
   - week: "2026-W15"

@@ -11,3 +11,9 @@ files:
     created: "2026-04-11"
     purpose: "budget-draft 상세 PRD — 12단계 워크플로우 (요구사항~하이파이 디자인)"
     change_count: 1
+  - path: docs/prd/budget-builder/budget-draft-v1-step-flow.md
+    source: claude
+    status: active
+    created: "2026-04-14"
+    purpose: "STEP 플로우 v1 스펙 — 6단계 구조, 선택지, UX 규칙, 디자인 패턴 정의"
+    change_count: 1
