@@ -15,24 +15,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteTitle = '웨딩버젯 - 내 결혼 예산 초안 만들기';
+const siteTitle = '버젯로드 - 내 결혼 예산 초안 만들기';
 const siteDescription =
   '결혼 유형만 선택하면 통계 기반으로 항목별 예산 초안을 자동으로 만들어드려요. 시세 조사 없이, 3분이면 전체 예산 감을 잡을 수 있어요.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || 'https://wedding-budget.vercel.app',
+    process.env.NEXT_PUBLIC_SITE_URL || 'https://budgetroad.vercel.app',
   ),
   title: {
     default: siteTitle,
-    template: '%s | 웨딩버젯',
+    template: '%s | 버젯로드',
   },
   description: siteDescription,
   keywords: ['결혼 예산', '결혼 비용', '웨딩 예산', '식장 비용', '스드메 가격'],
   openGraph: {
     title: siteTitle,
     description: siteDescription,
-    siteName: '웨딩버젯',
+    siteName: '버젯로드',
     locale: 'ko_KR',
     type: 'website',
   },

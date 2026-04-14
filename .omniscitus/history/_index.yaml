@@ -20,6 +20,23 @@ units:
     domain: web
     status: closed
     created: 2026-04-11
-    last_updated: 2026-04-11
-    session_count: 1
+    last_updated: 2026-04-13
+    session_count: 2
     title: "예산 초안 생성 기능 프론트엔드 구현"
+  - id: og-image-social-sharing
+    file: web/2026-04-13-og-image-social-sharing.md
+    domain: web
+    status: open
+    created: 2026-04-13
+    last_updated: 2026-04-13
+    session_count: 1
+    title: "OG 이미지 및 소셜 공유 최적화"
+
+weekly_summaries:
+  - week: "2026-W15"
+    file: "_weekly/2026-W15.md"
+    start: "2026-04-06"
+    end: "2026-04-12"
+    unit_count: 3
+    domains: [devops, product, web]
+    generated_at: "2026-04-13"
