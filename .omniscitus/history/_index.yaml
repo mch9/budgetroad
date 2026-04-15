@@ -53,8 +53,16 @@ units:
     status: open
     created: 2026-04-15
     last_updated: 2026-04-15
+    session_count: 2
+    title: "디자인 디렉토리 구조 및 피그마 이전"
+  - id: blog-prd
+    file: product/2026-04-15-blog-prd.md
+    domain: product
+    status: open
+    created: 2026-04-15
+    last_updated: 2026-04-15
     session_count: 1
-    title: "디자인 디렉토리 구조 세팅"
+    title: "사례 가이드 블로그 PRD"
   - id: landing-page-redesign
     file: web/2026-04-14-landing-page-redesign.md
     domain: web

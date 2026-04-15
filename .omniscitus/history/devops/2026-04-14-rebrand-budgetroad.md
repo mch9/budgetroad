@@ -35,7 +35,7 @@
 **Learned**: none
 
 ## Pending
-- [ ] GitHub 저장소 이름 wedding-budget → budgetroad 변경 검토
+- [x] GitHub 저장소 이름 wedding-budget → budgetroad 변경 완료 ✔️ 2026-04-15
 
 ## Notes
 - PR: https://github.com/mch9/wedding-budget/pull/8
