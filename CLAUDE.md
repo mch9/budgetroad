@@ -1,4 +1,4 @@
-# 버젯로드 (budgetroad)
+# 버짓로드 (budgetroad)
 
 ## 프로젝트 개요
 결혼 준비 중인 사용자가 결혼 유형과 조건을 선택하면, 통계 기반 평균값으로 예산 초안을 자동 생성해주는 웹앱.
@@ -51,6 +51,7 @@ wedding-budget/
 │   ├── hooks/            # 커스텀 React 훅
 │   ├── lib/              # 유틸리티 (utils.ts 등)
 │   └── types/            # TypeScript 타입 정의
+├── design/               # Pencil 디자인 파일 (.pen) → design/README.md 참조
 ├── prisma/               # Prisma 스키마 (SQLite 로컬 / Neon 배포)
 ├── public/               # 정적 파일 (이미지, 아이콘)
 └── ...
@@ -123,6 +124,7 @@ wedding-budget/
 - Primary: #FF8400
 - 폰트: Geist (본문), Geist Mono (금액 숫자)
 - 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
+- **UI 구현/수정/디자인 작업 시** → `design/README.md` 참조 (Pencil .pen 파일 구조 및 참조 가이드)
 
 ## 제외 범위 (이번에는 안 만듦)
 - 예산 항목별 금액 직접 수정/관리 기능 (이후 버전)
