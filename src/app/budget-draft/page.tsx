@@ -27,16 +27,26 @@ import {
 } from '@/lib/budget-data';
 
 const TOTAL_STEPS = 6;
+const RESULT_STORAGE_KEY = 'budgetroad_result';
 
 export default function BudgetDraftPage() {
-  const [step, setStep] = useState(0); // 0-5 = steps, 6 = result
+  const [step, setStep] = useState(0);
   const [selections, setSelections] = useState<StepSelections>(DEFAULT_SELECTIONS);
   const [result, setResult] = useState<BudgetResult | null>(null);
   const enteredAt = useRef(Date.now());
   const inputStarted = useRef(false);
 
+  // Restore result from sessionStorage on mount
   useEffect(() => {
     trackEvent('budget_draft_entered');
+    try {
+      const saved = sessionStorage.getItem(RESULT_STORAGE_KEY);
+      if (saved) {
+        const parsed = JSON.parse(saved) as BudgetResult;
+        setResult(parsed);
+        setStep(TOTAL_STEPS);
+      }
+    } catch { /* ignore */ }
   }, []);
 
   function trackFirstInput() {
@@ -60,6 +70,7 @@ export default function BudgetDraftPage() {
       trackEvent('result_viewed', { total_amount: r.total });
       setResult(r);
       setStep(TOTAL_STEPS);
+      sessionStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(r));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -75,43 +86,49 @@ export default function BudgetDraftPage() {
     setStep(0);
     setSelections(DEFAULT_SELECTIONS);
     setResult(null);
+    sessionStorage.removeItem(RESULT_STORAGE_KEY);
   }
 
   const isResult = step === TOTAL_STEPS;
+  const progressPct = Math.round(((step + 1) / TOTAL_STEPS) * 100);
 
   return (
-    <div className="flex min-h-dvh flex-col bg-[#FFF8F0]">
-      {/* Header */}
-      <header className="sticky top-0 z-10 flex h-14 items-center justify-between bg-white/80 px-6 backdrop-blur-sm">
-        <Link href="/" className="text-lg font-extrabold text-primary">
-          버짓로드
+    <div className="flex min-h-dvh flex-col bg-[#F9FAFB]">
+      {/* Header — Figma: 87px, border-bottom 1px solid #E5E7EB */}
+      <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/80 px-6 backdrop-blur-sm sm:h-[87px] sm:px-8">
+        <Link href="/" className="text-lg font-bold text-[#373737] sm:text-2xl">
+          budgetroad
         </Link>
         {isResult && (
-          <button onClick={reset} className="text-sm font-medium text-primary">
+          <button onClick={reset} className="text-sm font-medium text-[#6A7282]">
             ← 다시 하기
           </button>
         )}
         {!isResult && step > 0 && (
-          <button onClick={back} className="text-sm font-medium text-muted-foreground">
+          <button onClick={back} className="text-sm font-medium text-[#6A7282]">
             ← 이전
           </button>
         )}
       </header>
 
-      {/* Progress */}
+      {/* Progress — Figma: labels + 8px bar, track #E5E7EB, fill #AAC7E1 */}
       {!isResult && (
-        <div className="px-6">
-          <div className="h-1 w-full rounded-full bg-gray-200">
+        <div className="mx-auto w-full max-w-[576px] px-6 pt-6">
+          <div className="flex items-center justify-between pb-2">
+            <span className="text-sm text-[#6A7282]">단계 {step + 1} / {TOTAL_STEPS}</span>
+            <span className="text-sm text-[#6A7282]">{progressPct}% 완료</span>
+          </div>
+          <div className="h-2 w-full rounded-full bg-[#E5E7EB]">
             <div
-              className="h-1 rounded-full bg-primary transition-all duration-300"
-              style={{ width: `${((step + 1) / TOTAL_STEPS) * 100}%` }}
+              className="h-2 rounded-full bg-[#AAC7E1] transition-all duration-300"
+              style={{ width: `${progressPct}%` }}
             />
           </div>
         </div>
       )}
 
       {/* Content */}
-      <main className="flex flex-1 flex-col">
+      <main className={`mx-auto flex w-full flex-1 flex-col px-6 ${isResult ? 'max-w-[1040px]' : 'max-w-[576px]'}`}>
         {step === 0 && <Step1 value={selections.region} onChange={(v) => update('region', v)} />}
         {step === 1 && (
           <Step2
@@ -158,14 +175,14 @@ export default function BudgetDraftPage() {
         {isResult && result && <ResultView result={result} onReset={reset} />}
       </main>
 
-      {/* Bottom Button */}
+      {/* Bottom Button — Figma: bg #373737, border-radius 14px, height 60px */}
       {!isResult && (
-        <div className="px-6 pb-8 pt-4">
+        <div className="mx-auto w-full max-w-[576px] px-6 pb-8 pt-4">
           <button
             onClick={next}
-            className="w-full rounded-2xl bg-primary py-4 text-base font-semibold text-white shadow-[0_4px_12px_rgba(255,132,0,0.25)] active:scale-[0.99]"
+            className="w-full rounded-[14px] bg-[#373737] py-4 text-lg font-medium text-white active:scale-[0.99]"
           >
-            {step === TOTAL_STEPS - 1 ? '예산 결과 보기 →' : '다음'}
+            {step === TOTAL_STEPS - 1 ? '예산 결과 보기' : '다음으로'}
           </button>
         </div>
       )}
@@ -177,16 +194,16 @@ export default function BudgetDraftPage() {
 
 function StepHeader({ step, title, subtitle }: { step: number; title: string; subtitle: string }) {
   return (
-    <div className="space-y-2 px-6 pb-2 pt-8">
-      <p className="text-sm font-semibold text-primary">STEP {step}</p>
-      <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
-      <p className="text-sm text-gray-400">{subtitle}</p>
+    <div className="space-y-1.5 pb-2 pt-8">
+      <p className="text-sm text-[#6A7282]">STEP {step}</p>
+      <h1 className="text-[30px] font-bold leading-9 text-[#373737]">{title}</h1>
+      <p className="text-base text-[#6A7282]">{subtitle}</p>
     </div>
   );
 }
 
 function SectionLabel({ label }: { label: string }) {
-  return <p className="px-6 pb-2 pt-5 text-xs font-medium text-gray-400">{label}</p>;
+  return <p className="pb-2 pt-5 text-xs font-medium text-[#6A7282]">{label}</p>;
 }
 
 function OptionCard<T extends string | number>({
@@ -207,32 +224,39 @@ function OptionCard<T extends string | number>({
   return (
     <button
       onClick={onClick}
-      className={`flex w-full items-center gap-3 rounded-xl border-2 p-3.5 text-left transition-all ${
+      className={`flex w-full items-center justify-between rounded-[14px] border-2 p-5 text-left transition-all ${
         selected
-          ? 'border-primary bg-orange-50'
-          : 'border-gray-200 bg-white'
+          ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]'
+          : 'border-[#E5E7EB] bg-white'
       }`}
     >
-      <div
-        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg ${
-          selected ? 'bg-primary' : 'bg-gray-100'
-        }`}
-      >
-        {isSkip ? (
-          <span className={`text-base font-bold ${selected ? 'text-white' : 'text-gray-400'}`}>✕</span>
-        ) : (
-          icon
-        )}
+      <div className="flex items-center gap-3">
+        <div
+          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs ${
+            selected ? 'bg-[#AAC7E1] text-white' : 'bg-transparent'
+          }`}
+        >
+          {selected ? (
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8L6.5 11.5L13 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          ) : isSkip ? (
+            <span className="text-[#D1D5DC]">✕</span>
+          ) : null}
+        </div>
+        <span className={`text-lg font-medium ${selected ? 'text-[#101828]' : 'text-[#364153]'}`}>
+          {label}
+        </span>
       </div>
-      <div className="min-w-0 flex-1">
-        <p className={`text-sm font-semibold text-gray-900 ${selected ? 'font-bold' : ''}`}>{label}</p>
-        <p className={`text-xs ${selected ? 'text-primary' : 'text-gray-400'}`}>{desc}</p>
-      </div>
-      <div
-        className={`h-5 w-5 shrink-0 rounded-full border-2 ${
-          selected ? 'border-primary bg-primary' : 'border-gray-300'
-        }`}
-      />
+      {selected ? (
+        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M5 10L8.5 13.5L15 6.5" stroke="white" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      ) : (
+        <div className="h-6 w-6 shrink-0 rounded-full border-2 border-[#D1D5DC] bg-white" />
+      )}
     </button>
   );
 }
@@ -242,8 +266,8 @@ function OptionCard<T extends string | number>({
 function Step1({ value, onChange }: { value: Region; onChange: (v: Region) => void }) {
   return (
     <div>
-      <StepHeader step={1} title="어디서 결혼하시나요?" subtitle="지역에 따라 예산 평균이 달라져요" />
-      <div className="flex flex-col gap-3 px-6 pt-4">
+      <StepHeader step={1} title="어디서 결혼하시나요?" subtitle="지역을 선택하면 지역별 시세가 반영됩니다" />
+      <div className="flex flex-col gap-3 pt-4">
         {REGION_OPTIONS.map((o) => (
           <OptionCard key={o.value} selected={value === o.value} label={o.label} desc={o.desc} icon={o.icon} onClick={() => onChange(o.value)} />
         ))}
@@ -262,13 +286,13 @@ function Step2({
     <div>
       <StepHeader step={2} title="어떤 예식을 생각하세요?" subtitle="예식장 유형과 시기를 선택해주세요" />
       <SectionLabel label="예식장 유형" />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {VENUE_OPTIONS.map((o) => (
           <OptionCard key={o.value} selected={venue === o.value} label={o.label} desc={o.desc} icon={o.icon} onClick={() => onVenueChange(o.value)} />
         ))}
       </div>
       <SectionLabel label="예식 시기" />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {SEASON_OPTIONS.map((o) => (
           <OptionCard key={o.value} selected={season === o.value} label={o.label} desc={o.desc} icon={o.icon} onClick={() => onSeasonChange(o.value)} />
         ))}
@@ -282,7 +306,7 @@ function TierSelector({ label, icon, value, onChange }: { label: string; icon: s
   return (
     <>
       <SectionLabel label={label} />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {tiers.map((t) => (
           <OptionCard
             key={t}
@@ -307,9 +331,9 @@ function Step3({
   return (
     <div>
       <StepHeader step={3} title="스드메는 어떻게 하실 건가요?" subtitle="스튜디오, 드레스, 메이크업 등급을 선택해주세요" />
-      <TierSelector label="스튜디오" icon="📷" value={studio} onChange={onStudioChange} />
-      <TierSelector label="드레스" icon="👗" value={dress} onChange={onDressChange} />
-      <TierSelector label="메이크업" icon="💄" value={makeup} onChange={onMakeupChange} />
+      <TierSelector label="스튜디오" icon="" value={studio} onChange={onStudioChange} />
+      <TierSelector label="드레스" icon="" value={dress} onChange={onDressChange} />
+      <TierSelector label="메이크업" icon="" value={makeup} onChange={onMakeupChange} />
     </div>
   );
 }
@@ -327,7 +351,7 @@ function Step4({
     <div>
       <StepHeader step={4} title="식사는 어떻게 하실 건가요?" subtitle="예상 인원과 식사 비용을 선택해주세요" />
       <SectionLabel label="예상 보증인원" />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {GUEST_OPTIONS.map((o) => (
           <OptionCard
             key={o.value}
@@ -339,27 +363,27 @@ function Step4({
           />
         ))}
         {customGuest ? (
-          <div className="flex items-center gap-2 rounded-xl border-2 border-primary bg-orange-50 p-3.5">
-            <span className="text-sm text-gray-500">인원:</span>
+          <div className="flex items-center gap-2 rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
+            <span className="text-sm text-[#6A7282]">인원:</span>
             <input
               type="number"
               value={guest}
               onChange={(e) => onGuestChange(Number(e.target.value) || 100)}
-              className="w-20 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-center font-mono text-sm font-semibold outline-none focus:border-primary"
+              className="w-20 rounded-lg border border-[#D1D5DC] bg-white px-3 py-1.5 text-center font-mono text-sm font-semibold outline-none focus:border-[#AAC7E1]"
             />
-            <span className="text-sm text-gray-500">명</span>
+            <span className="text-sm text-[#6A7282]">명</span>
           </div>
         ) : (
           <button
             onClick={() => setCustomGuest(true)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-gray-200 bg-white p-3.5 text-sm font-medium text-gray-400"
+            className="flex w-full items-center justify-center gap-1.5 rounded-[14px] border-2 border-dashed border-[#E5E7EB] bg-white p-5 text-sm font-medium text-[#6A7282]"
           >
-            ✏️ 직접 입력
+            직접 입력
           </button>
         )}
       </div>
       <SectionLabel label="1인당 식사 비용" />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {MEAL_OPTIONS.map((o) => (
           <OptionCard
             key={o.value}
@@ -371,22 +395,22 @@ function Step4({
           />
         ))}
         {customMeal ? (
-          <div className="flex items-center gap-2 rounded-xl border-2 border-primary bg-orange-50 p-3.5">
-            <span className="text-sm text-gray-500">1인당:</span>
+          <div className="flex items-center gap-2 rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
+            <span className="text-sm text-[#6A7282]">1인당:</span>
             <input
               type="number"
               value={meal}
               onChange={(e) => onMealChange(Number(e.target.value) || 5)}
-              className="w-20 rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-center font-mono text-sm font-semibold outline-none focus:border-primary"
+              className="w-20 rounded-lg border border-[#D1D5DC] bg-white px-3 py-1.5 text-center font-mono text-sm font-semibold outline-none focus:border-[#AAC7E1]"
             />
-            <span className="text-sm text-gray-500">만원</span>
+            <span className="text-sm text-[#6A7282]">만원</span>
           </div>
         ) : (
           <button
             onClick={() => setCustomMeal(true)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-xl border-2 border-dashed border-gray-200 bg-white p-3.5 text-sm font-medium text-gray-400"
+            className="flex w-full items-center justify-center gap-1.5 rounded-[14px] border-2 border-dashed border-[#E5E7EB] bg-white p-5 text-sm font-medium text-[#6A7282]"
           >
-            ✏️ 직접 입력
+            직접 입력
           </button>
         )}
       </div>
@@ -404,13 +428,13 @@ function Step5({
     <div>
       <StepHeader step={5} title="예물과 예단은요?" subtitle="생략해도 괜찮아요, 선택은 자유입니다" />
       <SectionLabel label="예물" />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {YEMUL_OPTIONS.map((o) => (
           <OptionCard key={o.value} selected={yemul === o.value} label={o.label} desc={o.desc} icon={o.icon} isSkip={o.value === 'skip'} onClick={() => onYemulChange(o.value)} />
         ))}
       </div>
       <SectionLabel label="예단" />
-      <div className="flex flex-col gap-2.5 px-6">
+      <div className="flex flex-col gap-3">
         {YEDAN_OPTIONS.map((o) => (
           <OptionCard key={o.value} selected={yedan === o.value} label={o.label} desc={o.desc} icon={o.icon} isSkip={o.value === 'skip'} onClick={() => onYedanChange(o.value)} />
         ))}
@@ -428,46 +452,59 @@ function Step6({
   return (
     <div>
       <StepHeader step={6} title="신혼여행은 계획하고 있나요?" subtitle="마지막 단계예요! 거의 다 왔어요" />
-      <div className="flex flex-col gap-2.5 px-6 pt-6">
-        {/* 신혼여행 갈 예정 — 금액 수정 포함 */}
+      <div className="flex flex-col gap-3 pt-6">
         <button
           onClick={() => onChoiceChange('yes')}
-          className={`w-full rounded-xl border-2 p-3.5 text-left transition-all ${
-            choice === 'yes' ? 'border-primary bg-orange-50' : 'border-gray-200 bg-white'
+          className={`w-full rounded-[14px] border-2 p-5 text-left transition-all ${
+            choice === 'yes' ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]' : 'border-[#E5E7EB] bg-white'
           }`}
         >
-          <div className="flex items-center gap-3">
-            <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-lg ${choice === 'yes' ? 'bg-primary' : 'bg-gray-100'}`}>
-              ✈️
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              {choice === 'yes' ? (
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]">
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                    <path d="M3 8L6.5 11.5L13 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </div>
+              ) : (
+                <div className="h-6 w-6 shrink-0" />
+              )}
+              <span className={`text-lg font-medium ${choice === 'yes' ? 'text-[#101828]' : 'text-[#364153]'}`}>
+                신혼여행 갈 예정
+              </span>
             </div>
-            <div className="min-w-0 flex-1">
-              <p className={`text-sm font-semibold text-gray-900 ${choice === 'yes' ? 'font-bold' : ''}`}>신혼여행 갈 예정</p>
-              <p className={`text-xs ${choice === 'yes' ? 'text-primary' : 'text-gray-400'}`}>기본 예산 1,000만원</p>
-            </div>
-            <div className={`h-5 w-5 shrink-0 rounded-full border-2 ${choice === 'yes' ? 'border-primary bg-primary' : 'border-gray-300'}`} />
+            {choice === 'yes' ? (
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path d="M5 10L8.5 13.5L15 6.5" stroke="white" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            ) : (
+              <div className="h-6 w-6 shrink-0 rounded-full border-2 border-[#D1D5DC] bg-white" />
+            )}
           </div>
           {choice === 'yes' && (
-            <div className="mt-3 flex items-center justify-between rounded-lg border border-orange-200 bg-white px-3 py-2" onClick={(e) => e.stopPropagation()}>
-              <span className="text-xs text-gray-400">예산 금액</span>
+            <div className="mt-3 flex items-center justify-between rounded-lg border border-[#AAC7E1]/40 bg-white px-3 py-2" onClick={(e) => e.stopPropagation()}>
+              <span className="text-xs text-[#6A7282]">예산 금액</span>
               <div className="flex items-center gap-1.5">
                 <input
                   type="number"
                   value={budget}
                   onChange={(e) => onBudgetChange(Number(e.target.value) || 500)}
-                  className="w-20 rounded border border-gray-200 bg-white px-2 py-1 text-right font-mono text-sm font-semibold outline-none focus:border-primary"
+                  className="w-20 rounded border border-[#D1D5DC] bg-white px-2 py-1 text-right font-mono text-sm font-semibold outline-none focus:border-[#AAC7E1]"
                 />
-                <span className="text-xs text-gray-400">만원</span>
+                <span className="text-xs text-[#6A7282]">만원</span>
               </div>
             </div>
           )}
         </button>
 
-        {/* 생략 */}
         <OptionCard
           selected={choice === 'no'}
           label="생략"
           desc="신혼여행 없이 진행"
-          icon="✕"
+          icon=""
           isSkip
           onClick={() => onChoiceChange('no')}
         />
@@ -482,136 +519,168 @@ function ResultView({ result, onReset }: { result: BudgetResult; onReset: () => 
   const includedItems = result.items.filter((i) => !i.skipped);
   const skippedItems = result.items.filter((i) => i.skipped);
 
-  // Donut chart
-  const conicSegments = includedItems
-    .reduce<Array<{ color: string; start: number; end: number }>>((acc, item) => {
-      const pct = result.total > 0 ? (item.amount / result.total) * 360 : 0;
-      const start = acc.length > 0 ? acc[acc.length - 1].end : 0;
-      acc.push({ color: item.color, start, end: start + pct });
-      return acc;
-    }, []);
-
-  const conicGradient = conicSegments
-    .map((s) => `${s.color} ${s.start}deg ${s.end}deg`)
-    .join(', ');
+  // Pie chart SVG segments with white borders
+  const pieSegments = includedItems.reduce<Array<{ color: string; startAngle: number; endAngle: number }>>((acc, item) => {
+    const angle = result.total > 0 ? (item.amount / result.total) * 360 : 0;
+    const start = acc.length > 0 ? acc[acc.length - 1].endAngle : -90;
+    acc.push({ color: item.color, startAngle: start, endAngle: start + angle });
+    return acc;
+  }, []);
 
   const maxAmount = Math.max(...includedItems.map((i) => i.amount));
 
   return (
-    <div className="flex-1 pb-8">
-      {/* Progress full */}
-      <div className="px-6">
-        <div className="h-1 w-full rounded-full bg-primary" />
-      </div>
-
-      <div className="px-6 pb-2 pt-6 text-center">
-        <h1 className="text-lg font-bold text-gray-900">예산 결과</h1>
-      </div>
-
-      {/* Chart Card */}
-      <div className="px-5 pt-4">
-        <div className="flex flex-col items-center rounded-2xl bg-white px-6 py-8 shadow-sm">
-          {/* Donut */}
-          <div className="relative h-[200px] w-[200px]">
-            <div
-              className="h-full w-full rounded-full"
-              style={{
-                background: `conic-gradient(${conicGradient})`,
-                WebkitMask: 'radial-gradient(circle, transparent 55%, black 56%)',
-                mask: 'radial-gradient(circle, transparent 55%, black 56%)',
-              }}
-            />
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="text-xs text-gray-400">총 예산</span>
-              <span className="mt-1 font-mono text-2xl font-bold text-gray-900">
-                {result.total.toLocaleString()}만원
-              </span>
-              <span className="mt-1 text-[10px] text-gray-300">
-                {result.totalMin.toLocaleString()} ~ {result.totalMax.toLocaleString()}만
-              </span>
-            </div>
+    <div className="flex-1 pb-12 pt-8">
+      {/* Top section — Figma: Card 670px + Statistics 320px, gap ~43px */}
+      <div className="flex flex-col gap-6 sm:flex-row sm:items-stretch sm:gap-10">
+        {/* Card — Total amount (Figma: 670.82x443, left) */}
+        <div
+          className="flex min-h-[300px] flex-[2.1] flex-col items-center justify-center rounded-[19px] bg-[#FDFDFD] px-6 py-10 sm:min-h-[443px] sm:px-14"
+          style={{ boxShadow: '0px 19px 56px rgba(69, 69, 80, 0.1)' }}
+        >
+          {/* Header — border-bottom 2.33px solid rgba(163,163,163,0.2) */}
+          <div className="flex w-full items-center justify-between pb-5" style={{ borderBottom: '2.33px solid rgba(163, 163, 163, 0.2)' }}>
+            <span className="text-xl font-medium text-[#656575] sm:text-[28px] lg:text-[42px] lg:leading-[56px]">시뮬레이션 결과</span>
+            <span className="rounded-md bg-[#F4F5F7] px-3 py-1.5 text-sm text-[#656575] sm:px-5 sm:py-2.5 sm:text-lg">
+              Today
+            </span>
           </div>
+          {/* Amount — Figma: Pretendard 700 65px, #01150C */}
+          <p className="mt-6 whitespace-nowrap text-center text-2xl font-bold text-[#01150C] sm:mt-7 sm:text-[48px] sm:leading-[1.4] lg:text-[65px]">
+            {(result.total * 10000).toLocaleString()}원
+          </p>
+          {/* Range — Figma: Pretendard 500 33px, #525256 */}
+          <p className="mt-2 text-center text-base font-medium text-[#525256] sm:text-xl lg:text-[24px]">
+            {result.totalMin.toLocaleString()} ~ {result.totalMax.toLocaleString()}만원 범위
+          </p>
+        </div>
 
-          {/* Legend */}
-          <div className="mt-6 grid w-full grid-cols-2 gap-x-6 gap-y-2.5">
-            {result.items.map((item) => (
-              <div key={item.id} className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
-                <span className="text-sm text-gray-900">{item.label}</span>
-                <span className="ml-auto font-mono text-sm text-gray-400">
-                  {item.skipped
-                    ? '미포함'
-                    : `${Math.round((item.amount / result.total) * 100)}%`}
+        {/* Statistics — Pie chart + legend (Figma: 319.45x442.88, right) */}
+        <div
+          className="flex flex-1 flex-col items-center rounded-[10px] bg-[#FDFDFD] p-6 sm:max-w-[320px] sm:p-7"
+          style={{ boxShadow: '0px 9px 28px rgba(69, 69, 80, 0.1)' }}
+        >
+          {/* Donut chart — ring style, white gaps between segments */}
+          <svg viewBox="0 0 200 200" className="h-[160px] w-[160px] shrink-0 sm:h-[175px] sm:w-[175px]">
+            {pieSegments.map((seg, i) => {
+              const cx = 100, cy = 100, r = 70;
+              const startRad = (seg.startAngle * Math.PI) / 180;
+              const endRad = (seg.endAngle * Math.PI) / 180;
+              const x1 = cx + r * Math.cos(startRad);
+              const y1 = cy + r * Math.sin(startRad);
+              const x2 = cx + r * Math.cos(endRad);
+              const y2 = cy + r * Math.sin(endRad);
+              const largeArc = seg.endAngle - seg.startAngle > 180 ? 1 : 0;
+              return (
+                <path
+                  key={i}
+                  d={`M${x1},${y1} A${r},${r} 0 ${largeArc} 1 ${x2},${y2}`}
+                  fill="none"
+                  stroke={seg.color}
+                  strokeWidth="30"
+                  strokeLinecap="butt"
+                />
+              );
+            })}
+          </svg>
+
+          {/* Legend — Figma: Inter 19px, #1A1919, circle 19px */}
+          <div className="mt-7 flex w-full flex-col gap-2.5">
+            {includedItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between">
+                <div className="flex items-center gap-3.5">
+                  <span className="h-[19px] w-[19px] shrink-0 rounded-full" style={{ backgroundColor: item.color }} />
+                  <span className="text-[15px] text-[#1A1919] sm:text-[19px]">{item.label}</span>
+                </div>
+                <span className="text-[15px] text-[#1A1919] sm:text-[19px]">
+                  {Math.round((item.amount / result.total) * 100)}%
                 </span>
+              </div>
+            ))}
+            {skippedItems.map((item) => (
+              <div key={item.id} className="flex items-center justify-between">
+                <div className="flex items-center gap-3.5">
+                  <span className="h-[19px] w-[19px] shrink-0 rounded-full bg-[#D1D5DC]" />
+                  <span className="text-[15px] text-[#A3A3A3] sm:text-[19px]">{item.label}</span>
+                </div>
+                <span className="text-[15px] text-[#A3A3A3] sm:text-[19px]">미포함</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Detail Card */}
-      <div className="px-5 pt-5">
-        <div className="rounded-2xl bg-white p-5 shadow-sm">
-          <h2 className="text-base font-bold text-gray-900">항목별 예산 상세</h2>
-          <div className="mt-4 flex flex-col divide-y divide-gray-100">
-            {includedItems.map((item) => (
-              <div key={item.id} className="flex flex-col gap-2 py-4 first:pt-0 last:pb-0">
-                <div className="flex items-center">
-                  <div
-                    className="flex h-8 w-8 items-center justify-center rounded-lg text-sm"
-                    style={{ backgroundColor: `${item.color}20` }}
-                  >
-                    {item.icon}
-                  </div>
-                  <span className="ml-2 text-sm font-semibold text-gray-900">{item.label}</span>
-                  <span className="ml-auto font-mono text-base font-bold text-gray-900">
-                    {item.amount.toLocaleString()}만원
-                  </span>
-                </div>
-                <div className="h-1.5 w-full rounded-full bg-gray-100">
-                  <div
-                    className="h-1.5 rounded-full transition-all"
-                    style={{
-                      width: `${(item.amount / maxAmount) * 100}%`,
-                      backgroundColor: item.color,
-                    }}
+      {/* Item detail section — Figma: "항목별 예산", 1016px, border-bottom separated */}
+      <div className="mt-10">
+        <h2 className="text-xl font-medium text-[#101828] sm:text-2xl">항목별 예산</h2>
+        <div className="mt-8 flex flex-col">
+          {includedItems.map((item) => (
+            <div key={item.id} className="flex flex-col gap-3 border-b border-[#E5E7EB] py-5 first:pt-0">
+              {/* Row: label + amount */}
+              <div className="flex items-start justify-between">
+                <div className="flex items-center gap-3">
+                  <span
+                    className="h-6 w-6 shrink-0 rounded-[6px]"
+                    style={{ backgroundColor: item.color }}
                   />
+                  <span className="text-lg font-medium text-[#101828] sm:text-xl">{item.label}</span>
                 </div>
-                {item.range && (
-                  <p className="text-right text-[11px] text-gray-300">{item.range}</p>
-                )}
-              </div>
-            ))}
-            {skippedItems.map((item) => (
-              <div key={item.id} className="flex items-center py-4 last:pb-0">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-sm">
-                  {item.icon}
+                <div className="text-right">
+                  <p className="font-[family-name:var(--font-geist-mono)] text-lg text-[#101828] sm:text-2xl">
+                    {(item.amount * 10000).toLocaleString()}원
+                  </p>
+                  <p className="text-sm text-[#6A7282]">
+                    {Math.round((item.amount / result.total) * 100)}%
+                  </p>
                 </div>
-                <span className="ml-2 text-sm font-semibold text-gray-300">{item.label}</span>
-                <span className="ml-auto text-sm text-gray-300">미포함</span>
               </div>
-            ))}
-          </div>
+              {/* Bar */}
+              <div className="h-2 w-full rounded-full bg-[#F3F4F6]">
+                <div
+                  className="h-2 rounded-full"
+                  style={{
+                    width: `${(item.amount / maxAmount) * 100}%`,
+                    backgroundColor: item.color,
+                  }}
+                />
+              </div>
+            </div>
+          ))}
+          {skippedItems.map((item) => (
+            <div key={item.id} className="flex items-center justify-between border-b border-[#E5E7EB] py-5">
+              <div className="flex items-center gap-3">
+                <span className="h-6 w-6 shrink-0 rounded-[6px] bg-[#E5E7EB]" />
+                <span className="text-lg font-medium text-[#A3A3A3] sm:text-xl">{item.label}</span>
+              </div>
+              <span className="text-lg text-[#A3A3A3]">미포함</span>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Disclaimer */}
-      <p className="px-8 pt-5 text-center text-[11px] leading-relaxed text-gray-300">
+      <p className="mt-8 text-center text-xs leading-relaxed text-[#6A7282]/50">
         ※ 위 예산은 최근 시장 평균 데이터를 기반으로 한 참고용 추정치입니다.
         <br />
         실제 비용은 업체 시기 협상에 따라 다를 수 있습니다.
       </p>
 
-      {/* CTAs */}
-      <div className="flex flex-col gap-3 px-6 pt-6">
+      {/* CTAs — Figma: 672px, 78px height, border-radius 24px */}
+      <div className="mx-auto mt-10 flex w-full max-w-[672px] flex-col gap-3">
         <button
           onClick={onReset}
-          className="w-full rounded-2xl bg-gray-900 py-4 text-base font-semibold text-white active:scale-[0.99]"
+          className="flex h-[78px] w-full items-center justify-center rounded-3xl bg-[#373737] text-xl font-medium text-white active:scale-[0.99]"
         >
           조건 바꿔서 재계산하기
         </button>
-        <button className="w-full rounded-2xl border border-gray-200 bg-white py-3.5 text-sm font-medium text-gray-500 active:scale-[0.99]">
-          ↗ 결과 공유하기
+        <button className="flex h-[78px] w-full items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-white text-xl font-medium text-[#101828] active:scale-[0.99]">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#364153" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M15 3h6v6" />
+            <path d="M9 21H3v-6" />
+            <path d="M21 3l-7 7" />
+            <path d="M3 21l7-7" />
+          </svg>
+          결과 공유하기
         </button>
       </div>
     </div>

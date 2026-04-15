@@ -1,0 +1,352 @@
+{
+  "version": "2.10",
+  "children": [
+    {
+      "type": "frame",
+      "id": "IV5e3",
+      "x": 0,
+      "y": 0,
+      "name": "Design Tokens",
+      "width": 800,
+      "fill": "#FFFFFF",
+      "layout": "vertical",
+      "gap": 32,
+      "padding": 40,
+      "children": [
+        {
+          "type": "text",
+          "id": "aPq0V",
+          "name": "t1",
+          "fill": "#101828",
+          "content": "BUDGETROAD Design DNA",
+          "fontFamily": "Inter",
+          "fontSize": 28,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "y1I4d",
+          "name": "t2",
+          "fill": "#6A7282",
+          "content": "Figma UI개선안 기반 디자인 토큰 (2026-04-15 추출)",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "f5OWv",
+          "name": "cs",
+          "fill": "#6A7282",
+          "content": "COLORS",
+          "fontFamily": "Inter",
+          "fontSize": 12,
+          "fontWeight": "700",
+          "letterSpacing": 2
+        },
+        {
+          "type": "frame",
+          "id": "hXvNb",
+          "name": "Backgrounds",
+          "width": "fill_container",
+          "gap": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "cTL4d",
+              "name": "b1",
+              "width": 120,
+              "height": 80,
+              "fill": "#F9FAFB",
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "U9jA4",
+                  "name": "b1l",
+                  "fill": "#373737",
+                  "content": "Page BG\n#F9FAFB",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "Wlzic",
+              "name": "b2",
+              "width": 120,
+              "height": 80,
+              "fill": "#F8F7F1",
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "8IRjl",
+                  "name": "b2l",
+                  "fill": "#373737",
+                  "content": "Warm BG\n#F8F7F1",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "SLu3f",
+              "name": "b3",
+              "width": 120,
+              "height": 80,
+              "fill": "#FFFFFF",
+              "cornerRadius": 8,
+              "stroke": {
+                "align": "inside",
+                "thickness": 1,
+                "fill": "#E5E7EB"
+              },
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "DvvIp",
+                  "name": "b3l",
+                  "fill": "#373737",
+                  "content": "Card BG\n#FFFFFF",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "R5nH8",
+              "name": "b4",
+              "width": 120,
+              "height": 80,
+              "fill": "#AAC7E1",
+              "cornerRadius": 8,
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "IVuQB",
+                  "name": "b4l",
+                  "fill": "#FFFFFF",
+                  "content": "Accent\n#AAC7E1",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "WXpsM",
+              "name": "b5",
+              "width": 120,
+              "height": 80,
+              "fill": "#373737",
+              "cornerRadius": 8,
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "Jwds6",
+                  "name": "b5l",
+                  "fill": "#FFFFFF",
+                  "content": "CTA Button\n#373737",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "frame",
+          "id": "jKf9U",
+          "name": "Text Colors",
+          "width": "fill_container",
+          "gap": 16,
+          "children": [
+            {
+              "type": "frame",
+              "id": "ynZ9J",
+              "name": "x1",
+              "width": 120,
+              "height": 80,
+              "fill": "#101828",
+              "cornerRadius": 8,
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "5AzXX",
+                  "name": "x1l",
+                  "fill": "#FFFFFF",
+                  "content": "Text Dark\n#101828",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "dpjsm",
+              "name": "x2",
+              "width": 120,
+              "height": 80,
+              "fill": "#4A5565",
+              "cornerRadius": 8,
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "ZQ12v",
+                  "name": "x2l",
+                  "fill": "#FFFFFF",
+                  "content": "Text Secondary\n#4A5565",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "3FkW8",
+              "name": "x3",
+              "width": 120,
+              "height": 80,
+              "fill": "#6A7282",
+              "cornerRadius": 8,
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "cyNs4",
+                  "name": "x3l",
+                  "fill": "#FFFFFF",
+                  "content": "Text Muted\n#6A7282",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            },
+            {
+              "type": "frame",
+              "id": "por4t",
+              "name": "x4",
+              "width": 120,
+              "height": 80,
+              "fill": "#E5E7EB",
+              "cornerRadius": 8,
+              "layout": "vertical",
+              "padding": 8,
+              "justifyContent": "end",
+              "children": [
+                {
+                  "type": "text",
+                  "id": "EVseV",
+                  "name": "x4l",
+                  "fill": "#373737",
+                  "content": "Border\n#E5E7EB",
+                  "fontFamily": "Inter",
+                  "fontSize": 10,
+                  "fontWeight": "normal"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "huOfW",
+          "name": "fs",
+          "fill": "#6A7282",
+          "content": "TYPOGRAPHY",
+          "fontFamily": "Inter",
+          "fontSize": 12,
+          "fontWeight": "700",
+          "letterSpacing": 2
+        },
+        {
+          "type": "text",
+          "id": "ic7L0",
+          "name": "fh",
+          "fill": "#101828",
+          "content": "결혼 준비, 어디서부터 시작할까?",
+          "fontFamily": "Inter",
+          "fontSize": 36,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "NFEsM",
+          "name": "fb",
+          "fill": "#6A7282",
+          "content": "Pretendard → Inter (Pencil 대체) / 로고: Geist Bold",
+          "fontFamily": "Inter",
+          "fontSize": 14,
+          "fontWeight": "normal"
+        },
+        {
+          "type": "text",
+          "id": "R4r4F",
+          "name": "fl",
+          "fill": "#101828",
+          "content": "budgetroad",
+          "fontFamily": "Geist",
+          "fontSize": 24,
+          "fontWeight": "700"
+        },
+        {
+          "type": "text",
+          "id": "Js3AR",
+          "name": "ns",
+          "fill": "#6A7282",
+          "textGrowth": "fixed-width",
+          "width": 720,
+          "content": "NOTES: CTA #373737 다크 / Accent #AAC7E1 블루 / Progress bar #AAC7E1+#E5E7EB",
+          "fontFamily": "Inter",
+          "fontSize": 13,
+          "fontWeight": "normal"
+        }
+      ]
+    }
+  ]
+}
