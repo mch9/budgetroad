@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteTitle = '버젯로드 - 내 결혼 예산 초안 만들기';
+const siteTitle = '버짓로드 - 내 결혼 예산 초안 만들기';
 const siteDescription =
   '결혼 유형만 선택하면 통계 기반으로 항목별 예산 초안을 자동으로 만들어드려요. 시세 조사 없이, 3분이면 전체 예산 감을 잡을 수 있어요.';
 
@@ -25,14 +25,14 @@ export const metadata: Metadata = {
   ),
   title: {
     default: siteTitle,
-    template: '%s | 버젯로드',
+    template: '%s | 버짓로드',
   },
   description: siteDescription,
   keywords: ['결혼 예산', '결혼 비용', '웨딩 예산', '식장 비용', '스드메 가격'],
   openGraph: {
     title: siteTitle,
     description: siteDescription,
-    siteName: '버젯로드',
+    siteName: '버짓로드',
     locale: 'ko_KR',
     type: 'website',
   },

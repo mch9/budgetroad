@@ -84,7 +84,7 @@ export default function BudgetDraftPage() {
       {/* Header */}
       <header className="sticky top-0 z-10 flex h-14 items-center justify-between bg-white/80 px-6 backdrop-blur-sm">
         <Link href="/" className="text-lg font-extrabold text-primary">
-          버젯로드
+          버짓로드
         </Link>
         {isResult && (
           <button onClick={reset} className="text-sm font-medium text-primary">

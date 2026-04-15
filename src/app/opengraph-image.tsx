@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'nodejs';
-export const alt = '버젯로드 - 내 결혼 예산 초안 만들기';
+export const alt = '버짓로드 - 내 결혼 예산 초안 만들기';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -59,7 +59,7 @@ export default function OgImage() {
             letterSpacing: '-0.02em',
           }}
         >
-          버젯로드
+          버짓로드
         </div>
 
         {/* Subtitle */}
