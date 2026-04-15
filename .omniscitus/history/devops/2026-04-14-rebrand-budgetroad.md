@@ -1,7 +1,7 @@
 # 버젯로드 리브랜딩 및 도메인 변경
 
 ## Summary
-서비스명을 "웨딩버젯"에서 "버젯로드"로 변경하고, Vercel 도메인을 budgetroad.vercel.app으로 이전.
+서비스명을 "웨딩버젯"에서 "버젯로드"로 변경하고 Vercel 도메인 이전. 이후 표기를 "버짓로드"로 교정하여 전체 SEO/UI 반영.
 
 ## Context
 - **Background**: 서비스 정체성 강화를 위해 프로젝트명/도메인 리브랜딩 결정
@@ -22,6 +22,17 @@
 - PR #8 → main 머지 → Vercel 배포 완료
 
 **Learned**: Vercel에서 프로젝트 이름을 바꿔도 기존 .vercel.app 도메인은 자동 변경되지 않음 — Domains 설정에서 수동으로 변경 필요
+
+### 2026-04-15
+**Focus**: 서비스명 표기 "버젯로드" → "버짓로드" 일괄 변경
+- layout.tsx siteTitle, template, siteName 변경 (3곳)
+- opengraph-image.tsx alt 텍스트 + 렌더링 텍스트 변경 (2곳)
+- budget-draft/page.tsx 헤더 로고 텍스트 변경
+- budget-draft/layout.tsx openGraph title 변경
+- CLAUDE.md 프로젝트 제목 변경
+- main 푸시 → Vercel 자동 배포
+
+**Learned**: none
 
 ## Pending
 - [ ] GitHub 저장소 이름 wedding-budget → budgetroad 변경 검토

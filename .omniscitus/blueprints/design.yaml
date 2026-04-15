@@ -1,7 +1,13 @@
 files:
-  - path: design/budget-draft-v1-step-flow.pen
+  - path: design/README.md
     source: claude
     status: active
-    created: "2026-04-14"
-    purpose: "STEP 플로우 v1 디자인 — 7개 화면 (STEP 1~6 + 결과) 모바일 UI 목업"
+    created: "2026-04-15"
+    purpose: "디자인 디렉토리 구조 및 참조 가이드 — .pen 파일 역할, 폴더 규칙, 참조 타이밍"
+    change_count: 1
+  - path: design/master/budget-draft.pen
+    source: claude
+    status: active
+    created: "2026-04-11"
+    purpose: "예산 초안 생성 페이지 확정 디자인 (STEP 플로우 + 결과)"
     change_count: 1

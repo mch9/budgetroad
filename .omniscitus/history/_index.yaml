@@ -36,9 +36,9 @@ units:
     domain: devops
     status: open
     created: 2026-04-14
-    last_updated: 2026-04-14
-    session_count: 1
-    title: "버젯로드 리브랜딩 및 도메인 변경"
+    last_updated: 2026-04-15
+    session_count: 2
+    title: "버짓로드 리브랜딩 및 도메인 변경"
   - id: step-flow-rebuild
     file: web/2026-04-14-step-flow-rebuild.md
     domain: web
@@ -47,6 +47,14 @@ units:
     last_updated: 2026-04-14
     session_count: 1
     title: "예산 초안 6단계 STEP 플로우 재구축"
+  - id: design-directory-setup
+    file: devops/2026-04-15-design-directory-setup.md
+    domain: devops
+    status: open
+    created: 2026-04-15
+    last_updated: 2026-04-15
+    session_count: 1
+    title: "디자인 디렉토리 구조 세팅"
   - id: landing-page-redesign
     file: web/2026-04-14-landing-page-redesign.md
     domain: web
