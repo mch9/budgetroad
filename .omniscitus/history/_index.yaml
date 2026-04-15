@@ -68,9 +68,9 @@ units:
     domain: web
     status: open
     created: 2026-04-14
-    last_updated: 2026-04-14
-    session_count: 1
-    title: "랜딩 페이지 공감형 재구성"
+    last_updated: 2026-04-15
+    session_count: 2
+    title: "랜딩 페이지 피그마 기반 리디자인"
 
 weekly_summaries:
   - week: "2026-W15"

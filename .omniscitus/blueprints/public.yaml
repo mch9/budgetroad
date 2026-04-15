@@ -35,3 +35,9 @@ files:
     created: "2026-04-11"
     purpose: "SEO 크롤러 허용 정책 파일"
     change_count: 1
+  - path: public/couple-illustration.png
+    source: claude
+    status: active
+    created: "2026-04-15"
+    purpose: "랜딩 페이지 라인아트 커플 일러스트 — Figma에서 API로 추출"
+    change_count: 1
