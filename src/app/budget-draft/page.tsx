@@ -9,7 +9,6 @@ import {
   type Season,
   type Tier,
   type YemulTier,
-  type YedanChoice,
   type HoneymoonChoice,
   type StepSelections,
   type BudgetResult,
@@ -21,8 +20,8 @@ import {
   GUEST_OPTIONS,
   MEAL_OPTIONS,
   YEMUL_OPTIONS,
-  YEDAN_OPTIONS,
   HONEYMOON_OPTIONS,
+  STANDARD_MEAL_PRICES,
   calculateBudget,
 } from '@/lib/budget-data';
 
@@ -161,6 +160,8 @@ export default function BudgetDraftPage() {
           <Step4
             guest={selections.guestCount}
             meal={selections.mealCost}
+            region={selections.region}
+            venueType={selections.venueType}
             onGuestChange={(v) => update('guestCount', v)}
             onMealChange={(v) => update('mealCost', v)}
           />
@@ -168,9 +169,9 @@ export default function BudgetDraftPage() {
         {step === 4 && (
           <Step5
             yemul={selections.yemulTier}
-            yedan={selections.yedanChoice}
+            yemulBudget={selections.yemulBudget}
             onYemulChange={(v) => update('yemulTier', v)}
-            onYedanChange={(v) => update('yedanChoice', v)}
+            onYemulBudgetChange={(v) => update('yemulBudget', v)}
           />
         )}
         {step === 5 && (
@@ -348,13 +349,23 @@ function Step3({
 }
 
 function Step4({
-  guest, meal, onGuestChange, onMealChange,
+  guest, meal, region, venueType, onGuestChange, onMealChange,
 }: {
-  guest: number; meal: number;
+  guest: number; meal: number; region: Region; venueType: VenueType;
   onGuestChange: (v: number) => void; onMealChange: (v: number) => void;
 }) {
   const [customGuest, setCustomGuest] = useState(false);
-  const [customMeal, setCustomMeal] = useState(false);
+  const standardMeal = STANDARD_MEAL_PRICES[region]?.[venueType];
+  const isPreset = MEAL_OPTIONS.some((o) => o.value === meal);
+
+  // 표준 가격으로 초기값 세팅 (Step4 첫 진입 시)
+  const initialized = useRef(false);
+  useEffect(() => {
+    if (!initialized.current && standardMeal) {
+      initialized.current = true;
+      onMealChange(Math.round(standardMeal));
+    }
+  }, []);
 
   return (
     <div>
@@ -372,15 +383,18 @@ function Step4({
           />
         ))}
         {customGuest ? (
-          <div className="flex items-center gap-2 rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
-            <span className="text-sm text-[#6A7282]">인원:</span>
-            <input
-              type="number"
-              value={guest}
-              onChange={(e) => onGuestChange(Number(e.target.value) || 100)}
-              className="w-20 rounded-lg border border-[#D1D5DC] bg-white px-3 py-1.5 text-center font-mono text-sm font-semibold outline-none focus:border-[#AAC7E1]"
-            />
-            <span className="text-sm text-[#6A7282]">명</span>
+          <div className="flex items-center justify-between rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
+            <span className="text-base font-medium text-[#364153]">보증인원</span>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                inputMode="numeric"
+                value={guest}
+                onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); onGuestChange(Number(v) || 0); }}
+                className="w-28 rounded-lg border border-[#D1D5DC] bg-white px-4 py-2.5 text-right text-lg font-semibold outline-none focus:border-[#AAC7E1]"
+              />
+              <span className="text-base text-[#6A7282]">명</span>
+            </div>
           </div>
         ) : (
           <button
@@ -393,60 +407,87 @@ function Step4({
       </div>
       <SectionLabel label="1인당 식사 비용" />
       <div className="flex flex-col gap-3">
+        {/* 직접 입력 (표준 가격 세팅) — 첫 번째 항목 */}
+        <div className={`flex items-center justify-between rounded-[14px] border-2 p-5 transition-all ${
+          !isPreset ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]' : 'border-[#E5E7EB] bg-white'
+        }`}>
+          <div>
+            <span className={`text-base font-medium ${!isPreset ? 'text-[#101828]' : 'text-[#364153]'}`}>
+              직접 입력
+            </span>
+            {standardMeal && (
+              <p className="text-xs text-[#6A7282]">
+                표준 가격: {standardMeal.toLocaleString()}만원
+              </p>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              inputMode="numeric"
+              value={meal}
+              onChange={(e) => {
+                const v = e.target.value.replace(/[^0-9]/g, '');
+                onMealChange(Number(v) || 0);
+              }}
+              className="w-28 rounded-lg border border-[#D1D5DC] bg-white px-4 py-2.5 text-right text-lg font-semibold outline-none focus:border-[#AAC7E1]"
+            />
+            <span className="text-base text-[#6A7282]">만원</span>
+          </div>
+        </div>
+        {/* 프리셋 옵션 */}
         {MEAL_OPTIONS.map((o) => (
           <OptionCard
             key={o.value}
-            selected={!customMeal && meal === o.value}
+            selected={meal === o.value}
             label={o.label}
             desc={o.desc}
             icon={o.icon}
-            onClick={() => { setCustomMeal(false); onMealChange(o.value); }}
+            onClick={() => onMealChange(o.value)}
           />
         ))}
-        {customMeal ? (
-          <div className="flex items-center gap-2 rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
-            <span className="text-sm text-[#6A7282]">1인당:</span>
-            <input
-              type="number"
-              value={meal}
-              onChange={(e) => onMealChange(Number(e.target.value) || 5)}
-              className="w-20 rounded-lg border border-[#D1D5DC] bg-white px-3 py-1.5 text-center font-mono text-sm font-semibold outline-none focus:border-[#AAC7E1]"
-            />
-            <span className="text-sm text-[#6A7282]">만원</span>
-          </div>
-        ) : (
-          <button
-            onClick={() => setCustomMeal(true)}
-            className="flex w-full items-center justify-center gap-1.5 rounded-[14px] border-2 border-dashed border-[#E5E7EB] bg-white p-5 text-sm font-medium text-[#6A7282]"
-          >
-            직접 입력
-          </button>
-        )}
       </div>
     </div>
   );
 }
 
 function Step5({
-  yemul, yedan, onYemulChange, onYedanChange,
+  yemul, yemulBudget, onYemulChange, onYemulBudgetChange,
 }: {
-  yemul: YemulTier; yedan: YedanChoice;
-  onYemulChange: (v: YemulTier) => void; onYedanChange: (v: YedanChoice) => void;
+  yemul: YemulTier; yemulBudget: number;
+  onYemulChange: (v: YemulTier) => void; onYemulBudgetChange: (v: number) => void;
 }) {
   return (
     <div>
-      <StepHeader step={5} title="예물과 예단은요?" subtitle="생략해도 괜찮아요, 선택은 자유입니다" />
+      <StepHeader step={5} title="예물은 어떻게 하실 건가요?" subtitle="생략해도 괜찮아요, 선택은 자유입니다" />
       <SectionLabel label="예물" />
       <div className="flex flex-col gap-3">
         {YEMUL_OPTIONS.map((o) => (
           <OptionCard key={o.value} selected={yemul === o.value} label={o.label} desc={o.desc} icon={o.icon} isSkip={o.value === 'skip'} onClick={() => onYemulChange(o.value)} />
         ))}
-      </div>
-      <SectionLabel label="예단" />
-      <div className="flex flex-col gap-3">
-        {YEDAN_OPTIONS.map((o) => (
-          <OptionCard key={o.value} selected={yedan === o.value} label={o.label} desc={o.desc} icon={o.icon} isSkip={o.value === 'skip'} onClick={() => onYedanChange(o.value)} />
-        ))}
+        {/* 직접 입력 옵션 */}
+        {yemul === 'custom' ? (
+          <div className="flex items-center justify-between rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
+            <span className="text-base font-medium text-[#101828]">직접 입력</span>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                inputMode="numeric"
+                value={yemulBudget}
+                onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); onYemulBudgetChange(Number(v) || 0); }}
+                className="w-28 rounded-lg border border-[#D1D5DC] bg-white px-4 py-2.5 text-right text-lg font-semibold outline-none focus:border-[#AAC7E1]"
+              />
+              <span className="text-base text-[#6A7282]">만원</span>
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={() => onYemulChange('custom')}
+            className="flex w-full items-center justify-center gap-1.5 rounded-[14px] border-2 border-dashed border-[#E5E7EB] bg-white p-5 text-base font-medium text-[#6A7282]"
+          >
+            직접 입력
+          </button>
+        )}
       </div>
     </div>
   );
@@ -462,52 +503,29 @@ function Step6({
     <div>
       <StepHeader step={6} title="신혼여행은 계획하고 있나요?" subtitle="마지막 단계예요! 거의 다 왔어요" />
       <div className="flex flex-col gap-3 pt-6">
-        <button
-          onClick={() => onChoiceChange('yes')}
-          className={`w-full rounded-[14px] border-2 p-5 text-left transition-all ${
-            choice === 'yes' ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]' : 'border-[#E5E7EB] bg-white'
-          }`}
-        >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              {choice === 'yes' ? (
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]">
-                  <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                    <path d="M3 8L6.5 11.5L13 5" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-              ) : (
-                <div className="h-6 w-6 shrink-0" />
-              )}
-              <span className={`text-lg font-medium ${choice === 'yes' ? 'text-[#101828]' : 'text-[#364153]'}`}>
-                신혼여행 갈 예정
-              </span>
+        {choice === 'yes' ? (
+          <div className="flex items-center justify-between rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
+            <span className="text-base font-medium text-[#101828]">신혼여행 갈 예정</span>
+            <div className="flex items-center gap-2">
+              <input
+                type="text"
+                inputMode="numeric"
+                value={budget}
+                onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); onBudgetChange(Number(v) || 0); }}
+                className="w-28 rounded-lg border border-[#D1D5DC] bg-white px-4 py-2.5 text-right text-lg font-semibold outline-none focus:border-[#AAC7E1]"
+              />
+              <span className="text-base text-[#6A7282]">만원</span>
             </div>
-            {choice === 'yes' ? (
-              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path d="M5 10L8.5 13.5L15 6.5" stroke="white" strokeWidth="1.67" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-            ) : (
-              <div className="h-6 w-6 shrink-0 rounded-full border-2 border-[#D1D5DC] bg-white" />
-            )}
           </div>
-          {choice === 'yes' && (
-            <div className="mt-3 flex items-center justify-between rounded-lg border border-[#AAC7E1]/40 bg-white px-3 py-2" onClick={(e) => e.stopPropagation()}>
-              <span className="text-xs text-[#6A7282]">예산 금액</span>
-              <div className="flex items-center gap-1.5">
-                <input
-                  type="number"
-                  value={budget}
-                  onChange={(e) => onBudgetChange(Number(e.target.value) || 500)}
-                  className="w-20 rounded border border-[#D1D5DC] bg-white px-2 py-1 text-right font-mono text-sm font-semibold outline-none focus:border-[#AAC7E1]"
-                />
-                <span className="text-xs text-[#6A7282]">만원</span>
-              </div>
-            </div>
-          )}
-        </button>
+        ) : (
+          <OptionCard
+            selected={false}
+            label="신혼여행 갈 예정"
+            desc="기본 예산 1,000만원"
+            icon=""
+            onClick={() => onChoiceChange('yes')}
+          />
+        )}
 
         <OptionCard
           selected={choice === 'no'}
@@ -529,7 +547,7 @@ function summarizeSelections(s: StepSelections): string {
   const venue = VENUE_OPTIONS.find((o) => o.value === s.venueType)?.label ?? '';
   const tier = TIER_LABELS[s.studioTier]?.label ?? '';
   const guest = `${s.guestCount}명`;
-  const yemul = YEMUL_OPTIONS.find((o) => o.value === s.yemulTier)?.label ?? '';
+  const yemul = s.yemulTier === 'custom' ? `예물 ${s.yemulBudget.toLocaleString()}만원` : (YEMUL_OPTIONS.find((o) => o.value === s.yemulTier)?.label ?? '');
   const honeymoon = s.honeymoonChoice === 'yes' ? '신혼여행 포함' : '신혼여행 없음';
   return [region, venue, tier, guest, yemul, honeymoon].join(', ');
 }
