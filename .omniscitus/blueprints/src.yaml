@@ -40,7 +40,13 @@ files:
     source: claude
     status: active
     created: "2026-04-13"
-    purpose: "Google Analytics gtag 헬퍼 — pageview/event 전송 함수"
+    purpose: "Google Analytics gtag 헬퍼 — 모든 이벤트에 visitor_id 자동 포함"
+    change_count: 2
+  - path: src/lib/visitor.ts
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "localStorage 기반 비로그인 방문자 식별 — UUID 생성/저장, 재방문 판별"
     change_count: 1
   - path: src/types/gtag.d.ts
     source: claude
@@ -112,5 +118,5 @@ files:
     source: claude
     status: active
     created: "2026-04-11"
-    purpose: "결혼 예산 데이터 모델 — 지역×예식장×시기 가격표, 스드메 등급별 가격, 예물/예단/신혼여행 + 계산 로직"
+    purpose: "결혼 예산 데이터 모델 — 팀 조사 기반 지역×유형 대관료, 지역×시즌×등급 스드메, 예물/신혼여행 + 계산 로직"
     change_count: 2

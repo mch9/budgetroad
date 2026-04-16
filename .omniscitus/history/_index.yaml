@@ -45,7 +45,7 @@ units:
     status: open
     created: 2026-04-14
     last_updated: 2026-04-16
-    session_count: 2
+    session_count: 3
     title: "예산 초안 6단계 STEP 플로우 재구축"
   - id: design-directory-setup
     file: devops/2026-04-15-design-directory-setup.md
@@ -63,6 +63,14 @@ units:
     last_updated: 2026-04-15
     session_count: 1
     title: "사례 가이드 블로그 PRD"
+  - id: visitor-tracking
+    file: web/2026-04-16-visitor-tracking.md
+    domain: web
+    status: open
+    created: 2026-04-16
+    last_updated: 2026-04-16
+    session_count: 1
+    title: "비로그인 방문자 식별 및 재방문 추적"
   - id: landing-page-redesign
     file: web/2026-04-14-landing-page-redesign.md
     domain: web
