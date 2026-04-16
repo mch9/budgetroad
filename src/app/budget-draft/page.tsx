@@ -559,17 +559,17 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
         >
           {/* Header — border-bottom 2.33px solid rgba(163,163,163,0.2) */}
           <div className="flex w-full items-center justify-between pb-5" style={{ borderBottom: '2.33px solid rgba(163, 163, 163, 0.2)' }}>
-            <span className="text-xl font-medium text-[#656575] sm:text-[28px] lg:text-[42px] lg:leading-[56px]">결혼 예상 비용</span>
-            <span className="rounded-md bg-[#F4F5F7] px-3 py-1.5 text-sm text-[#656575] sm:px-5 sm:py-2.5 sm:text-lg">
+            <span className="text-lg font-medium text-[#656575] sm:text-2xl lg:text-[32px] lg:leading-[44px]">결혼 예상 비용</span>
+            <span className="rounded-md bg-[#F4F5F7] px-3 py-1.5 text-xs font-normal text-[#656575] sm:px-5 sm:py-2.5 sm:text-base">
               총합
             </span>
           </div>
-          {/* Amount */}
-          <p className="mt-6 whitespace-nowrap text-center text-2xl font-bold text-[#01150C] sm:mt-7 sm:text-[48px] sm:leading-[1.4] lg:text-[65px]">
+          {/* Amount — Figma: Pretendard 700 65px */}
+          <p className="mt-6 whitespace-nowrap text-center text-2xl font-bold text-[#01150C] sm:mt-7 sm:text-[40px] sm:leading-[1.4] lg:text-[52px]">
             {(result.total * 10000).toLocaleString()}원
           </p>
-          {/* Selection summary */}
-          <p className="mt-2 text-center text-sm font-medium text-[#525256] sm:text-lg lg:text-xl">
+          {/* Selection summary — Figma: Pretendard 500 33px, #525256 */}
+          <p className="mt-2 text-center text-sm font-medium text-[#525256] sm:text-base lg:text-lg">
             {summarizeSelections(selections)}
           </p>
         </div>
