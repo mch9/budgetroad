@@ -79,9 +79,14 @@ export default function Home() {
 
       {/* Header — Figma: 87px, padding 24px 32px, no solid border (dashed grid line at same y) */}
       <header className="relative z-10 flex h-14 items-center px-6 sm:h-[87px] sm:px-8">
-        <span className="font-[family-name:var(--font-geist-sans)] text-lg font-bold text-[#373737] sm:text-2xl">
-          budgetroad
-        </span>
+        <Image
+          src="/brand/logo-ko-nav.png"
+          alt="버짓로드"
+          width={269}
+          height={80}
+          className="h-[28px] w-auto sm:h-[36px]"
+          priority
+        />
       </header>
 
       <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center sm:gap-9">

@@ -96,8 +96,12 @@ export default function BudgetDraftPage() {
     <div className="flex min-h-dvh flex-col bg-[#F9FAFB]">
       {/* Header — Figma: 87px, border-bottom 1px solid #E5E7EB */}
       <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/80 px-6 backdrop-blur-sm sm:h-[87px] sm:px-8">
-        <Link href="/" className="text-lg font-bold text-[#373737] sm:text-2xl">
-          budgetroad
+        <Link href="/">
+          <img
+            src="/brand/logo-ko-nav.png"
+            alt="버짓로드"
+            className="h-[28px] w-auto sm:h-[36px]"
+          />
         </Link>
         {isResult && (
           <button onClick={reset} className="text-sm font-medium text-[#6A7282]">
