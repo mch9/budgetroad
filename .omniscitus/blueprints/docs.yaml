@@ -23,3 +23,9 @@ files:
     created: "2026-04-15"
     purpose: "블로그 기능 상세 PRD — Step 0~8 완료 (기능 요구사항, 화면 구성, 접근 플로우)"
     change_count: 1
+  - path: docs/prd/analytics/analytics-dashboard-v0.md
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "운영 분석 대시보드 One-Pager PRD — 16개 핵심 지표, DB+자체 대시보드 기술 방향"
+    change_count: 1

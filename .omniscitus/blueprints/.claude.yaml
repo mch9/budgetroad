@@ -137,3 +137,9 @@ files:
     created: "2026-04-11"
     purpose: "PRD 분할 워크플로우 스킬"
     change_count: 1
+  - path: .claude/skills/prd-onepager/SKILL.md
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "One-Pager PRD 스킬 — 5질문으로 작은 기능/내부 도구 기획 기록 (실리콘밸리 사례 기반)"
+    change_count: 1

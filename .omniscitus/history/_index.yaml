@@ -63,6 +63,14 @@ units:
     last_updated: 2026-04-15
     session_count: 1
     title: "사례 가이드 블로그 PRD"
+  - id: analytics-dashboard-prd
+    file: product/2026-04-16-analytics-dashboard-prd.md
+    domain: product
+    status: open
+    created: 2026-04-16
+    last_updated: 2026-04-16
+    session_count: 1
+    title: "운영 분석 대시보드 PRD"
   - id: visitor-tracking
     file: web/2026-04-16-visitor-tracking.md
     domain: web
