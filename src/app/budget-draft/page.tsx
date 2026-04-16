@@ -42,8 +42,13 @@ export default function BudgetDraftPage() {
     try {
       const saved = sessionStorage.getItem(RESULT_STORAGE_KEY);
       if (saved) {
-        const parsed = JSON.parse(saved) as BudgetResult;
-        setResult(parsed);
+        const parsed = JSON.parse(saved);
+        if (parsed.result && parsed.selections) {
+          setResult(parsed.result as BudgetResult);
+          setSelections(parsed.selections as StepSelections);
+        } else {
+          setResult(parsed as BudgetResult);
+        }
         setStep(TOTAL_STEPS);
       }
     } catch { /* ignore */ }
@@ -70,7 +75,7 @@ export default function BudgetDraftPage() {
       trackEvent('result_viewed', { total_amount: r.total });
       setResult(r);
       setStep(TOTAL_STEPS);
-      sessionStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(r));
+      sessionStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify({ result: r, selections }));
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
@@ -176,7 +181,7 @@ export default function BudgetDraftPage() {
             onBudgetChange={(v) => update('honeymoonBudget', v)}
           />
         )}
-        {isResult && result && <ResultView result={result} onReset={reset} />}
+        {isResult && result && <ResultView result={result} selections={selections} onReset={reset} />}
       </main>
 
       {/* Bottom Button — Figma: bg #373737, border-radius 14px, height 60px */}
@@ -519,7 +524,17 @@ function Step6({
 
 // ── Result ──
 
-function ResultView({ result, onReset }: { result: BudgetResult; onReset: () => void }) {
+function summarizeSelections(s: StepSelections): string {
+  const region = REGION_OPTIONS.find((o) => o.value === s.region)?.label ?? '';
+  const venue = VENUE_OPTIONS.find((o) => o.value === s.venueType)?.label ?? '';
+  const tier = TIER_LABELS[s.studioTier]?.label ?? '';
+  const guest = `${s.guestCount}명`;
+  const yemul = YEMUL_OPTIONS.find((o) => o.value === s.yemulTier)?.label ?? '';
+  const honeymoon = s.honeymoonChoice === 'yes' ? '신혼여행 포함' : '신혼여행 없음';
+  return [region, venue, tier, guest, yemul, honeymoon].join(', ');
+}
+
+function ResultView({ result, selections, onReset }: { result: BudgetResult; selections: StepSelections; onReset: () => void }) {
   const includedItems = result.items.filter((i) => !i.skipped);
   const skippedItems = result.items.filter((i) => i.skipped);
 
@@ -544,18 +559,18 @@ function ResultView({ result, onReset }: { result: BudgetResult; onReset: () => 
         >
           {/* Header — border-bottom 2.33px solid rgba(163,163,163,0.2) */}
           <div className="flex w-full items-center justify-between pb-5" style={{ borderBottom: '2.33px solid rgba(163, 163, 163, 0.2)' }}>
-            <span className="text-xl font-medium text-[#656575] sm:text-[28px] lg:text-[42px] lg:leading-[56px]">시뮬레이션 결과</span>
+            <span className="text-xl font-medium text-[#656575] sm:text-[28px] lg:text-[42px] lg:leading-[56px]">결혼 예상 비용</span>
             <span className="rounded-md bg-[#F4F5F7] px-3 py-1.5 text-sm text-[#656575] sm:px-5 sm:py-2.5 sm:text-lg">
-              Today
+              총합
             </span>
           </div>
-          {/* Amount — Figma: Pretendard 700 65px, #01150C */}
+          {/* Amount */}
           <p className="mt-6 whitespace-nowrap text-center text-2xl font-bold text-[#01150C] sm:mt-7 sm:text-[48px] sm:leading-[1.4] lg:text-[65px]">
             {(result.total * 10000).toLocaleString()}원
           </p>
-          {/* Range — Figma: Pretendard 500 33px, #525256 */}
-          <p className="mt-2 text-center text-base font-medium text-[#525256] sm:text-xl lg:text-[24px]">
-            {result.totalMin.toLocaleString()} ~ {result.totalMax.toLocaleString()}만원 범위
+          {/* Selection summary */}
+          <p className="mt-2 text-center text-sm font-medium text-[#525256] sm:text-lg lg:text-xl">
+            {summarizeSelections(selections)}
           </p>
         </div>
 

@@ -41,3 +41,39 @@ files:
     created: "2026-04-15"
     purpose: "랜딩 페이지 라인아트 커플 일러스트 — Figma에서 API로 추출"
     change_count: 1
+  - path: public/brand/logo-en.png
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "영문 브랜드 로고 원본 (BUDGET ROAD, 세리프체)"
+    change_count: 1
+  - path: public/brand/logo-en-transparent.png
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "영문 브랜드 로고 투명 배경 버전"
+    change_count: 1
+  - path: public/brand/logo-en-nav.png
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "영문 브랜드 로고 네비바 최적화 (479x80 @2x)"
+    change_count: 1
+  - path: public/brand/logo-ko.png
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "한글 브랜드 로고 원본 (버짓로드, 세리프체)"
+    change_count: 1
+  - path: public/brand/logo-ko-transparent.png
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "한글 브랜드 로고 투명 배경 버전"
+    change_count: 1
+  - path: public/brand/logo-ko-nav.png
+    source: claude
+    status: active
+    created: "2026-04-16"
+    purpose: "한글 브랜드 로고 네비바 최적화 (269x80 @2x) — 현재 네비바에 적용 중"
+    change_count: 1

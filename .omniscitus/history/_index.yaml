@@ -44,8 +44,8 @@ units:
     domain: web
     status: open
     created: 2026-04-14
-    last_updated: 2026-04-14
-    session_count: 1
+    last_updated: 2026-04-16
+    session_count: 2
     title: "예산 초안 6단계 STEP 플로우 재구축"
   - id: design-directory-setup
     file: devops/2026-04-15-design-directory-setup.md
@@ -68,8 +68,8 @@ units:
     domain: web
     status: open
     created: 2026-04-14
-    last_updated: 2026-04-15
-    session_count: 2
+    last_updated: 2026-04-16
+    session_count: 3
     title: "랜딩 페이지 피그마 기반 리디자인"
 
 weekly_summaries:
