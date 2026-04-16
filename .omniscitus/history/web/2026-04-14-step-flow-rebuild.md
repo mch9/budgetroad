@@ -39,6 +39,8 @@
 - sessionStorage로 결과 페이지 새로고침 시 데이터 + 선택값 보존
 - 하단 버튼: 672px, 78px 높이, border-radius 24px
 - 한글 세리프 로고(버짓로드) 네비바 적용
+- 결과 카드 텍스트 크기 Figma 기준 조정 (제목 medium, 뱃지 regular, 금액 52px)
+- main 푸시 → Vercel 프로덕션 배포 완료
 
 **Learned**: CSS conic-gradient 파이차트는 세그먼트 간 구분선 표현이 어려움. SVG arc path + stroke로 전환하면 흰색 간격과 도넛(링) 형태 모두 자연스럽게 구현 가능
 
