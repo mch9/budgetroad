@@ -89,7 +89,7 @@ export default function Home() {
         />
       </header>
 
-      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-6 py-12 text-center sm:gap-9">
+      <main className="relative z-10 flex flex-1 flex-col items-center justify-center gap-6 px-6 pb-32 pt-12 text-center sm:gap-9 sm:py-12">
         {/* Illustration — Figma: 269x269 */}
         <Image
           src="/couple-illustration.png"

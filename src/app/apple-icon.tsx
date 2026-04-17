@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
-export const size = { width: 32, height: 32 };
+export const size = { width: 180, height: 180 };
 export const contentType = 'image/png';
 
 const bGlyph = readFileSync(
@@ -10,7 +10,7 @@ const bGlyph = readFileSync(
 );
 const bGlyphSrc = `data:image/png;base64,${bGlyph.toString('base64')}`;
 
-export default function Icon() {
+export default function AppleIcon() {
   return new ImageResponse(
     (
       <div
@@ -26,7 +26,7 @@ export default function Icon() {
         }}
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={bGlyphSrc} width={24} height={24} alt="" />
+        <img src={bGlyphSrc} width={136} height={136} alt="" />
       </div>
     ),
     { ...size },

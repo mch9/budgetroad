@@ -137,7 +137,7 @@ export default function BudgetDraftPage() {
       )}
 
       {/* Content */}
-      <main className={`mx-auto flex w-full flex-1 flex-col px-6 ${isResult ? 'max-w-[1040px]' : 'max-w-[576px]'}`}>
+      <main className={`mx-auto flex w-full flex-1 flex-col px-6 ${isResult ? 'max-w-[1040px]' : 'max-w-[576px] pb-32 sm:pb-0'}`}>
         {step === 0 && <Step1 value={selections.region} onChange={(v) => update('region', v)} />}
         {step === 1 && (
           <Step2
@@ -186,15 +186,17 @@ export default function BudgetDraftPage() {
         {isResult && result && <ResultView result={result} selections={selections} onReset={reset} />}
       </main>
 
-      {/* Bottom Button — Figma: bg #373737, border-radius 14px, height 60px */}
+      {/* Bottom Button — mobile: fixed floating bar / desktop: inline */}
       {!isResult && (
-        <div className="mx-auto w-full max-w-[576px] px-6 pb-8 pt-4">
-          <button
-            onClick={next}
-            className="w-full rounded-[14px] bg-[#373737] py-4 text-lg font-medium text-white active:scale-[0.99]"
-          >
-            {step === TOTAL_STEPS - 1 ? '예산 결과 보기' : '다음으로'}
-          </button>
+        <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E5E7EB] bg-[#F9FAFB]/90 px-6 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur-md sm:static sm:border-0 sm:bg-transparent sm:p-0 sm:backdrop-blur-none">
+          <div className="mx-auto w-full max-w-[576px] sm:px-6 sm:pb-8 sm:pt-4">
+            <button
+              onClick={next}
+              className="w-full rounded-[14px] bg-[#373737] py-4 text-lg font-medium text-white active:scale-[0.99]"
+            >
+              {step === TOTAL_STEPS - 1 ? '예산 결과 보기' : '다음으로'}
+            </button>
+          </div>
         </div>
       )}
     </div>
