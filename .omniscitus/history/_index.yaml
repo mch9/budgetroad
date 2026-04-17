@@ -95,6 +95,22 @@ units:
     last_updated: 2026-04-16
     session_count: 3
     title: "랜딩 페이지 피그마 기반 리디자인"
+  - id: mobile-floating-ctas-and-favicon
+    file: web/2026-04-18-mobile-floating-ctas-and-favicon.md
+    domain: web
+    status: open
+    created: 2026-04-18
+    last_updated: 2026-04-18
+    session_count: 1
+    title: "모바일 플로팅 CTA + 파비콘 리브랜딩"
+  - id: blueprint-v1-and-meta-tools
+    file: devops/2026-04-18-blueprint-v1-and-meta-tools.md
+    domain: devops
+    status: open
+    created: 2026-04-18
+    last_updated: 2026-04-18
+    session_count: 1
+    title: "Blueprint v1 마이그레이션 + find-context skill"
 
 weekly_summaries:
   - week: "2026-W15"

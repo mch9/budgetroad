@@ -80,3 +80,9 @@ files:
     created: 2026-04-16
     change_count: 1
     purpose: "한글 브랜드 로고 네비바 최적화 (269x80 @2x) — 현재 네비바에 적용 중"
+  "public/brand/b-glyph.png":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-18
+    change_count: 1
+    purpose: "파비콘용 B 글리프 PNG — Figma node 424:50 원본을 PIL로 투명 여백 trim + 512x512 리사이즈 (108KB, 투명 배경). icon.tsx/apple-icon.tsx가 base64 인라인으로 로드"
