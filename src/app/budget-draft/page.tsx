@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
+import { shareResult } from '@/lib/share';
 import {
   type Region,
   type VenueType,
@@ -555,6 +556,28 @@ function summarizeSelections(s: StepSelections): string {
 function ResultView({ result, selections, onReset }: { result: BudgetResult; selections: StepSelections; onReset: () => void }) {
   const includedItems = result.items.filter((i) => !i.skipped);
   const skippedItems = result.items.filter((i) => i.skipped);
+  const [toast, setToast] = useState<string | null>(null);
+
+  async function handleShare() {
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://budgetroad.vercel.app';
+    const method = await shareResult({
+      totalWon: result.total * 10000,
+      summary: summarizeSelections(selections),
+      siteUrl,
+    });
+    trackEvent('share_result', { method });
+    if (method === 'clipboard') {
+      setToast('링크가 복사되었어요');
+    } else if (method === 'failed') {
+      setToast('공유에 실패했어요');
+    }
+  }
+
+  useEffect(() => {
+    if (!toast) return;
+    const id = setTimeout(() => setToast(null), 2000);
+    return () => clearTimeout(id);
+  }, [toast]);
 
   // Pie chart SVG segments with white borders
   const pieSegments = includedItems.reduce<Array<{ color: string; startAngle: number; endAngle: number }>>((acc, item) => {
@@ -710,7 +733,10 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
         >
           조건 바꿔서 재계산하기
         </button>
-        <button className="flex h-[78px] w-full items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-white text-xl font-medium text-[#101828] active:scale-[0.99]">
+        <button
+          onClick={handleShare}
+          className="flex h-[78px] w-full items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-white text-xl font-medium text-[#101828] active:scale-[0.99]"
+        >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#364153" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 3h6v6" />
             <path d="M9 21H3v-6" />
@@ -720,6 +746,14 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
           결과 공유하기
         </button>
       </div>
+
+      {toast && (
+        <div className="pointer-events-none fixed inset-x-0 bottom-8 z-50 flex justify-center">
+          <div className="rounded-full bg-[#373737] px-5 py-3 text-sm text-white shadow-lg">
+            {toast}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
