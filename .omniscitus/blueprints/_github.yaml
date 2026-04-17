@@ -1,0 +1,10 @@
+version: 1
+updated: 2026-04-17T00:00:00.000Z
+
+files:
+  ".github/workflows/ci.yml":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 3
+    purpose: "GitHub Actions CI/CD — lint/build/deploy(Vercel) 3단계 + Slack 알림 (main/develop 브랜치 대상)"

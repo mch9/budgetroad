@@ -1,79 +1,82 @@
+version: 1
+updated: 2026-04-17T00:00:00.000Z
+
 files:
-  - path: public/file.svg
-    source: auto:create-next-app
+  "public/file.svg":
     status: active
-    created: "2026-04-11"
+    source: "auto:create-next-app"
+    created: 2026-04-11
+    change_count: 1
     purpose: "Next.js 기본 파일 아이콘 SVG"
-    change_count: 1
-  - path: public/globe.svg
-    source: auto:create-next-app
+  "public/globe.svg":
     status: active
-    created: "2026-04-11"
+    source: "auto:create-next-app"
+    created: 2026-04-11
+    change_count: 1
     purpose: "Next.js 기본 글로브 아이콘 SVG"
-    change_count: 1
-  - path: public/next.svg
-    source: auto:create-next-app
+  "public/next.svg":
     status: active
-    created: "2026-04-11"
+    source: "auto:create-next-app"
+    created: 2026-04-11
+    change_count: 1
     purpose: "Next.js 로고 SVG"
-    change_count: 1
-  - path: public/vercel.svg
-    source: auto:create-next-app
+  "public/vercel.svg":
     status: active
-    created: "2026-04-11"
+    source: "auto:create-next-app"
+    created: 2026-04-11
+    change_count: 1
     purpose: "Vercel 로고 SVG"
-    change_count: 1
-  - path: public/window.svg
-    source: auto:create-next-app
+  "public/window.svg":
     status: active
-    created: "2026-04-11"
+    source: "auto:create-next-app"
+    created: 2026-04-11
+    change_count: 1
     purpose: "Next.js 기본 윈도우 아이콘 SVG"
-    change_count: 1
-  - path: public/robots.txt
-    source: claude
+  "public/robots.txt":
     status: active
-    created: "2026-04-11"
+    source: "claude"
+    created: 2026-04-11
+    change_count: 1
     purpose: "SEO 크롤러 허용 정책 파일"
-    change_count: 1
-  - path: public/couple-illustration.png
-    source: claude
+  "public/couple-illustration.png":
     status: active
-    created: "2026-04-15"
+    source: "claude"
+    created: 2026-04-15
+    change_count: 1
     purpose: "랜딩 페이지 라인아트 커플 일러스트 — Figma에서 API로 추출"
-    change_count: 1
-  - path: public/brand/logo-en.png
-    source: claude
+  "public/brand/logo-en.png":
     status: active
-    created: "2026-04-16"
+    source: "claude"
+    created: 2026-04-16
+    change_count: 1
     purpose: "영문 브랜드 로고 원본 (BUDGET ROAD, 세리프체)"
-    change_count: 1
-  - path: public/brand/logo-en-transparent.png
-    source: claude
+  "public/brand/logo-en-transparent.png":
     status: active
-    created: "2026-04-16"
+    source: "claude"
+    created: 2026-04-16
+    change_count: 1
     purpose: "영문 브랜드 로고 투명 배경 버전"
-    change_count: 1
-  - path: public/brand/logo-en-nav.png
-    source: claude
+  "public/brand/logo-en-nav.png":
     status: active
-    created: "2026-04-16"
+    source: "claude"
+    created: 2026-04-16
+    change_count: 1
     purpose: "영문 브랜드 로고 네비바 최적화 (479x80 @2x)"
-    change_count: 1
-  - path: public/brand/logo-ko.png
-    source: claude
+  "public/brand/logo-ko.png":
     status: active
-    created: "2026-04-16"
+    source: "claude"
+    created: 2026-04-16
+    change_count: 1
     purpose: "한글 브랜드 로고 원본 (버짓로드, 세리프체)"
-    change_count: 1
-  - path: public/brand/logo-ko-transparent.png
-    source: claude
+  "public/brand/logo-ko-transparent.png":
     status: active
-    created: "2026-04-16"
+    source: "claude"
+    created: 2026-04-16
+    change_count: 1
     purpose: "한글 브랜드 로고 투명 배경 버전"
-    change_count: 1
-  - path: public/brand/logo-ko-nav.png
-    source: claude
+  "public/brand/logo-ko-nav.png":
     status: active
-    created: "2026-04-16"
-    purpose: "한글 브랜드 로고 네비바 최적화 (269x80 @2x) — 현재 네비바에 적용 중"
+    source: "claude"
+    created: 2026-04-16
     change_count: 1
+    purpose: "한글 브랜드 로고 네비바 최적화 (269x80 @2x) — 현재 네비바에 적용 중"

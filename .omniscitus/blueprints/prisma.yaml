@@ -1,4 +1,9 @@
+version: 1
+updated: 2026-04-17T00:00:00.000Z
+
 files:
-  - path: prisma/schema.prisma
-    source: claude
-    purpose: "Prisma DB 스키마 — SQLite(로컬)/Neon Postgres(배포) 데이터 모델 정의"
+  "prisma/schema.prisma":
+    status: active
+    source: "claude"
+    change_count: 2
+    purpose: "Prisma DB 스키마 — Neon Postgres 연결 설정 (DATABASE_URL pooled + DATABASE_URL_UNPOOLED direct), 모델은 Event 스키마 옵션 A로 추가 예정"

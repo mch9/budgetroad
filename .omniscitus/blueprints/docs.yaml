@@ -1,31 +1,40 @@
+version: 1
+updated: 2026-04-17T00:00:00.000Z
+
 files:
-  - path: docs/prd/ROADMAP.md
-    source: claude
+  "docs/prd/ROADMAP.md":
     status: active
-    created: "2026-04-11"
+    source: "claude"
+    created: 2026-04-11
+    change_count: 1
     purpose: "경험 로드맵 — 3개 경험(MVP/Phase2/Phase3) 분해 및 PRD 진행 상태 추적"
-    change_count: 1
-  - path: docs/prd/budget-builder/budget-draft-v0.md
-    source: claude
+  "docs/prd/budget-builder/budget-draft-v0.md":
     status: active
-    created: "2026-04-11"
+    source: "claude"
+    created: 2026-04-11
+    change_count: 1
     purpose: "budget-draft 상세 PRD — 12단계 워크플로우 (요구사항~하이파이 디자인)"
-    change_count: 1
-  - path: docs/prd/budget-builder/budget-draft-v1-step-flow.md
-    source: claude
+  "docs/prd/budget-builder/budget-draft-v1-step-flow.md":
     status: active
-    created: "2026-04-14"
+    source: "claude"
+    created: 2026-04-14
+    change_count: 1
     purpose: "STEP 플로우 v1 스펙 — 6단계 구조, 선택지, UX 규칙, 디자인 패턴 정의"
-    change_count: 1
-  - path: docs/prd/blog/blog-v0.md
-    source: claude
+  "docs/prd/blog/blog-v0.md":
     status: active
-    created: "2026-04-15"
+    source: "claude"
+    created: 2026-04-15
+    change_count: 1
     purpose: "블로그 기능 상세 PRD — Step 0~8 완료 (기능 요구사항, 화면 구성, 접근 플로우)"
-    change_count: 1
-  - path: docs/prd/analytics/analytics-dashboard-v0.md
-    source: claude
+  "docs/prd/analytics/analytics-dashboard-v0.md":
     status: active
-    created: "2026-04-16"
-    purpose: "운영 분석 대시보드 One-Pager PRD — 16개 핵심 지표, DB+자체 대시보드 기술 방향"
+    source: "claude"
+    created: 2026-04-16
     change_count: 1
+    purpose: "운영 분석 대시보드 One-Pager PRD — 16개 핵심 지표, DB+자체 대시보드 기술 방향"
+  "docs/prd/analytics/event-schema-options.md":
+    status: active
+    source: "claude"
+    created: 2026-04-17
+    change_count: 1
+    purpose: "이벤트 스키마 설계 기록 — 3안 비교(플랫 JSON/정규화/하이브리드) + 결정: 옵션 A + D1~D6 선택값"

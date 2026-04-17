@@ -1,0 +1,154 @@
+version: 1
+updated: 2026-04-17T00:00:00.000Z
+
+files:
+  ".claude/.starter-path":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "claude-starter 워크숍 템플릿 원본 경로 기록"
+  ".claude/settings.json":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "Claude Code 플러그인 활성화 설정 (clarify, vercel, github, commit-commands, typescript-lsp, pr-review-toolkit, explanatory-output-style, omniscitus)"
+  ".claude/skills/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "프로젝트 로컬 skills 인덱스"
+  ".claude/skills/0-local-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 0단계 — 로컬 개발 환경 세팅"
+  ".claude/skills/1-claude-md-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 1단계 — CLAUDE.md 작성"
+  ".claude/skills/2-directory-structure-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 2단계 — 디렉토리 구조 설계"
+  ".claude/skills/3-mcp-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 3단계 — MCP 서버 세팅"
+  ".claude/skills/4-critical-ground-rule-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 4단계 — 핵심 ground rule 정의"
+  ".claude/skills/5-detail-prd/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 5단계 — 상세 PRD 작성"
+  ".claude/skills/6-prototype/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 6단계 — 프로토타입 제작"
+  ".claude/skills/7-implement-by-claude-teams/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 7단계 — Claude 팀별 구현"
+  ".claude/skills/8-github-ci-cd-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 8단계 — GitHub CI/CD 세팅"
+  ".claude/skills/9-deploy/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 9단계 — 배포"
+  ".claude/skills/10-confirm/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "워크숍 10단계 — 최종 확인"
+  ".claude/skills/bootstrap-packages/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "검증된 helper 패키지 세트 일괄 설치"
+  ".claude/skills/claude-basic/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "Claude Code 기본 사용법 가이드"
+  ".claude/skills/cto-council/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "CTO 페르소나 Q&A 세션 — 기술 구조 궁금증/불안감 해소"
+  ".claude/skills/feedback-council/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "5명의 AI 관점으로 즉각 피드백 수집 + 액션아이템 도출"
+  ".claude/skills/growth-setup/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "SEO 메타태그 + Google Analytics + Vercel Analytics 통합 세팅 워크플로우"
+  ".claude/skills/help-claude/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "Claude 사용 도움말"
+  ".claude/skills/plugin-guide/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "플러그인 사용 가이드"
+  ".claude/skills/prd-collab/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "PRD 협업 워크플로우 — 추상→구체 12단계로 하나의 유저 경험 단위 기획 완성"
+  ".claude/skills/prd-onepager/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-16
+    change_count: 1
+    purpose: "작은 기능 단위의 One-Pager PRD 작성 (prd-collab이 과할 때)"
+  ".claude/skills/prd-split/SKILL.md":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-11
+    change_count: 1
+    purpose: "큰 아이디어를 경험 단위로 분해 + 각 경험을 /prd-collab으로 완성하는 워크플로우"
+  ".claude/skills/find-context/SKILL.md":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-17
+    change_count: 1
+    purpose: "현재 대화 주제 관련 과거 의사결정(why)과 교훈(lessons learned)을 history/prd에서 추려 리포트"

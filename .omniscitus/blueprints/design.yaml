@@ -1,13 +1,28 @@
+version: 1
+updated: 2026-04-17T00:00:00.000Z
+
 files:
-  - path: design/README.md
-    source: claude
+  "design/README.md":
     status: active
-    created: "2026-04-15"
+    source: "claude"
+    created: 2026-04-15
+    change_count: 1
     purpose: "디자인 디렉토리 구조 및 참조 가이드 — .pen 파일 역할, 폴더 규칙, 참조 타이밍"
-    change_count: 1
-  - path: design/master/budget-draft.pen
-    source: claude
+  "design/master/budget-draft.pen":
     status: active
-    created: "2026-04-11"
-    purpose: "예산 초안 생성 페이지 확정 디자인 (STEP 플로우 + 결과)"
+    source: "claude"
+    created: 2026-04-11
     change_count: 1
+    purpose: "예산 초안 생성 페이지 확정 디자인 (STEP 플로우 + 결과)"
+  "design/master/home.pen":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-16
+    change_count: 1
+    purpose: "랜딩 페이지 (/) 확정 디자인"
+  "design/shared/design-dna.pen":
+    status: active
+    source: "user:mincheol.kim"
+    created: 2026-04-16
+    change_count: 1
+    purpose: "디자인 토큰 — 컬러, 폰트, 간격, 그림자 등 디자인 시스템 정의"
