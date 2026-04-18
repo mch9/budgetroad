@@ -115,11 +115,12 @@ export const STANDARD_MEAL_PRICES: Record<Region, Partial<Record<VenueType, numb
 };
 
 // 예식장 대관료: [region][venueType] — Median 값 (시즌 구분 없음)
+// 0은 "데이터 없음" sentinel — isVenueDisabled()로 UI에서 차단
 const VENUE_PRICES: Record<Region, Record<VenueType, number>> = {
   gangnam: {
     convention: 1360,
     chapel: 1300,
-    traditional: 0, // 강남 전통혼례 데이터 없음
+    traditional: 0,
     outdoor: 1295,
   },
   'seoul-etc': {
@@ -135,6 +136,10 @@ const VENUE_PRICES: Record<Region, Record<VenueType, number>> = {
     outdoor: 956.25,
   },
 };
+
+export function isVenueDisabled(region: Region, venueType: VenueType): boolean {
+  return VENUE_PRICES[region][venueType] === 0;
+}
 
 // 스드메: [region][season][tier] — 실속(P10)/대중(P50)/프리미엄(P90)
 const STUDIO_PRICES: Record<Region, Record<Season, Record<Tier, number>>> = {
