@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-17T16:32:27.304Z
+updated: 2026-04-18T14:41:55.848Z
 
 files:
   "src/app/layout.tsx":
@@ -201,10 +201,16 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-04-17T15:18:54.326Z
-    change_count: 5
+    last_modified: 2026-04-18T14:41:55.848Z
+    change_count: 7
     purpose: "예산 생성 페이지 — 6단계 STEP 플로우 (지역/예식/스드메/식사/예물·예단/신혼여행) + 도넛차트 결과 + 결과 공유 버튼(shareResult 연결)"
     change_log:
+      - date: 2026-04-18T14:41:55.848Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-18T14:41:55.001Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-17T15:18:54.326Z
         action: edit
         source: "claude:mincheol.kim"

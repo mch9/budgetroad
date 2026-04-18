@@ -33,7 +33,7 @@ export default function BudgetDraftPage() {
   const [step, setStep] = useState(0);
   const [selections, setSelections] = useState<StepSelections>(DEFAULT_SELECTIONS);
   const [result, setResult] = useState<BudgetResult | null>(null);
-  const enteredAt = useRef(Date.now());
+  const [enteredAt] = useState(() => Date.now());
   const inputStarted = useRef(false);
 
   // Restore result from sessionStorage on mount
@@ -57,7 +57,7 @@ export default function BudgetDraftPage() {
   function trackFirstInput() {
     if (inputStarted.current) return;
     inputStarted.current = true;
-    const elapsed = Math.round((Date.now() - enteredAt.current) / 1000);
+    const elapsed = Math.round((Date.now() - enteredAt) / 1000);
     trackEvent('input_started', { time_to_start_sec: elapsed });
   }
 
