@@ -111,6 +111,14 @@ units:
     last_updated: 2026-04-18
     session_count: 1
     title: "Blueprint v1 마이그레이션 + find-context skill"
+  - id: ci-lint-and-slack-fixes
+    file: devops/2026-04-18-ci-lint-and-slack-fixes.md
+    domain: devops
+    status: open
+    created: 2026-04-18
+    last_updated: 2026-04-18
+    session_count: 1
+    title: "CI Lint 에러 + Slack 알림 스팸 해결"
 
 weekly_summaries:
   - week: "2026-W15"
