@@ -74,12 +74,12 @@ jobs:
     name: 전체 완료 알림
     runs-on: ubuntu-latest
     needs: [lint, build, deploy]
-    if: always()
+    if: always() && github.event_name == 'push'
     steps:
       - name: Slack 최종 알림
         uses: 8398a7/action-slack@v3
         with:
-          status: ${{ needs.deploy.result || needs.build.result }}
+          status: ${{ needs.deploy.result == 'skipped' && needs.build.result || needs.deploy.result }}
           text: |
             CI/CD 파이프라인 완료
             Lint: ${{ needs.lint.result }}
