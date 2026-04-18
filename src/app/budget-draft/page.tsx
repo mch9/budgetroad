@@ -24,6 +24,7 @@ import {
   HONEYMOON_OPTIONS,
   STANDARD_MEAL_PRICES,
   calculateBudget,
+  isVenueDisabled,
 } from '@/lib/budget-data';
 
 const TOTAL_STEPS = 6;
@@ -70,13 +71,34 @@ export default function BudgetDraftPage() {
     setSelections((prev) => ({ ...prev, [key]: value }));
   }
 
+  function updateRegion(v: Region) {
+    trackFirstInput();
+    setSelections((prev) => ({
+      ...prev,
+      region: v,
+      venueType: isVenueDisabled(v, prev.venueType) ? 'convention' : prev.venueType,
+    }));
+  }
+
   function next() {
     if (step < TOTAL_STEPS - 1) {
       setStep(step + 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const r = calculateBudget(selections);
-      trackEvent('result_viewed', { total_amount: r.total });
+      trackEvent('result_viewed', {
+        total_amount: r.total,
+        region: selections.region,
+        venue_type: selections.venueType,
+        season: selections.season,
+        studio_tier: selections.studioTier,
+        dress_tier: selections.dressTier,
+        makeup_tier: selections.makeupTier,
+        guest_count: selections.guestCount,
+        meal_cost: selections.mealCost,
+        yemul_tier: selections.yemulTier,
+        honeymoon_choice: selections.honeymoonChoice,
+      });
       setResult(r);
       setStep(TOTAL_STEPS);
       sessionStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify({ result: r, selections }));
@@ -86,6 +108,7 @@ export default function BudgetDraftPage() {
 
   function back() {
     if (step > 0) {
+      trackEvent('back_clicked', { from_step: step + 1 });
       setStep(step - 1);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -142,9 +165,10 @@ export default function BudgetDraftPage() {
 
       {/* Content */}
       <main className={`mx-auto flex w-full flex-1 flex-col px-6 ${isResult ? 'max-w-[1040px]' : 'max-w-[576px] pb-32 sm:pb-0'}`}>
-        {step === 0 && <Step1 value={selections.region} onChange={(v) => update('region', v)} />}
+        {step === 0 && <Step1 value={selections.region} onChange={updateRegion} />}
         {step === 1 && (
           <Step2
+            region={selections.region}
             venue={selections.venueType}
             season={selections.season}
             onVenueChange={(v) => update('venueType', v)}
@@ -229,6 +253,7 @@ function OptionCard<T extends string | number>({
   desc,
   icon,
   isSkip,
+  disabled,
   onClick,
 }: {
   selected: boolean;
@@ -236,8 +261,27 @@ function OptionCard<T extends string | number>({
   desc: string;
   icon: string;
   isSkip?: boolean;
+  disabled?: boolean;
   onClick: () => void;
 }) {
+  if (disabled) {
+    return (
+      <button
+        type="button"
+        disabled
+        aria-disabled
+        className="flex w-full cursor-not-allowed items-center justify-between rounded-[14px] border-2 border-[#F3F4F6] bg-[#F9FAFB] p-5 text-left"
+      >
+        <div className="flex items-center gap-3">
+          <div className="h-6 w-6 shrink-0" />
+          <span className="text-lg font-medium text-[#9CA3AF]">{label}</span>
+        </div>
+        <span className="rounded-full bg-[#F3F4F6] px-2.5 py-1 text-xs text-[#9CA3AF]">
+          데이터 없음
+        </span>
+      </button>
+    );
+  }
   return (
     <button
       onClick={onClick}
@@ -294,9 +338,9 @@ function Step1({ value, onChange }: { value: Region; onChange: (v: Region) => vo
 }
 
 function Step2({
-  venue, season, onVenueChange, onSeasonChange,
+  region, venue, season, onVenueChange, onSeasonChange,
 }: {
-  venue: VenueType; season: Season;
+  region: Region; venue: VenueType; season: Season;
   onVenueChange: (v: VenueType) => void; onSeasonChange: (v: Season) => void;
 }) {
   return (
@@ -305,7 +349,15 @@ function Step2({
       <SectionLabel label="예식장 유형" />
       <div className="flex flex-col gap-3">
         {VENUE_OPTIONS.map((o) => (
-          <OptionCard key={o.value} selected={venue === o.value} label={o.label} desc={o.desc} icon={o.icon} onClick={() => onVenueChange(o.value)} />
+          <OptionCard
+            key={o.value}
+            selected={venue === o.value}
+            label={o.label}
+            desc={o.desc}
+            icon={o.icon}
+            disabled={isVenueDisabled(region, o.value)}
+            onClick={() => onVenueChange(o.value)}
+          />
         ))}
       </div>
       <SectionLabel label="예식 시기" />

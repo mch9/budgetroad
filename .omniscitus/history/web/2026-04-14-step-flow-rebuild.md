@@ -66,7 +66,7 @@
 - [x] 드레스/메이크업 가격을 지역별로 분리 ✔️ 2026-04-16 (지역×시즌×등급 3차원 테이블)
 - [x] 결과 공유 기능 구현 ✔️ 2026-04-17 (native share + clipboard fallback, og-image-social-sharing 유닛 참조)
 - [x] 모바일 결과 페이지 레이아웃 세부 조정 (2컬럼→1컬럼 전환) ✔️ 2026-04-18 (page.tsx:595 `flex-col sm:flex-row` 확인)
-- [ ] 강남 전통혼례 데이터 보완 (현재 대관료 0원 — 데이터 없음)
+- [x] 강남 전통혼례 데이터 보완 (현재 대관료 0원 — 데이터 없음) ✔️ 2026-04-19 (데이터 생성 대신 UI에서 해당 조합을 "데이터 없음" pill로 비활성 처리 + region 변경 시 venueType 자동 리셋 — `src/lib/budget-data.ts:isVenueDisabled`, `src/app/budget-draft/page.tsx:updateRegion`)
 
 ## Notes
 - 디자인 파일: design/budget-draft-v1-step-flow.pen
