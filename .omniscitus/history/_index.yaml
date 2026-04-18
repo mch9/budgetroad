@@ -60,9 +60,9 @@ units:
     domain: product
     status: open
     created: 2026-04-15
-    last_updated: 2026-04-15
-    session_count: 1
-    title: "사례 가이드 블로그 PRD"
+    last_updated: 2026-04-18
+    session_count: 2
+    title: "블로그 PRD (Content Strategy 확정)"
   - id: analytics-dashboard-prd
     file: product/2026-04-16-analytics-dashboard-prd.md
     domain: product

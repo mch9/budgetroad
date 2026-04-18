@@ -33,10 +33,13 @@ export default function BudgetDraftPage() {
   const [step, setStep] = useState(0);
   const [selections, setSelections] = useState<StepSelections>(DEFAULT_SELECTIONS);
   const [result, setResult] = useState<BudgetResult | null>(null);
-  const enteredAt = useRef(Date.now());
+  const [enteredAt] = useState(() => Date.now());
   const inputStarted = useRef(false);
 
-  // Restore result from sessionStorage on mount
+  // Restore result from sessionStorage on mount. setState inside this effect
+  // is intentional — lazy useState initializer would break SSR hydration
+  // because sessionStorage is unavailable on the server.
+  /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     trackEvent('budget_draft_entered');
     try {
@@ -53,11 +56,12 @@ export default function BudgetDraftPage() {
       }
     } catch { /* ignore */ }
   }, []);
+  /* eslint-enable react-hooks/set-state-in-effect */
 
   function trackFirstInput() {
     if (inputStarted.current) return;
     inputStarted.current = true;
-    const elapsed = Math.round((Date.now() - enteredAt.current) / 1000);
+    const elapsed = Math.round((Date.now() - enteredAt) / 1000);
     trackEvent('input_started', { time_to_start_sec: elapsed });
   }
 
