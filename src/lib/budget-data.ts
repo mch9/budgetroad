@@ -93,6 +93,10 @@ export const HONEYMOON_OPTIONS = [
 
 // ── Price Data (단위: 만원) ──
 
+// 스드메 시장 조정 계수: MVP에서는 한국소비자원·공여사들 조사 데이터의 1.5배 적용
+// (추후 사이클에서 사용자 선택 옵션으로 정교화 예정)
+const SDM_MARKET_MULTIPLIER = 1.5;
+
 // 1인당 표준 식사비: [region][venueType] (단위: 만원)
 export const STANDARD_MEAL_PRICES: Record<Region, Partial<Record<VenueType, number>>> = {
   gangnam: {
@@ -144,16 +148,16 @@ export function isVenueDisabled(region: Region, venueType: VenueType): boolean {
 // 스드메: [region][season][tier] — 실속(P10)/대중(P50)/프리미엄(P90)
 const STUDIO_PRICES: Record<Region, Record<Season, Record<Tier, number>>> = {
   gangnam: {
-    peak: { simple: 70, standard: 97, luxury: 136.5 },
-    'off-peak': { simple: 71, standard: 98, luxury: 134 },
+    peak: { simple: 105, standard: 150, luxury: 227.5 },
+    'off-peak': { simple: 105, standard: 150, luxury: 245 },
   },
   'seoul-etc': {
-    peak: { simple: 40, standard: 72.5, luxury: 114.5 },
-    'off-peak': { simple: 41, standard: 75, luxury: 123 },
+    peak: { simple: 68, standard: 130, luxury: 164 },
+    'off-peak': { simple: 68, standard: 132, luxury: 164 },
   },
   gyeonggi: {
-    peak: { simple: 39, standard: 82, luxury: 94 },
-    'off-peak': { simple: 43, standard: 82, luxury: 98 },
+    peak: { simple: 44, standard: 81.5, luxury: 143 },
+    'off-peak': { simple: 44, standard: 88, luxury: 143 },
   },
 };
 
@@ -174,16 +178,16 @@ const DRESS_PRICES: Record<Region, Record<Season, Record<Tier, number>>> = {
 
 const MAKEUP_PRICES: Record<Region, Record<Season, Record<Tier, number>>> = {
   gangnam: {
-    peak: { simple: 105, standard: 150, luxury: 227.5 },
-    'off-peak': { simple: 105, standard: 150, luxury: 245 },
+    peak: { simple: 70, standard: 97, luxury: 136.5 },
+    'off-peak': { simple: 71, standard: 98, luxury: 134 },
   },
   'seoul-etc': {
-    peak: { simple: 68, standard: 130, luxury: 164 },
-    'off-peak': { simple: 68, standard: 132, luxury: 164 },
+    peak: { simple: 40, standard: 72.5, luxury: 114.5 },
+    'off-peak': { simple: 41, standard: 75, luxury: 123 },
   },
   gyeonggi: {
-    peak: { simple: 44, standard: 81.5, luxury: 143 },
-    'off-peak': { simple: 44, standard: 88, luxury: 143 },
+    peak: { simple: 39, standard: 82, luxury: 94 },
+    'off-peak': { simple: 43, standard: 82, luxury: 98 },
   },
 };
 
@@ -219,18 +223,18 @@ export function calculateBudget(s: StepSelections): BudgetResult {
   const studio = STUDIO_PRICES[s.region][s.season][s.studioTier];
   const dress = DRESS_PRICES[s.region][s.season][s.dressTier];
   const makeup = MAKEUP_PRICES[s.region][s.season][s.makeupTier];
-  const sdm = studio + dress + makeup;
+  const sdm = Math.round((studio + dress + makeup) * SDM_MARKET_MULTIPLIER);
   const meal = Math.round((s.guestCount * s.mealCost) / 10) * 10;
   const yemul = s.yemulTier === 'custom' ? s.yemulBudget : YEMUL_PRICES[s.yemulTier];
   const honeymoon = s.honeymoonChoice === 'yes' ? s.honeymoonBudget : 0;
 
   // 스드메 범위: 같은 지역·시즌에서 실속~프리미엄
-  const sdmMin = STUDIO_PRICES[s.region][s.season].simple
+  const sdmMin = Math.round((STUDIO_PRICES[s.region][s.season].simple
     + DRESS_PRICES[s.region][s.season].simple
-    + MAKEUP_PRICES[s.region][s.season].simple;
-  const sdmMax = STUDIO_PRICES[s.region][s.season].luxury
+    + MAKEUP_PRICES[s.region][s.season].simple) * SDM_MARKET_MULTIPLIER);
+  const sdmMax = Math.round((STUDIO_PRICES[s.region][s.season].luxury
     + DRESS_PRICES[s.region][s.season].luxury
-    + MAKEUP_PRICES[s.region][s.season].luxury;
+    + MAKEUP_PRICES[s.region][s.season].luxury) * SDM_MARKET_MULTIPLIER);
   const mealMin = Math.round((s.guestCount * 6) / 10) * 10;
   const mealMax = Math.round((s.guestCount * 15) / 10) * 10;
 

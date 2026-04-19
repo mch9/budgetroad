@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-18T15:43:43.874Z
+updated: 2026-04-19T10:50:21.736Z
 
 files:
   "src/app/layout.tsx":
@@ -260,10 +260,22 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-04-18T15:24:39.568Z
-    change_count: 4
+    last_modified: 2026-04-19T10:50:21.736Z
+    change_count: 8
     purpose: "결혼 예산 데이터 모델 — 팀 조사 기반 지역×유형 대관료, 지역×시즌×등급 스드메, 예물/신혼여행 + 계산 로직"
     change_log:
+      - date: 2026-04-19T10:50:21.736Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-19T10:50:04.801Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-19T10:45:44.206Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-19T10:45:35.455Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-18T15:24:39.568Z
         action: edit
         source: "claude:mincheol.kim"
