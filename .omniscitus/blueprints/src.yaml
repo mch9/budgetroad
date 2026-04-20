@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-20T10:52:46.629Z
+updated: 2026-04-20T10:57:41.183Z
 
 files:
   "src/app/layout.tsx":
@@ -317,5 +317,16 @@ files:
         action: write
         source: "claude:mincheol.kim"
       - date: 2026-04-17T15:18:58.334Z
+        action: write
+        source: "claude:mincheol.kim"
+  "src/app/design-system/page.tsx":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-20
+    last_modified: 2026-04-20T10:57:41.183Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-04-20T10:57:41.183Z
         action: write
         source: "claude:mincheol.kim"
