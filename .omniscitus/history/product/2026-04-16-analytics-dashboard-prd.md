@@ -36,13 +36,27 @@
 
 **Learned**: One-Pager PRD가 "과하게 가벼운지" 걱정될 때 문제는 PRD 깊이 자체가 아니라 **상위 구조(ROADMAP)에서의 포지셔닝**일 수 있음 — 고아 문서는 공유되지 않고, 상위 구조에 묶인 one-pager는 기획 레이어에 잘 녹아듦.
 
+### 2026-04-19
+**Focus**: MVP 구현 경로를 **자체 DB·자체 대시보드 → GA4 + Looker Studio 경량 경로로 피벗**
+- `/follow-up` 리뷰에서 기존 5개 pending(Event 모델/API/trackEvent 병행/admin 대시보드/인증)이 입문자 단독 구현 부담 + MVP scope 과다임을 확인
+- 사용자의 "이렇게 할 일이 많은 게 설계 잘못이냐" 불안 표출 → 레스토랑 비유(수집/저장/표시 3단계 + 인증 = 5 부품)로 구조 설명 후 **대안 A(GA+Sheets), B(GA4+Looker), C(지금 PRD) 비교** → 대안 B 채택
+- 16개 KPI vs GA4+Looker 가능성 매핑 → **14~15개 GA4로 관측 가능, 2개(저장 의존)는 Phase 2/3 연계, 1~2개(코호트)는 BigQuery SQL 경로로 대응** 판정
+- 파이프라인 실제 구축은 **별도 devops unit(`ga4-looker-analytics-setup`)으로 분리** — 본 PRD는 "제품 결정"으로 유지, 실제 operational 작업은 그쪽에서 추적
+- 본 PRD의 기존 pending(Event 모델/API/admin 페이지/인증)은 **Phase 2(공유 링크)·Phase 3(저장·마이페이지) 진입 시 자연 합류**하도록 보류. 없애지는 않음
+
+**Learned**:
+- **"자체 DB = 자유" vs "매니지드 = 락인" 이분법이 잘못**. GA4는 BigQuery export(무료)와 Data API로 완전 탈출 가능 → 선택 기준은 **지금 이 기능에 그 인프라가 필요한가**로 좁혀야 함
+- One-Pager PRD가 "너무 가벼웠나" 대신 **"타이밍이 아직 아니었다"**가 맞는 진단일 수 있음. PRD는 유효하되, MVP 단계에선 경량 경로로 대체하고 사용자 기능 합류 시점에 활성화
+- 자체 DB 구현의 실제 수확 시점은 **사용자가 "본인 예산을 저장·조회"를 요구하는 순간(Phase 2/3)**. 분석용만으론 지금 구현 정당화 어려움 — `/admin/dashboard` 없어도 GA4+Looker가 동일한 경험 제공
+
 ## Pending
 - [x] DB 스키마 설계 — 옵션 A 잠정 채택 ✔️ 2026-04-17
-- [ ] `prisma/schema.prisma`에 Event 모델 추가 + 첫 마이그레이션
-- [ ] 이벤트 수집 API 구현 (POST /api/events)
-- [ ] 기존 trackEvent()에 자체 API 호출 추가 (Promise.allSettled로 GA 병행)
-- [ ] /admin/dashboard 페이지 + recharts 시각화 (16개 KPI)
-- [ ] 환경변수 기반 관리자 인증
+- [~] `prisma/schema.prisma`에 Event 모델 추가 + 첫 마이그레이션 — **Phase 2/3 시점으로 보류** (2026-04-19 피벗)
+- [~] 이벤트 수집 API 구현 (POST /api/events) — **보류**
+- [~] 기존 trackEvent()에 자체 API 호출 추가 (Promise.allSettled로 GA 병행) — **보류**
+- [~] /admin/dashboard 페이지 + recharts 시각화 (16개 KPI) — **보류** (GA4+Looker Studio가 해당 역할 대행)
+- [~] 환경변수 기반 관리자 인증 — **보류**
+- [ ] (MVP 운영) BigQuery export 활성화 — 데이터 장기 보존 위해 지금 켜야 함 (ga4-looker-analytics-setup unit에 중복 기재)
 
 ## Notes
 - PRD 파일: docs/prd/analytics/analytics-dashboard-v0.md
@@ -51,3 +65,4 @@
 - 스킬 파일: .claude/skills/prd-onepager/SKILL.md
 - 기존 visitor_id (localStorage) 재활용하여 DB 이벤트에도 포함 예정
 - 관련 메모리: `analytics-kpi-team-decided` (KPI는 팀 결정 완료, 구현은 단독 OK)
+- 관련 unit: `ga4-looker-analytics-setup` (2026-04-19 피벗으로 신설 — MVP 구현 경로)

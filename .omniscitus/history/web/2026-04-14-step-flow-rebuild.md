@@ -60,6 +60,20 @@
 
 **Learned**: type="number"의 기본 스피너는 만원 단위 입력에서 UX를 해침. type="text" + inputMode="numeric"으로 변경하면 스피너 없이 모바일에서는 숫자 키패드가 뜸
 
+### 2026-04-19
+**Focus**: 데이터 없는 예식장 조합 UI 차단 + 스드메 가격 스왑 버그 수정 + 1.5x 시장 조정 계수 도입
+- `isVenueDisabled(region, venueType)` 헬퍼 추가 (`VENUE_PRICES[region][venueType] === 0` sentinel 감지) — 강남+전통혼례 조합을 Step2에서 "데이터 없음" pill + muted 스타일 + `cursor-not-allowed`로 비활성
+- `OptionCard`에 `disabled` prop 추가 (early return으로 `bg-[#F9FAFB]` + `border-[#F3F4F6]` + `text-[#9CA3AF]` 스타일 분기)
+- `updateRegion` 핸들러 신설 — Step1에서 region 변경 시 현재 `venueType`이 새 region에서 disabled면 `convention`으로 자동 리셋
+- 팀 스프레드시트와 코드 대조 결과 `STUDIO_PRICES` ↔ `MAKEUP_PRICES` 내용이 서로 뒤바뀐 버그 발견 (드레스는 일치). 변수명 유지, 객체 내용만 교체
+- `SDM_MARKET_MULTIPLIER = 1.5` 상수 추가 + `calculateBudget`의 `sdm`/`sdmMin`/`sdmMax`에 적용 + `Math.round`로 소수점 제거
+- PR #16 (venue disable + GA 이벤트 확장) + PR #17 (SDM 스왑/멀티플라이어) 각각 merge
+
+**Learned**:
+- "데이터 없음" 조합을 **UI에서 차단**하는 게 `0`/평균치로 임의 채워넣는 것보다 통계 기반 서비스 브랜드에 더 정합. 코드 계산 경로에서 sentinel을 만나지 않도록 방어선은 UI에 둔다
+- 스왑 버그는 **"같은 등급 양쪽 선택" 시 우연히 총액이 맞아** 장기간 잠복 가능. 다른 등급 조합(예: 스튜디오 프리미엄 + 메이크업 실속)에서만 금액이 어긋남 → 개별 라인 아이템 표시가 없으면 한참 못 발견할 수 있음
+- 가격 조정을 **데이터 교체가 아닌 명시적 상수(`SDM_MARKET_MULTIPLIER`)**로 처리하면 (a) 원본 조사 값 보존, (b) 되돌리기 1줄 수정, (c) "추후 사용자 선택 옵션"으로 확장 시 상수 → prop/state 교체만 하면 됨
+
 ## Pending
 - [x] 한국소비자원 참가격 데이터로 가격 정밀도 보완 ✔️ 2026-04-16 (팀 조사 데이터로 교체)
 - [x] 예식장 대관료에 지역별 차이 세분화 ✔️ 2026-04-16 (지역×유형별 Median 반영)
@@ -71,5 +85,6 @@
 ## Notes
 - 디자인 파일: design/budget-draft-v1-step-flow.pen
 - 스펙 문서: docs/prd/budget-builder/budget-draft-v1-step-flow.md
-- PRs: #9 (SEO 메타데이터), #10 (STEP 플로우 재구축), #12 (Figma UI 전면 적용)
+- PRs: #9 (SEO 메타데이터), #10 (STEP 플로우 재구축), #12 (Figma UI 전면 적용), #16 (venue disable + analytics events), #17 (SDM swap/multiplier)
 - 팀 조사 데이터 원본: 장동화와 아이들 - 민철님은 봐라!.pdf (한국소비자원+공여사들 기반)
+- SDM 1.5x 근거: "시장 조사 결과 반영해 MVP에서는 기존 금액 대비 1.5배 적용, 추후 사이클에서 선택 옵션으로 정교화 예정" (팀 결정)
