@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-19T10:50:21.736Z
+updated: 2026-04-20T10:52:46.629Z
 
 files:
   "src/app/layout.tsx":
@@ -26,11 +26,13 @@ files:
     status: active
     source: "auto:shadcn"
     created: 
-    last_modified: 
-    change_count: 0
+    last_modified: 2026-04-20T10:52:46.629Z
+    change_count: 1
     purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
     change_log:
-      []
+      - date: 2026-04-20T10:52:46.629Z
+        action: edit
+        source: "claude:mincheol.kim"
   "src/app/favicon.ico":
     status: deleted
     source: "auto:create-next-app"
