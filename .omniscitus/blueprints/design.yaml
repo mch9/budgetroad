@@ -1,28 +1,48 @@
 version: 1
-updated: 2026-04-17T00:00:00.000Z
+updated: 2026-04-20T10:42:48.124Z
 
 files:
   "design/README.md":
     status: active
     source: "claude"
     created: 2026-04-15
-    change_count: 1
-    purpose: "디자인 디렉토리 구조 및 참조 가이드 — .pen 파일 역할, 폴더 규칙, 참조 타이밍"
+    last_modified: 2026-04-20T10:42:48.124Z
+    change_count: 3
+    purpose: "디자인 가이드 진입점 — Claude Design(base-nova) 기반, 토큰/컴포넌트 위치, 팀 Figma 링크, UI 작업 플로우"
+    change_log:
+      - date: 2026-04-20T10:42:48.124Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-20T10:40:31.670Z
+        action: write
+        source: "claude:mincheol.kim"
   "design/master/budget-draft.pen":
-    status: active
+    status: deleted
     source: "claude"
     created: 2026-04-11
+    last_modified: 
+    deleted: 2026-04-20
     change_count: 1
-    purpose: "예산 초안 생성 페이지 확정 디자인 (STEP 플로우 + 결과)"
+    purpose: "(폐지) 예산 초안 페이지 Pencil 디자인 — .pen 워크플로우 폐기로 제거"
+    change_log:
+      []
   "design/master/home.pen":
-    status: active
+    status: deleted
     source: "user:mincheol.kim"
     created: 2026-04-16
+    last_modified: 
+    deleted: 2026-04-20
     change_count: 1
-    purpose: "랜딩 페이지 (/) 확정 디자인"
+    purpose: "(폐지) 랜딩 페이지 Pencil 디자인 — .pen 워크플로우 폐기로 제거"
+    change_log:
+      []
   "design/shared/design-dna.pen":
-    status: active
+    status: deleted
     source: "user:mincheol.kim"
     created: 2026-04-16
+    last_modified: 
+    deleted: 2026-04-20
     change_count: 1
-    purpose: "디자인 토큰 — 컬러, 폰트, 간격, 그림자 등 디자인 시스템 정의"
+    purpose: "(폐지) 디자인 토큰 Pencil 정의 — globals.css가 진실의 원천이 되어 제거"
+    change_log:
+      []

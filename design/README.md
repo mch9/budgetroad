@@ -1,46 +1,43 @@
-# Design System
+# Design Guide
 
-Pencil MCP로 관리하는 `.pen` 디자인 파일의 구조와 참조 가이드.
+버짓로드 디자인의 진입점. **진실의 원천은 코드**이며, 이 문서는 어디서 무엇을 찾는지 알려주는 지도.
 
-## 디렉토리 구조
+## 진실의 원천
 
-```
-design/
-├── shared/          # 디자인 토큰 + 공통 컴포넌트
-│   ├── design-dna.pen    — 컬러, 폰트, 간격, 그림자 등 디자인 토큰
-│   └── components.pen    — 버튼, 카드, 입력필드 등 재사용 컴포넌트
-├── master/          # 확정 디자인 (현재 배포 기준)
-│   ├── home.pen          — 랜딩 페이지 (/)
-│   └── budget-draft.pen  — 예산 초안 생성 (/budget-draft)
-└── experiment/      # 실험 디자인 (A/B 테스트, 다음 버전 시안)
-    └── {page-name}.pen   — 검증 중인 디자인 변형
-```
+| 대상 | 위치 |
+|------|------|
+| 컬러·라디우스·다크모드 토큰 | `src/app/globals.css` (`@theme`, `:root`) |
+| 타이포그래피 스케일 | `src/app/globals.css` (`@theme`의 `--text-*`) |
+| UI 컴포넌트 | `src/components/ui/` (shadcn `base-nova` 스타일) |
+| 브랜드 에셋 (로고/파비콘) | `public/brand/`, `src/app/icon.tsx`, `src/app/opengraph-image.tsx` |
 
-## 각 폴더의 역할
+## 기반 시스템
 
-| 폴더 | 목적 | 변경 시점 |
-|------|------|----------|
-| `shared/` | 디자인 토큰과 공통 컴포넌트 정의 | 브랜딩/디자인 시스템 변경 시 |
-| `master/` | 배포 중인 화면의 확정 디자인 | 디자인 변경이 개발 완료되어 배포될 때 |
-| `experiment/` | 검증 중인 시안, 새 버전 탐색 | 자유롭게 생성/삭제 가능 |
+**shadcn `base-nova`** — Anthropic 후원 공개 레지스트리. Claude 디자인 언어 기반.
+- 설정: `components.json` (`"style": "base-nova"`)
+- 프리미티브: `@base-ui/react`
+- 공식 문서: https://ui.shadcn.com
 
-## 참조 가이드
+## 브랜드 커스터마이징
 
-### UI 구현/수정할 때
-1. `master/{page}.pen`을 열어 확정 디자인 확인
-2. 컬러/폰트 등 토큰이 필요하면 `shared/design-dna.pen` 참조
-3. 공통 컴포넌트 스타일은 `shared/components.pen` 참조
+시스템은 base-nova를 따르되, 다음은 버짓로드 고유값:
+- **Primary**: `#FF8400` (OKLCH `0.7 0.16 60`)
+- **폰트**: Geist (본문), Geist Mono (금액 숫자)
+- **서비스명 표기**: "버짓로드"
 
-### 새 디자인을 만들 때
-1. `experiment/{page}.pen`에 시안 작성
-2. 확정되면 `master/{page}.pen`으로 이동 (기존 파일 덮어쓰기)
+## 팀 디자인
 
-### 디자인 토큰 변경할 때
-1. `shared/design-dna.pen` 수정
-2. 영향받는 `master/` 파일들도 함께 업데이트
+팀원 Figma 시안: https://www.figma.com/design/ln357t0WYrrMCjyQ9ncQ0N/UI-Design
 
-## .pen 파일 규칙
+코드와 Figma가 어긋날 땐 **코드가 우선**이며, Figma 업데이트 필요 시 팀에 공유.
 
-- `.pen` 파일은 Pencil MCP 도구로만 읽고 쓸 수 있음 (Read/Grep 사용 불가)
-- 파일명은 URL 경로와 매칭: `home.pen` → `/`, `budget-draft.pen` → `/budget-draft`
-- experiment 파일이 master로 승격되면 experiment에서 삭제
+## UI 작업 플로우
+
+1. **새 컴포넌트 필요**: `bunx shadcn@latest add {component}` → `src/components/ui/`에 base-nova 버전 설치
+2. **토큰 수정**: `globals.css`의 `:root`(라이트) / `.dark`(다크) 값 변경. 토큰명은 유지.
+3. **페이지 작업**: 하드코딩 hex 대신 토큰 클래스 사용 (`bg-muted`, `text-foreground`, `border-border` 등)
+4. **디자인 검증**: `/design-system` 쇼케이스 페이지(추후 구축 예정)에서 전체 컴포넌트 점검
+
+## 과거 이력
+
+`.pen` 파일 기반 워크플로우는 2026-04-20에 폐지. 사유: 진실의 원천 분산(.pen/Figma/코드 3곳) → 드리프트 리스크 + 팀 공유 불가. 관련 history unit: `design-directory-setup`.

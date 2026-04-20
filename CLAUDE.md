@@ -51,7 +51,7 @@ wedding-budget/
 │   ├── hooks/            # 커스텀 React 훅
 │   ├── lib/              # 유틸리티 (utils.ts 등)
 │   └── types/            # TypeScript 타입 정의
-├── design/               # Pencil 디자인 파일 (.pen) → design/README.md 참조
+├── design/               # 디자인 가이드 (README만, 토큰/컴포넌트 진실의 원천은 코드)
 ├── prisma/               # Prisma 스키마 (SQLite 로컬 / Neon 배포)
 ├── public/               # 정적 파일 (이미지, 아이콘)
 └── ...
@@ -124,7 +124,8 @@ wedding-budget/
 - Primary: #FF8400
 - 폰트: Geist (본문), Geist Mono (금액 숫자)
 - 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
-- **UI 구현/수정/디자인 작업 시** → `design/README.md` 참조 (Pencil .pen 파일 구조 및 참조 가이드)
+- **기반**: shadcn `base-nova` (Claude Design). 토큰 = `src/app/globals.css`, 컴포넌트 = `src/components/ui/`
+- **UI 작업 시** → `design/README.md` 참조 (진입점 + 워크플로우)
 
 ## 제외 범위 (이번에는 안 만듦)
 - 예산 항목별 금액 직접 수정/관리 기능 (이후 버전)

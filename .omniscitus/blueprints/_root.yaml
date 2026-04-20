@@ -1,56 +1,117 @@
 version: 1
-updated: 2026-04-17T00:00:00.000Z
+updated: 2026-04-20T10:40:41.849Z
 
 files:
   "CLAUDE.md":
     status: active
     source: "user:mincheol.kim"
+    created: 
+    last_modified: 2026-04-20T10:40:41.849Z
+    change_count: 2
     purpose: "프로젝트 설계도 — Claude가 참조하는 프로젝트 개요, 기술 스택, 구조, 작업 원칙 정의"
+    change_log:
+      - date: 2026-04-20T10:40:41.849Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-20T10:40:39.946Z
+        action: edit
+        source: "claude:mincheol.kim"
   "AGENTS.md":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "Next.js가 자동 생성한 에이전트 설정 파일"
+    change_log:
+      []
   "README.md":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "프로젝트 소개 및 시작 가이드"
+    change_log:
+      []
   "package.json":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "프로젝트 의존성 및 스크립트 정의 (검증된 helper 버전으로 덮어씀)"
+    change_log:
+      []
   "bun.lock":
     status: active
     source: "auto:bun"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "의존성 버전 잠금 파일"
+    change_log:
+      []
   "tsconfig.json":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "TypeScript 컴파일러 설정"
+    change_log:
+      []
   "next.config.ts":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "Next.js 프레임워크 설정"
+    change_log:
+      []
   "postcss.config.mjs":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "PostCSS 설정 (Tailwind CSS 처리)"
+    change_log:
+      []
   "eslint.config.mjs":
     status: active
     source: "auto:create-next-app"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "ESLint 코드 품질 검사 설정"
+    change_log:
+      []
   "components.json":
     status: active
     source: "auto:shadcn"
+    created: 
+    last_modified: 
+    change_count: 0
     purpose: "shadcn/ui 컴포넌트 설정 (경로, 스타일, 별칭)"
+    change_log:
+      []
   ".gitignore":
     status: active
     source: "auto:create-next-app"
     created: 2026-04-11
+    last_modified: 
     change_count: 1
     purpose: "Git 추적 제외 패턴 정의"
+    change_log:
+      []
   ".prettierrc":
     status: active
     source: "claude"
     created: 2026-04-11
+    last_modified: 
     change_count: 1
     purpose: "Prettier 코드 포맷팅 설정 (세미콜론, 싱글쿼트, 2칸 들여쓰기)"
+    change_log:
+      []
