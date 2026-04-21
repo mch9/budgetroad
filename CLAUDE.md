@@ -122,7 +122,7 @@ wedding-budget/
 
 ## 디자인 시스템
 - Primary: #FF8400
-- 폰트: Geist (본문), Geist Mono (금액 숫자)
+- 폰트: Pretendard Variable (본문·금액 공통, `src/app/fonts/PretendardVariable.woff2`). 금액은 `tabular-nums`로 자릿수 정렬.
 - 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
 - **기반**: shadcn `base-nova` (Claude Design). 토큰 = `src/app/globals.css`, 컴포넌트 = `src/components/ui/`
 - **UI 작업 시** → `design/README.md` 참조 (진입점 + 워크플로우)

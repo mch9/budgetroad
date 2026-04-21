@@ -100,7 +100,7 @@ export default function Home() {
           priority
         />
 
-        {/* Heading — Figma: Geist 700, color #373737, letter-spacing -4.09px */}
+        {/* Heading — Pretendard 700, color #373737, letter-spacing -4.09px */}
         <h1 className="text-[32px] font-bold leading-tight text-[#373737] sm:text-[60px] sm:leading-[1.05] sm:tracking-[-2px]">
           <span className="relative inline-block">
             결혼 준비,

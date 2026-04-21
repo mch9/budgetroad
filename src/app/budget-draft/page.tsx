@@ -744,7 +744,7 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
                   <span className="text-lg font-medium text-[#101828] sm:text-xl">{item.label}</span>
                 </div>
                 <div className="text-right">
-                  <p className="font-[family-name:var(--font-geist-mono)] text-lg text-[#101828] sm:text-2xl">
+                  <p className="tabular-nums text-lg text-[#101828] sm:text-2xl">
                     {(item.amount * 10000).toLocaleString()}원
                   </p>
                   <p className="text-sm text-[#6A7282]">
