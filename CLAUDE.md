@@ -121,7 +121,7 @@ wedding-budget/
 - 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
 
 ## 디자인 시스템
-- Primary: #FF8400
+- 컬러: Primary Accent `#AAC7E1` (선택 상태), Action `#373737` (CTA·헤드라인), Background `#F9FAFB` — 상세는 `src/app/globals.css`
 - 폰트: Pretendard Variable (본문·금액 공통, `src/app/fonts/PretendardVariable.woff2`). 금액은 `tabular-nums`로 자릿수 정렬.
 - 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
 - **기반**: shadcn `base-nova` (Claude Design). 토큰 = `src/app/globals.css`, 컴포넌트 = `src/components/ui/`
