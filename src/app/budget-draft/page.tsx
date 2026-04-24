@@ -230,12 +230,12 @@ export default function BudgetDraftPage() {
 
       {/* Bottom Navigation — chevron + '이전' / '다음' + chevron */}
       {!isResult && (
-        <nav className="mx-auto w-full max-w-[576px] px-6 pb-8 pt-8">
-          <div className="flex items-center justify-between">
+        <nav className="sticky bottom-0 z-10 border-t border-[#E5E7EB] bg-[#F9FAFB]/90 backdrop-blur-md">
+          <div className="mx-auto flex w-full max-w-[576px] items-center justify-between px-6 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <button
               onClick={back}
               disabled={step === 0}
-              className="flex items-center gap-2 text-base font-bold text-[#6A7282] transition-opacity disabled:opacity-40"
+              className="flex h-14 items-center gap-2 text-base font-bold text-[#6A7282] transition-opacity disabled:opacity-40"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M10 4L6 8L10 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
@@ -244,7 +244,7 @@ export default function BudgetDraftPage() {
             </button>
             <button
               onClick={next}
-              className="flex items-center gap-2 text-base font-bold text-[#373737]"
+              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737]"
             >
               {step === TOTAL_STEPS - 1 ? '예산 결과 보기' : '다음'}
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -293,7 +293,7 @@ function OptionCard<T extends string | number>({
         type="button"
         disabled
         aria-disabled
-        className="flex w-full cursor-not-allowed items-center justify-between rounded-[14px] border-2 border-[#F3F4F6] bg-[#F9FAFB] p-5 text-left"
+        className="flex min-h-[94px] w-full cursor-not-allowed items-center justify-between rounded-[14px] border-2 border-[#F3F4F6] bg-[#F9FAFB] p-5 text-left"
       >
         <div className="flex items-center gap-3">
           <div className="h-6 w-6 shrink-0" />
@@ -308,7 +308,7 @@ function OptionCard<T extends string | number>({
   return (
     <button
       onClick={onClick}
-      className={`flex w-full items-center justify-between rounded-[14px] border-2 p-5 text-left transition-all ${
+      className={`flex min-h-[94px] w-full items-center justify-between rounded-[14px] border-2 p-5 text-left transition-all ${
         selected
           ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]'
           : 'border-[#E5E7EB] bg-white'
@@ -558,18 +558,15 @@ function HoneymoonStep({
       <StepHeader step={10} title="신혼여행은 계획하고 있나요?" />
       <div className="flex flex-col gap-3 pt-4">
         {choice === 'yes' ? (
-          <div className="flex items-center justify-between rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] p-5">
-            <div className="flex flex-col">
-              <span className="text-lg font-medium text-[#101828]">신혼여행 갈 예정</span>
-              <span className="mt-0.5 text-sm text-[#6A7282]">예상 예산을 입력해주세요</span>
-            </div>
+          <div className="flex h-[94px] items-center justify-between rounded-[14px] border-2 border-[#AAC7E1] bg-[rgba(170,199,225,0.3)] px-5">
+            <span className="text-lg font-medium text-[#101828]">신혼여행 갈 예정</span>
             <div className="flex items-center gap-2">
               <input
                 type="text"
                 inputMode="numeric"
                 value={budget}
                 onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); onBudgetChange(Number(v) || 0); }}
-                className="h-8 w-28 rounded-lg border border-[#D1D5DC] bg-white px-3 text-right text-lg font-semibold outline-none focus:border-[#AAC7E1]"
+                className="h-[42px] w-[118px] rounded-[9px] border border-[#D1D5DC] bg-white px-3 text-right text-lg font-semibold outline-none focus:border-[#AAC7E1]"
               />
               <span className="text-base text-[#6A7282]">만원</span>
             </div>
@@ -578,7 +575,6 @@ function HoneymoonStep({
           <OptionCard
             selected={false}
             label="신혼여행 갈 예정"
-            desc="예상 예산을 입력해주세요"
             icon="✈️"
             onClick={() => onChoiceChange('yes')}
           />
@@ -586,7 +582,6 @@ function HoneymoonStep({
         <OptionCard
           selected={choice === 'no'}
           label="미루거나 생략"
-          desc="신혼여행 없이 진행"
           icon="✕"
           onClick={() => onChoiceChange('no')}
         />
@@ -812,7 +807,7 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
       <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:gap-[37px]">
         <button
           onClick={onReset}
-          className="flex h-[78px] flex-1 items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-[#373737] text-xl font-medium text-white active:scale-[0.99]"
+          className="flex min-h-[78px] flex-1 items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-[#373737] text-xl font-medium text-white active:scale-[0.99]"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
@@ -824,7 +819,7 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
         </button>
         <button
           onClick={handleShare}
-          className="flex h-[78px] flex-1 items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-white text-xl font-medium text-[#101828] active:scale-[0.99]"
+          className="flex min-h-[78px] flex-1 items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-white text-xl font-medium text-[#101828] active:scale-[0.99]"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#364153" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M15 3h6v6" />
