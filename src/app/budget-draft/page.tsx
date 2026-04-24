@@ -632,9 +632,7 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
   const includedItems = result.items.filter((i) => !i.skipped);
   const skippedItems = result.items.filter((i) => i.skipped);
   const [toast, setToast] = useState<string | null>(null);
-  const [expanded, setExpanded] = useState<Set<string>>(
-    () => new Set(result.items.filter((i) => !i.skipped).map((i) => i.id))
-  );
+  const [expanded, setExpanded] = useState<Set<string>>(() => new Set());
 
   function toggleExpanded(id: string) {
     setExpanded((prev) => {
@@ -763,7 +761,7 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
                       </p>
                       <svg
                         width="20" height="20" viewBox="0 0 20 20" fill="none"
-                        className={`shrink-0 transition-transform ${isOpen ? '' : 'rotate-90'}`}
+                        className={`shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
                       >
                         <path d="M5 7.5L10 12.5L15 7.5" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
