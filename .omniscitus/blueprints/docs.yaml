@@ -1,16 +1,18 @@
 version: 1
-updated: 2026-04-22T06:11:25.219Z
+updated: 2026-04-24T11:15:40.910Z
 
 files:
   "docs/prd/ROADMAP.md":
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 
-    change_count: 1
+    last_modified: 2026-04-24T11:15:40.910Z
+    change_count: 2
     purpose: "경험 로드맵 — 3개 경험(MVP/Phase2/Phase3) 분해 및 PRD 진행 상태 추적"
     change_log:
-      []
+      - date: 2026-04-24T11:15:40.910Z
+        action: edit
+        source: "claude:mincheol.kim"
   "docs/prd/budget-builder/budget-draft-v0.md":
     status: active
     source: "claude"
@@ -77,10 +79,13 @@ files:
     status: active
     source: "claude"
     created: 2026-04-17
-    last_modified: 2026-04-22T06:11:25.219Z
-    change_count: 2
+    last_modified: 2026-04-24T11:15:34.255Z
+    change_count: 3
     purpose: "이벤트 스키마 설계 기록 — 3안 비교(플랫 JSON/정규화/하이브리드) + 결정: 옵션 A + D1~D6 선택값"
     change_log:
+      - date: 2026-04-24T11:15:34.255Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-22T06:11:25.219Z
         action: edit
         source: "claude:mincheol.kim"

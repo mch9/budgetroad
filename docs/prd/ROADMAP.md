@@ -36,7 +36,7 @@
 
 | # | 도구명 | 설명 | 의존 | PRD |
 |---|-------|------|------|-----|
-| T1 | 운영 분석 대시보드 | 핵심 KPI 16개를 자체 대시보드에서 30초 내 확인 | — | ✅ [analytics-dashboard-v0.md](./analytics/analytics-dashboard-v0.md) |
+| T1 | 운영 분석 대시보드 | 핵심 KPI 16개 관측 — **MVP는 GA4 + Looker Studio로 피벗, 자체 구축은 Phase 2/3 보류** | — | — |
 
 ---
 **Last Updated**: 2026-04-17
