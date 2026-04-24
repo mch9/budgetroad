@@ -721,14 +721,14 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
           className="flex flex-1 flex-col rounded-[18.6px] bg-[#FDFDFD] p-[25px] sm:max-w-[439px] sm:rounded-[24px] sm:p-[32px]"
           style={{ boxShadow: '0px 14.4px 43.3px rgba(69, 69, 80, 0.1)' }}
         >
-          <h3 className="pb-[9px] text-h3 font-bold leading-tight text-[#656575] sm:pb-3" style={{ borderBottom: '0.84px solid #BCBCBC' }}>
+          <h3 className="pb-[9px] text-[16px] font-bold leading-[22px] text-[#656575] sm:pb-3 sm:text-[21px] sm:leading-[29px]" style={{ borderBottom: '0.84px solid #BCBCBC' }}>
             선택한 조건
           </h3>
           <div className="mt-3 grid grid-cols-2 gap-x-4 gap-y-3 sm:mt-4 sm:gap-y-[15px]">
             {conditionFields.map(([label, value]) => (
               <div key={label} className="flex flex-col gap-[5px] sm:gap-[7px]">
-                <p className="text-caption font-normal text-[#6A7282]">{label}</p>
-                <p className="text-body font-bold text-[#101828]">{value}</p>
+                <p className="text-[11px] font-normal leading-[17px] text-[#6A7282] sm:text-[13.57px] sm:leading-[22px]">{label}</p>
+                <p className="text-[12px] font-bold leading-[18px] text-[#101828] sm:text-[15.5px] sm:leading-[24px]">{value}</p>
               </div>
             ))}
           </div>
@@ -738,7 +738,7 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
       {/* 항목별 예산 */}
       <div className="mt-12 sm:mt-[50px]">
         <div className="pb-5" style={{ borderBottom: '1.1px solid #BCBCBC' }}>
-          <h2 className="text-h2 font-medium leading-tight text-[#101828]">항목별 예산</h2>
+          <h2 className="text-[32px] font-medium leading-[32px] text-[#101828]">항목별 예산</h2>
         </div>
         <div className="mt-6 flex flex-col gap-6">
           {includedItems.map((item) => {
@@ -755,14 +755,14 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
                 >
                   <div className="flex items-center gap-3 pt-1">
                     <span className="h-6 w-6 shrink-0 rounded-md" style={{ backgroundColor: item.color }} />
-                    <span className="text-h3 font-semibold text-[#101828]">{item.label}</span>
+                    <span className="text-2xl font-semibold leading-[28px] text-[#101828]">{item.label}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <div className="flex flex-col items-end">
-                      <p className="tabular-nums text-h3 font-semibold text-[#101828]">
+                      <p className="tabular-nums text-2xl font-semibold leading-[32px] text-[#101828]">
                         {(item.amount * 10000).toLocaleString()}원
                       </p>
-                      <p className="tabular-nums text-caption font-normal text-[#6A7282]">{percentFixed}%</p>
+                      <p className="tabular-nums text-sm font-normal text-[#6A7282]">{percentFixed}%</p>
                     </div>
                     <svg
                       width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -781,8 +781,8 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
                   <div className="flex flex-col gap-3 rounded-[10px] bg-[#F3F4F6] px-6 py-4">
                     {item.details.map(([k, v]) => (
                       <div key={k} className="flex items-center justify-between">
-                        <span className="text-body font-medium text-[#101828]">{k}</span>
-                        <span className="text-body font-normal text-[#101828]">{v}</span>
+                        <span className="text-xl font-medium leading-[28px] text-[#101828]">{k}</span>
+                        <span className="text-xl font-normal leading-[32px] text-[#101828]">{v}</span>
                       </div>
                     ))}
                   </div>
@@ -794,9 +794,9 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
             <div key={item.id} className="flex items-center justify-between py-2">
               <div className="flex items-center gap-3">
                 <span className="h-6 w-6 shrink-0 rounded-md bg-[#E5E7EB]" />
-                <span className="text-h3 font-semibold text-[#A3A3A3]">{item.label}</span>
+                <span className="text-xl font-semibold text-[#A3A3A3] sm:text-2xl">{item.label}</span>
               </div>
-              <span className="text-body text-[#A3A3A3]">미포함</span>
+              <span className="text-base text-[#A3A3A3]">미포함</span>
             </div>
           ))}
         </div>
