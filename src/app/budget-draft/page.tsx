@@ -3,7 +3,14 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
-import { shareResult } from '@/lib/share';
+import { buildShareText, buildShareClipboard } from '@/lib/share';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   type Region,
   type VenueType,
@@ -618,21 +625,16 @@ function SeasonStep({ season, onSeasonChange }: { season: Season; onSeasonChange
 
 // ── Result ──
 
-function summarizeSelections(s: StepSelections): string {
-  const region = REGION_OPTIONS.find((o) => o.value === s.region)?.label ?? '';
-  const venue = VENUE_OPTIONS.find((o) => o.value === s.venueType)?.label ?? '';
-  const tier = TIER_LABELS[s.studioTier]?.label ?? '';
-  const guest = `${s.guestCount}명`;
-  const yemul = s.yemulTier === 'custom' ? `예물 ${s.yemulBudget.toLocaleString()}만원` : (YEMUL_OPTIONS.find((o) => o.value === s.yemulTier)?.label ?? '');
-  const honeymoon = s.honeymoonChoice === 'yes' ? '신혼여행 포함' : '신혼여행 없음';
-  return [region, venue, tier, guest, yemul, honeymoon].join(', ');
-}
-
 function ResultView({ result, selections, onReset }: { result: BudgetResult; selections: StepSelections; onReset: () => void }) {
   const includedItems = result.items.filter((i) => !i.skipped);
   const skippedItems = result.items.filter((i) => i.skipped);
   const [toast, setToast] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Set<string>>(() => new Set());
+  const [shareOpen, setShareOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://budgetroad.vercel.app';
+  const sharePreview = buildShareText({ totalWon: result.total * 10000, siteUrl });
 
   function toggleExpanded(id: string) {
     setExpanded((prev) => {
@@ -642,18 +644,19 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
     });
   }
 
-  async function handleShare() {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://budgetroad.vercel.app';
-    const method = await shareResult({
-      totalWon: result.total * 10000,
-      summary: summarizeSelections(selections),
-      siteUrl,
-    });
-    trackEvent('share_result', { method });
-    if (method === 'clipboard') {
-      setToast('링크가 복사되었어요');
-    } else if (method === 'failed') {
-      setToast('공유에 실패했어요');
+  function handleShare() {
+    setCopied(false);
+    setShareOpen(true);
+    trackEvent('share_result', { method: 'modal_opened' });
+  }
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(buildShareClipboard({ totalWon: result.total * 10000, siteUrl }));
+      setCopied(true);
+      trackEvent('share_result', { method: 'clipboard' });
+    } catch {
+      setToast('복사에 실패했어요');
     }
   }
 
@@ -832,6 +835,29 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
           결과 공유하기
         </button>
       </div>
+
+      <Dialog open={shareOpen} onOpenChange={setShareOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>결과 공유하기</DialogTitle>
+            <DialogDescription>
+              아래 내용이 클립보드로 복사돼요. 카톡·메시지·메모 어디든 붙여넣을 수 있어요.
+            </DialogDescription>
+          </DialogHeader>
+          <pre className="mt-2 whitespace-pre-wrap rounded-lg bg-[#F3F4F6] p-4 text-sm leading-relaxed text-[#364153]">
+            {sharePreview.text}
+            {'\n'}
+            {sharePreview.url}
+          </pre>
+          <button
+            type="button"
+            onClick={handleCopy}
+            className="mt-4 flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#373737] text-base font-medium text-white active:scale-[0.99]"
+          >
+            {copied ? '복사됨 ✓' : '링크와 문구 복사하기'}
+          </button>
+        </DialogContent>
+      </Dialog>
 
       {toast && (
         <div className="pointer-events-none fixed inset-x-0 bottom-8 z-50 flex justify-center">
