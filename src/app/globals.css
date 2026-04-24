@@ -47,13 +47,13 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  /* typography scale */
-  --text-display: 60px;
-  --text-h1: 32px;
-  --text-h2: 24px;
-  --text-h3: 20px;
+  /* typography scale (clamp: mobile → desktop, mobile-first) */
+  --text-display: clamp(40px, 8vw, 65px);
+  --text-h1: clamp(28px, 5vw, 48px);
+  --text-h2: clamp(22px, 4vw, 36px);
+  --text-h3: clamp(18px, 3.2vw, 30px);
   --text-body: 16px;
-  --text-caption: 13px;
+  --text-caption: clamp(13px, 1.3vw, 14px);
 
   /* letter-spacing */
   --tracking-display: -0.02em;
