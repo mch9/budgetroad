@@ -754,19 +754,19 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
                     <span className="h-6 w-6 shrink-0 rounded-md" style={{ backgroundColor: item.color }} />
                     <span className="text-2xl font-semibold leading-[28px] text-[#101828]">{item.label}</span>
                   </div>
-                  <div className="flex flex-col items-end">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="flex flex-col items-end">
                       <p className="tabular-nums text-2xl font-semibold leading-[32px] text-[#101828]">
                         {(item.amount * 10000).toLocaleString()}원
                       </p>
-                      <svg
-                        width="20" height="20" viewBox="0 0 20 20" fill="none"
-                        className={`shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-                      >
-                        <path d="M5 7.5L10 12.5L15 7.5" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
+                      <p className="tabular-nums text-sm font-normal text-[#6A7282]">{percentFixed}%</p>
                     </div>
-                    <p className="tabular-nums text-sm font-normal text-[#6A7282]">{percentFixed}%</p>
+                    <svg
+                      width="20" height="20" viewBox="0 0 20 20" fill="none"
+                      className={`shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    >
+                      <path d="M5 7.5L10 12.5L15 7.5" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
                   </div>
                 </button>
                 {/* Progress bar */}
@@ -813,10 +813,8 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
           className="flex h-[78px] flex-1 items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-[#373737] text-xl font-medium text-white active:scale-[0.99]"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 12a9 9 0 0 1 15-6.7L21 8" />
-            <path d="M21 3v5h-5" />
-            <path d="M21 12a9 9 0 0 1-15 6.7L3 16" />
-            <path d="M3 21v-5h5" />
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+            <path d="M3 3v5h5" />
           </svg>
           다시하기
         </button>
@@ -825,10 +823,11 @@ function ResultView({ result, selections, onReset }: { result: BudgetResult; sel
           className="flex h-[78px] flex-1 items-center justify-center gap-3 rounded-3xl border border-[#E5E7EB] bg-white text-xl font-medium text-[#101828] active:scale-[0.99]"
         >
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#364153" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M15 3h6v6" />
-            <path d="M9 21H3v-6" />
-            <path d="M21 3l-7 7" />
-            <path d="M3 21l7-7" />
+            <circle cx="18" cy="5" r="3" />
+            <circle cx="6" cy="12" r="3" />
+            <circle cx="18" cy="19" r="3" />
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49" />
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
           </svg>
           결과 공유하기
         </button>
