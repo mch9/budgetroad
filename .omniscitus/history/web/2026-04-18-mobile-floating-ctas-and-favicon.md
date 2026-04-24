@@ -44,8 +44,8 @@
 
 ## Pending
 - [ ] Chrome 탭 파비콘 캐시 털고 최종 육안 확인 (사용자 Cmd+Q 재시작 필요)
-- [ ] 파비콘용 별도 단순화 심벌 또는 sans-serif/slab-serif 버전 추후 검토 (작은 크기 판독성 vs 브랜드 일관성 trade-off, 중단됨)
-- [ ] `.claude/temp/backups/*.serif-B.bak` 백업 파일 정리 (필요 없으면 삭제)
+- [x] 파비콘용 별도 단순화 심벌 또는 sans-serif/slab-serif 버전 추후 검토 — **중단 결정** (본 세션 Learned: "작은 파비콘에서 세리프는 근본적 한계" 인정 + Sans-serif 실험 이미 rollback. 재개 시 새 작업으로 기록)
+- [x] `.claude/temp/backups/*.serif-B.bak` 백업 파일 정리 ✔️ 2026-04-21 (`claude-design-adoption` 세션에서 로컬 삭제, `.claude/temp/backups/` 디렉토리 비어있음 확인)
 
 ## Notes
 - 주요 파일: `src/app/cta-link.tsx`, `src/app/page.tsx`, `src/app/budget-draft/page.tsx`, `src/app/icon.tsx`, `src/app/apple-icon.tsx`, `public/brand/b-glyph.png`

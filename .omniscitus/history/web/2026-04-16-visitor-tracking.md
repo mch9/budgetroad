@@ -21,9 +21,9 @@ localStorage 기반 visitor ID를 도입하여 로그인 없이 재방문 사용
 **Learned**: crypto.randomUUID()는 모든 모던 브라우저에서 네이티브 지원되어 UUID v4 생성에 외부 라이브러리 불필요
 
 ## Pending
-- [ ] GA에서 visitor_id 커스텀 차원 설정 (GA4 관리 > 맞춤 정의)
-- [ ] 재방문율 대시보드 구성
-- [ ] 로그인 기능 추가 시 visitor_id와 계정 연결
+- [x] GA에서 visitor_id 커스텀 차원 설정 (GA4 관리 > 맞춤 정의) ✔️ 2026-04-19 (`ga4-looker-analytics-setup` 세션에서 사용자가 GA4 커스텀 측정기준 12개 수동 등록 시 포함)
+- [x] 재방문율 대시보드 구성 ✔️ 2026-04-19 (`ga4-looker-analytics-setup`에서 Looker Studio에 "일별 방문자 (신규 vs 재방문)" 차트 구성 — GA4 native 신규/재방문 차원 사용)
+- [ ] 로그인 기능 추가 시 visitor_id와 계정 연결 — 보류 (Phase 3 저장/마이페이지 진입 시 합류)
 
 ## Notes
 - visitor ID 저장 키: budgetroad_visitor_id

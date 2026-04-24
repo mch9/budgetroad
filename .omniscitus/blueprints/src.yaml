@@ -1,24 +1,38 @@
 version: 1
-updated: 2026-04-20T10:57:41.183Z
+updated: 2026-04-24T05:53:48.908Z
 
 files:
   "src/app/layout.tsx":
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 
-    change_count: 0
+    last_modified: 2026-04-21T01:47:54.094Z
+    change_count: 4
     purpose: "루트 레이아웃 — HTML 구조, 폰트, 메타데이터 정의"
     change_log:
-      []
+      - date: 2026-04-21T01:47:54.094Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T01:47:50.059Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T01:42:17.772Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T01:42:06.791Z
+        action: edit
+        source: "claude:mincheol.kim"
   "src/app/page.tsx":
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 2026-04-17T15:18:49.086Z
-    change_count: 1
+    last_modified: 2026-04-21T01:48:16.425Z
+    change_count: 2
     purpose: "메인 페이지 컴포넌트 (/ 경로)"
     change_log:
+      - date: 2026-04-21T01:48:16.425Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-17T15:18:49.086Z
         action: edit
         source: "claude:mincheol.kim"
@@ -26,10 +40,22 @@ files:
     status: active
     source: "auto:shadcn"
     created: 
-    last_modified: 2026-04-20T10:52:46.629Z
-    change_count: 1
+    last_modified: 2026-04-24T05:30:30.536Z
+    change_count: 5
     purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
     change_log:
+      - date: 2026-04-24T05:30:30.536Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T04:03:43.124Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T01:47:58.510Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T01:42:24.444Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-20T10:52:46.629Z
         action: edit
         source: "claude:mincheol.kim"
@@ -84,10 +110,13 @@ files:
     status: active
     source: "claude"
     created: 2026-04-13
-    last_modified: 2026-04-17T15:18:48.855Z
-    change_count: 2
+    last_modified: 2026-04-22T16:25:10.488Z
+    change_count: 3
     purpose: "랜딩 페이지 CTA 버튼 클라이언트 컴포넌트 — GA 이벤트 트래킹 포함"
     change_log:
+      - date: 2026-04-22T16:25:10.488Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-17T15:18:48.855Z
         action: write
         source: "claude:mincheol.kim"
@@ -133,7 +162,88 @@ files:
     created: 
     last_modified: 
     change_count: 0
-    purpose: "shadcn/ui Button 컴포넌트 — 다양한 variant/size 지원"
+    purpose: "shadcn base-nova Button — @base-ui/react 기반, 6 variants × 7 sizes (xs/sm/default/lg/icon 계열)"
+    change_log:
+      []
+  "src/components/ui/card.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Card — default/sm 사이즈, Header/Title/Description/Content/Footer/Action 서브컴포넌트, ring-1 경계"
+    change_log:
+      []
+  "src/components/ui/input.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Input — border/ring 포커스 스타일, @base-ui 프리미티브"
+    change_log:
+      []
+  "src/components/ui/label.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Label — 폼 필드 라벨, htmlFor 매칭"
+    change_log:
+      []
+  "src/components/ui/badge.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Badge — 6 variants (default/secondary/destructive/outline/ghost/link), rounded-4xl pill 형태"
+    change_log:
+      []
+  "src/components/ui/radio-group.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova RadioGroup + RadioGroupItem — @base-ui/react/radio-group 기반, data-checked 시 primary 채움"
+    change_log:
+      []
+  "src/components/ui/separator.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Separator — 수평/수직 구분선"
+    change_log:
+      []
+  "src/components/ui/dialog.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Dialog — Backdrop/Portal/Popup, Header/Footer/Title/Description 서브컴포넌트, zoom-in 애니메이션"
+    change_log:
+      []
+  "src/components/ui/tabs.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Tabs — default/line variant, 가로/세로 오리엔테이션, data-active 시 배경 강조"
+    change_log:
+      []
+  "src/components/ui/skeleton.tsx":
+    status: active
+    source: "auto:shadcn"
+    created: 2026-04-20
+    last_modified: 
+    change_count: 1
+    purpose: "shadcn base-nova Skeleton — 로딩 플레이스홀더, pulse 애니메이션"
     change_log:
       []
   "src/lib/utils.ts":
@@ -203,10 +313,259 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-04-18T15:43:43.874Z
-    change_count: 14
-    purpose: "예산 생성 페이지 — 6단계 STEP 플로우 (지역/예식/스드메/식사/예물·예단/신혼여행) + 도넛차트 결과 + 결과 공유 버튼(shareResult 연결)"
+    last_modified: 2026-04-24T05:53:48.908Z
+    change_count: 97
+    purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-04-24T05:53:48.908Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:53:44.263Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:53:40.198Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:53:34.861Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:53:30.324Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:53:26.025Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:53:21.579Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:52:06.374Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:51:44.264Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:51:22.677Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:50:05.920Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:49:59.411Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:49:53.676Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:48:33.963Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T05:48:22.055Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:29:23.441Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:29:14.241Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:29:07.845Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:24:33.864Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:22:50.958Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:20:36.620Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:12:09.682Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:11:57.715Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:05:40.718Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T03:05:34.957Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-23T02:58:23.119Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:23:43.599Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:21:56.760Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:17:18.704Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:17:11.569Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:17:03.296Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:16:54.524Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:16:45.318Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:16:37.595Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:12:05.655Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:02:27.860Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T16:02:16.700Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:56:53.963Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:51:52.554Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:47:27.438Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:43:50.662Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:43:27.546Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:40:26.803Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:40:21.932Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:38:06.076Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:35:16.586Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:34:56.391Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:32:09.838Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:31:40.705Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:13:21.792Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:13:06.647Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:03:41.780Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:03:26.351Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:58:13.632Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:53:29.988Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:53:12.334Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:51:33.175Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:51:02.282Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:50:52.773Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:25:50.605Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:25:35.062Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:25:24.132Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:17:15.978Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:17:03.573Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:16:57.560Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:14:31.562Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:14:27.037Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:14:21.677Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:04:09.400Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:03:54.097Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:02:06.945Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:59:38.547Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:59:31.596Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:57:13.345Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:53:43.147Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:48:37.054Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:40:31.667Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:34:41.388Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:34:30.140Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:34:25.416Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:34:19.035Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:33:51.826Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-21T01:48:07.207Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-18T15:43:43.874Z
         action: edit
         source: "claude:mincheol.kim"
@@ -262,10 +621,55 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-04-19T10:50:21.736Z
-    change_count: 8
+    last_modified: 2026-04-22T15:55:18.302Z
+    change_count: 23
     purpose: "결혼 예산 데이터 모델 — 팀 조사 기반 지역×유형 대관료, 지역×시즌×등급 스드메, 예물/신혼여행 + 계산 로직"
     change_log:
+      - date: 2026-04-22T15:55:18.302Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:55:10.561Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:55:03.838Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:54:58.159Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:54:51.313Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:42:52.635Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:42:36.136Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T15:03:34.205Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:58:02.030Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:50:45.139Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:25:15.832Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:16:51.087Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T14:03:46.618Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:59:21.417Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-22T13:40:25.181Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-19T10:50:21.736Z
         action: edit
         source: "claude:mincheol.kim"
@@ -288,11 +692,13 @@ files:
     status: active
     source: "claude"
     created: 2026-04-17
-    last_modified: 
-    change_count: 1
+    last_modified: 2026-04-24T05:51:09.337Z
+    change_count: 2
     purpose: "결과 공유 유틸 — buildShareText(B안 포맷) + shareResult(navigator.share → clipboard fallback, method 반환)"
     change_log:
-      []
+      - date: 2026-04-24T05:51:09.337Z
+        action: write
+        source: "claude:mincheol.kim"
   "src/app/apple-icon.tsx":
     status: active
     source: "claude:mincheol.kim"
@@ -325,8 +731,19 @@ files:
     created: 2026-04-20
     last_modified: 2026-04-20T10:57:41.183Z
     change_count: 1
-    purpose: ""
+    purpose: "/design-system 라우트 — Claude Design 컬러/타이포/컴포넌트 실제 렌더 확인용 쇼케이스 페이지 (토큰 시각 회귀 기준)"
     change_log:
       - date: 2026-04-20T10:57:41.183Z
+        action: write
+        source: "claude:mincheol.kim"
+  "src/app/fonts/PretendardVariable.woff2":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-21
+    last_modified: 2026-04-21T01:41:00.000Z
+    change_count: 1
+    purpose: "Pretendard Variable 웹폰트 (Apache 2.0, 2.06MB, weight axis 45~920) — next/font/local로 로드되는 본문·헤딩·숫자 공통 한글 폰트. Geist/Geist_Mono 전면 대체"
+    change_log:
+      - date: 2026-04-21T01:41:00.000Z
         action: write
         source: "claude:mincheol.kim"

@@ -56,7 +56,7 @@
 - [~] 기존 trackEvent()에 자체 API 호출 추가 (Promise.allSettled로 GA 병행) — **보류**
 - [~] /admin/dashboard 페이지 + recharts 시각화 (16개 KPI) — **보류** (GA4+Looker Studio가 해당 역할 대행)
 - [~] 환경변수 기반 관리자 인증 — **보류**
-- [ ] (MVP 운영) BigQuery export 활성화 — 데이터 장기 보존 위해 지금 켜야 함 (ga4-looker-analytics-setup unit에 중복 기재)
+- [x] (MVP 운영) BigQuery export 활성화 — **폐기** 2026-04-21 (`ga4-looker-analytics-setup` Pending 정리 시 "실익 낮음"으로 삭제. 필요 시 Phase 2/3 재검토)
 
 ## Notes
 - PRD 파일: docs/prd/analytics/analytics-dashboard-v0.md

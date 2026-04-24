@@ -38,8 +38,8 @@ SNS 공유 시 미리보기 카드에 표시될 OG 이미지를 코드 기반으
 ## Pending
 - [x] 커스텀 도메인 확정 후 metadataBase URL 업데이트 ✔️ 2026-04-14 (budgetroad.vercel.app)
 - [x] 배포 사이트에서 SNS 공유 미리보기 실제 테스트 (카카오톡) ✔️ 2026-04-17
-- [ ] 텔레그램 OG 캐시 `@WebpageBot`으로 갱신 (구버전 잔재)
-- [ ] GA `share_result` 이벤트 수집 확인
+- [x] 텔레그램 OG 캐시 `@WebpageBot`으로 갱신 — **폐기** 2026-04-21 (`ga4-looker-analytics-setup` Pending 정리 시 "실익 낮음"으로 삭제 합의)
+- [x] GA `share_result` 이벤트 수집 확인 ✔️ 2026-04-21 (`ga4-looker-analytics-setup`에서 KPI #8 Scorecard 14건·공유자 2명 확인)
 
 ## Notes
 - PR: https://github.com/mch9/wedding-budget/pull/7 (v1), #13 (v2 — share + illustration OG)

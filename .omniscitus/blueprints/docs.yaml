@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-18T14:21:40.967Z
+updated: 2026-04-22T06:11:25.219Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -77,8 +77,21 @@ files:
     status: active
     source: "claude"
     created: 2026-04-17
-    last_modified: 
-    change_count: 1
+    last_modified: 2026-04-22T06:11:25.219Z
+    change_count: 2
     purpose: "이벤트 스키마 설계 기록 — 3안 비교(플랫 JSON/정규화/하이브리드) + 결정: 옵션 A + D1~D6 선택값"
     change_log:
-      []
+      - date: 2026-04-22T06:11:25.219Z
+        action: edit
+        source: "claude:mincheol.kim"
+  "docs/prd/analytics/event-pipeline.md":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-22
+    last_modified: 2026-04-22T05:07:03.823Z
+    change_count: 1
+    purpose: "이벤트 수집 파이프라인 운영 원칙 — Neon + GA 병행 결정 배경, 아키텍처, 주의사항(체크리스트·silent fail·PII 금지·PoP 최적화), 용량 계획, Phase 2/3 합류 전략"
+    change_log:
+      - date: 2026-04-22T05:07:03.823Z
+        action: write
+        source: "claude:mincheol.kim"
