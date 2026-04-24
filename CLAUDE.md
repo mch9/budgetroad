@@ -31,7 +31,7 @@ Entered → Input Started → Result Viewed → Intent Created (Save/Share) → 
 - **Framework**: Next.js 14+ (App Router)
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
-- **Database**: SQLite (로컬) / Neon Postgres (배포) + Prisma
+- **Database**: Supabase PostgreSQL (dev/prod 공통) + Prisma — `is_dev` 플래그로 환경 구분
 - **Auth**: 프로젝트 진행 중 선택
 - **Deployment**: Vercel
 
@@ -52,7 +52,7 @@ wedding-budget/
 │   ├── lib/              # 유틸리티 (utils.ts 등)
 │   └── types/            # TypeScript 타입 정의
 ├── design/               # 디자인 가이드 (README만, 토큰/컴포넌트 진실의 원천은 코드)
-├── prisma/               # Prisma 스키마 (SQLite 로컬 / Neon 배포)
+├── prisma/               # Prisma 스키마 + migrations (Supabase PostgreSQL)
 ├── public/               # 정적 파일 (이미지, 아이콘)
 └── ...
 ```
@@ -121,8 +121,8 @@ wedding-budget/
 - 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
 
 ## 데이터 수집
-- 이벤트: 현재 GA4 + Vercel Analytics만 운영 (Neon Postgres 자체 수집은 Phase 2/3 보류)
-- 과거 스키마 결정(Phase 2/3 재개 시 참고): `docs/prd/analytics/event-schema-options.md` (옵션 A — 플랫 JSON 단일 테이블)
+- 이벤트: GA4 + Vercel Analytics 운영 중. Supabase 자체 수집(events 테이블)은 구축 진행 중 — 세부는 `.omniscitus/history/devops/2026-04-24-supabase-migration.md`
+- 스키마 결정 근거: `docs/prd/analytics/event-schema-options.md` (옵션 A — 플랫 JSON 단일 테이블)
 
 ## 디자인 시스템
 - 컬러: Primary Accent `#AAC7E1` (선택 상태), Action `#373737` (CTA·헤드라인), Background `#F9FAFB` — 상세는 `src/app/globals.css`

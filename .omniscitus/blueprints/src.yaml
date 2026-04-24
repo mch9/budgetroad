@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-24T05:53:48.908Z
+updated: 2026-04-24T13:59:29.963Z
 
 files:
   "src/app/layout.tsx":
@@ -133,11 +133,13 @@ files:
     status: active
     source: "claude"
     created: 2026-04-13
-    last_modified: 
-    change_count: 2
+    last_modified: 2026-04-24T13:59:29.963Z
+    change_count: 3
     purpose: "Google Analytics gtag 헬퍼 — 모든 이벤트에 visitor_id 자동 포함"
     change_log:
-      []
+      - date: 2026-04-24T13:59:29.963Z
+        action: write
+        source: "claude:mincheol.kim"
   "src/lib/visitor.ts":
     status: active
     source: "claude"
@@ -745,5 +747,27 @@ files:
     purpose: "Pretendard Variable 웹폰트 (Apache 2.0, 2.06MB, weight axis 45~920) — next/font/local로 로드되는 본문·헤딩·숫자 공통 한글 폰트. Geist/Geist_Mono 전면 대체"
     change_log:
       - date: 2026-04-21T01:41:00.000Z
+        action: write
+        source: "claude:mincheol.kim"
+  "src/lib/db.ts":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-24
+    last_modified: 2026-04-24T13:59:24.977Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-04-24T13:59:24.977Z
+        action: write
+        source: "claude:mincheol.kim"
+  "src/app/api/events/route.ts":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-24
+    last_modified: 2026-04-24T13:59:27.968Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-04-24T13:59:27.968Z
         action: write
         source: "claude:mincheol.kim"

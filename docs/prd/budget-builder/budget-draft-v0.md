@@ -48,7 +48,7 @@ budget-draft
 
 ### 진입점
 - 직접 URL 접근
-- 공유 링크 유입 (Phase 2)
+- 공유 링크 유입
 
 ### 퍼널 흐름
 랜딩(/) → CTA 클릭 → 유형 선택(/budget-draft) → 결과 확인
@@ -87,7 +87,7 @@ budget-draft
   2. 항목별 금액 테이블
   3. 비율 차트
   4. 통계 출처/기준
-  5. (Phase 2) 공유/저장 버튼
+  5. 공유 버튼
 
 ## Step 9. Wireframe
 ✅ 완료 — Pencil 와이어프레임 6개 화면

@@ -2,11 +2,13 @@ units:
   - id: budget-draft-figma-redesign
     file: web/2026-04-23-budget-draft-figma-redesign.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-23
-    last_updated: 2026-04-23
-    session_count: 2
+    last_updated: 2026-04-24
+    closed: 2026-04-24
+    session_count: 3
     title: "예산 초안 10-step 플로우 피그마 기반 리디자인"
+    note: "QA round 2 + 타이포 토큰 + 하이브리드 경계 반영 후 PR #18 + PR #20 프로덕션 배포 완료"
   - id: project-scaffold-setup
     file: devops/2026-04-11-project-scaffold-setup.md
     domain: devops
@@ -19,13 +21,13 @@ units:
   - id: budget-draft-prd
     file: product/2026-04-11-budget-draft-prd.md
     domain: product
-    status: open
-    deferred: true
-    resume_when: "Phase 2(공유) 또는 Phase 3(저장) 진입 시점"
+    status: closed
     created: 2026-04-11
-    last_updated: 2026-04-11
+    last_updated: 2026-04-24
+    closed: 2026-04-24
     session_count: 1
     title: "예산 초안 생성 기능 PRD"
+    note: "MVP PRD(v0) 완료. Phase 2/3 PRD는 1인 초안 대신 팀 합의 후 /prd-collab으로 재작성 방침 (market-entry-pivot 2026-04-24)"
   - id: budget-draft-implementation
     file: web/2026-04-11-budget-draft-implementation.md
     domain: web
@@ -73,13 +75,13 @@ units:
   - id: blog-prd
     file: product/2026-04-15-blog-prd.md
     domain: product
-    status: open
-    deferred: true
-    resume_when: "실사용자 피드백에서 '가이드/해설 콘텐츠 필요' 신호 3회 이상 누적될 때"
+    status: closed
     created: 2026-04-15
-    last_updated: 2026-04-18
+    last_updated: 2026-04-24
+    closed: 2026-04-24
     session_count: 2
     title: "블로그 PRD (Content Strategy 확정)"
+    note: "base PRD (docs/prd/blog/blog-v0.md) deleted in PR #22 (2026-04-24). 팀 합의 후 /prd-collab으로 재작성 방침"
   - id: analytics-dashboard-prd
     file: product/2026-04-16-analytics-dashboard-prd.md
     domain: product
@@ -93,13 +95,14 @@ units:
   - id: neon-db-setup
     file: devops/2026-04-17-neon-db-setup.md
     domain: devops
-    status: open
-    deferred: true
-    resume_when: "Phase 2/3 진입 또는 일 이벤트 > 100건 돌파 (Event 모델 및 /api/events 구축 재개)"
+    status: closed
     created: 2026-04-17
-    last_updated: 2026-04-17
-    session_count: 1
+    last_updated: 2026-04-24
+    closed: 2026-04-24
+    session_count: 2
     title: "Neon Postgres 프로비저닝 및 Prisma 연결"
+    superseded_by: supabase-migration
+    note: "Neon 프로비저닝 자체는 유지(비용 0), DB 활용은 Supabase로 이전"
   - id: visitor-tracking
     file: web/2026-04-16-visitor-tracking.md
     domain: web
@@ -150,10 +153,10 @@ units:
     domain: devops
     status: open
     deferred: true
-    resume_when: "🟡 계산식 KPI·🔴 난이도 KPI는 Neon Event 도입 후 SQL로 직접 계산. 현재는 🟢 6/6 + 퍼널 3~4개만 운영"
+    resume_when: "🟡 계산식 KPI·🔴 난이도 KPI는 Supabase Event 연결 후 SQL로 직접 계산 (supabase-migration unit에서 진행). 현재 🟢 6/6은 운영 유지"
     created: 2026-04-19
-    last_updated: 2026-04-22
-    session_count: 3
+    last_updated: 2026-04-24
+    session_count: 4
     title: "GA4 + Looker Studio 분석 파이프라인 구축"
   - id: claude-design-adoption
     file: devops/2026-04-20-claude-design-adoption.md
@@ -170,10 +173,19 @@ units:
     domain: product
     status: open
     created: 2026-04-22
-    last_updated: 2026-04-22
-    session_count: 1
+    last_updated: 2026-04-24
+    session_count: 2
     title: "검증 → 시장 진입 모드 전환 + 체계 대청소"
-    note: "Council 2회 소집 후 14 open → 10 close + 4 deferred. Doc-Freeze 발효 (~2026-06-03)"
+    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정"
+  - id: supabase-migration
+    file: devops/2026-04-24-supabase-migration.md
+    domain: devops
+    status: open
+    created: 2026-04-24
+    last_updated: 2026-04-24
+    session_count: 2
+    title: "Supabase 마이그레이션 (Neon → Supabase) + MCP 연결"
+    note: "팀 맥락(PM 7명) + Phase 3 로그인 대비 + Data Blending 이슈 해결로 피벗. MCP 인증 완료, events 테이블 + 3 indexes 구축 완료 (2026-04-24). 다음: /api/events route + gtag.ts 확장 + env 추가"
 
 weekly_summaries:
   - week: "2026-W16"

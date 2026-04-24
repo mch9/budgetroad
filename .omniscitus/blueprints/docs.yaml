@@ -1,15 +1,21 @@
 version: 1
-updated: 2026-04-24T11:15:40.910Z
+updated: 2026-04-24T13:29:10.396Z
 
 files:
   "docs/prd/ROADMAP.md":
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-04-24T11:15:40.910Z
-    change_count: 2
+    last_modified: 2026-04-24T13:29:10.396Z
+    change_count: 4
     purpose: "경험 로드맵 — 3개 경험(MVP/Phase2/Phase3) 분해 및 PRD 진행 상태 추적"
     change_log:
+      - date: 2026-04-24T13:29:10.396Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T13:29:07.963Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-24T11:15:40.910Z
         action: edit
         source: "claude:mincheol.kim"
@@ -17,27 +23,34 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 
-    change_count: 1
+    last_modified: 2026-04-24T13:28:59.432Z
+    change_count: 3
     purpose: "budget-draft 상세 PRD — 12단계 워크플로우 (요구사항~하이파이 디자인)"
     change_log:
-      []
+      - date: 2026-04-24T13:28:59.432Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T13:28:57.955Z
+        action: edit
+        source: "claude:mincheol.kim"
   "docs/prd/budget-builder/budget-draft-v1-step-flow.md":
-    status: active
+    status: deleted
     source: "claude"
     created: 2026-04-14
     last_modified: 
+    deleted: 2026-04-24
     change_count: 1
-    purpose: "STEP 플로우 v1 스펙 — 6단계 구조, 선택지, UX 규칙, 디자인 패턴 정의"
+    purpose: "STEP 플로우 v1 스펙 — 6단계 구조 (10-step으로 대체되어 2026-04-24 삭제, PR #22)"
     change_log:
       []
   "docs/prd/blog/blog-v0.md":
-    status: active
+    status: deleted
     source: "claude"
     created: 2026-04-15
     last_modified: 2026-04-18T14:21:40.967Z
+    deleted: 2026-04-24
     change_count: 10
-    purpose: "블로그 기능 상세 PRD — Step 0~8 + Content Strategy(Step 5-0) 확정, 자체 생산 3축(guide/data/frame) 전략, 초기 10편 믹스"
+    purpose: "블로그 기능 상세 PRD (팀 합의 없는 1인 초안, 2026-04-24 PR #22에서 삭제. 팀 논의 시 /prd-collab로 재작성 예정)"
     change_log:
       - date: 2026-04-18T14:21:40.967Z
         action: edit
@@ -67,22 +80,26 @@ files:
         action: edit
         source: "claude:mincheol.kim"
   "docs/prd/analytics/analytics-dashboard-v0.md":
-    status: active
+    status: deleted
     source: "claude"
     created: 2026-04-16
     last_modified: 
+    deleted: 2026-04-24
     change_count: 1
-    purpose: "운영 분석 대시보드 One-Pager PRD — 16개 핵심 지표, DB+자체 대시보드 기술 방향"
+    purpose: "운영 분석 대시보드 One-Pager PRD (MVP GA4+Looker 피벗 후 무효화되어 2026-04-24 PR #21에서 삭제. 결정 근거는 event-schema-options.md에 보존)"
     change_log:
       []
   "docs/prd/analytics/event-schema-options.md":
     status: active
     source: "claude"
     created: 2026-04-17
-    last_modified: 2026-04-24T11:15:34.255Z
-    change_count: 3
+    last_modified: 2026-04-24T13:29:02.537Z
+    change_count: 4
     purpose: "이벤트 스키마 설계 기록 — 3안 비교(플랫 JSON/정규화/하이브리드) + 결정: 옵션 A + D1~D6 선택값"
     change_log:
+      - date: 2026-04-24T13:29:02.537Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-24T11:15:34.255Z
         action: edit
         source: "claude:mincheol.kim"
@@ -90,12 +107,13 @@ files:
         action: edit
         source: "claude:mincheol.kim"
   "docs/prd/analytics/event-pipeline.md":
-    status: active
+    status: deleted
     source: "claude:mincheol.kim"
     created: 2026-04-22
     last_modified: 2026-04-22T05:07:03.823Z
+    deleted: 2026-04-24
     change_count: 1
-    purpose: "이벤트 수집 파이프라인 운영 원칙 — Neon + GA 병행 결정 배경, 아키텍처, 주의사항(체크리스트·silent fail·PII 금지·PoP 최적화), 용량 계획, Phase 2/3 합류 전략"
+    purpose: "이벤트 수집 파이프라인 운영 원칙 (pipeline 구현 없이 원칙만 존재하여 2026-04-24 PR #21에서 삭제. Supabase 도입 시 새 원칙 문서 재작성 예정)"
     change_log:
       - date: 2026-04-22T05:07:03.823Z
         action: write

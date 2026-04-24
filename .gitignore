@@ -44,3 +44,7 @@ yarn-error.log*
 next-env.d.ts
 .env*.local
 .claude/temp/
+
+# agent tool artifacts (Claude Code skills install)
+.agents/
+skills-lock.json

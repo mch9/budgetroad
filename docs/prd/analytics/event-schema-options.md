@@ -2,7 +2,7 @@
 
 > 작성일: 2026-04-17
 > 상태: **결정됨 — 옵션 A (플랫 JSON 단일 테이블)**
-> 비고: 2026-04-24 학습부채 정리 과정에서 상위 PRD(`analytics-dashboard-v0.md`) 폐기. 본 문서는 Phase 2/3 재개 시 참고용 결정 근거로만 보존.
+> 비고: 2026-04-24 `supabase-migration` unit에서 events 테이블 구축 시 본 스펙대로 구현됨 (`prisma/schema.prisma` Event 모델). 상위 PRD `analytics-dashboard-v0.md`는 학습부채 정리 과정에서 폐기.
 
 ## 결정 요약
 

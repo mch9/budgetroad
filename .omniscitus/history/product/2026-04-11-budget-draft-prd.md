@@ -1,5 +1,7 @@
 # 예산 초안 생성 기능 PRD
 
+**Status**: closed (2026-04-24) — MVP PRD(v0)는 완료·구현까지 끝남. Phase 2/3 PRD(링크 공유·저장)는 1인 초안 대신 팀 합의 후 `/prd-collab`으로 재작성 방침. Pending의 Phase 2/3 작성 항목은 obsolete.
+
 ## Summary
 결혼 예산 초안 자동 생성(budget-draft) 기능의 상세 PRD를 12단계 워크플로우로 완성.
 경험 로드맵 분해(3개 경험) → MVP 경험의 요구사항, 화면 설계, 와이어프레임, UX Writing, 하이파이 디자인까지 전체 완료.

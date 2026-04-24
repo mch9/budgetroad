@@ -103,14 +103,27 @@
 - **"기획 확정 전 구현"은 재작업 비용이 크다** — 이벤트 이름·파라미터는 UI 선택지에 종속되므로 UI 확정이 흔들리는 동안 이벤트 수집 코드 작성은 리팩토링 발생. 원칙 문서·스키마 정의는 선행 가능, 실제 migrate + API 구현은 후행
 - **"보험용 투트랙" 세팅의 함정** — 1인 운영 맥락에서 BigQuery + Neon 병행은 유지 부담만 남고 실전에선 한 트랙만 쓰게 되는 케이스가 많음. 1차 보험(GA4 14개월 retention) 만료 임박 시점에 BigQuery 단독 도입이 실용적
 
+### 2026-04-24
+**Focus**: Supabase 연결 경로 확정 (Data Blending 이슈 구조적 해결) + 관련 산출물 일부 정돈
+
+- **Looker Data Blending 365% 이상치 원인 최종 확정**: cardinality 미스매치 + GA4 Looker 커넥터 pre-aggregated 모델 + `이벤트 수` AUT 메트릭 이중 집계. **GA4 단일 소스만으로 전환율 Scorecard 계산 구조적으로 불가능** 판단
+- **해결 경로 확정**: Supabase 단일 소스 직접 쿼리 → Data Blending 불필요. 구현은 `devops/2026-04-24-supabase-migration.md` unit에서 진행
+- **학습부채 정리 영향**: 2026-04-22에 작성했던 `docs/prd/analytics/event-pipeline.md` (운영 원칙 문서)를 PR #21에서 삭제 — pipeline 구현 없이 원칙만 공중에 떠있던 문서였음. `event-schema-options.md`만 결정 근거로 보존 (Phase 2/3 재개 시 참고)
+- **Neon → Supabase 피벗**: `neon-db-setup` unit의 상위 참조(상위 PRD `analytics-dashboard-v0.md`도 삭제됨)와 함께 **Neon 경로 전체 superseded**. DB 이관하되 KPI 측정 방향성·trackEvent 확장 전략은 그대로 유지
+- **현재 운영 유지**: 🟢 KPI 6/6 Looker 차트는 **계속 활용** (이상치 없는 단순 집계). 🟡/🔴 KPI는 Supabase 연결 후 SQL 직접 쿼리로 구현
+
+**Learned**:
+- **Looker Blend vs 단일 소스 SQL**의 투명성 차이가 실전 결정 요소: GUI 조인은 내부 쿼리 확인 불가 → 이상치 디버깅 시 가설 검증 경로 부재. 자체 DB + SQL은 `EXPLAIN` 등으로 추적 가능. 무료 + no-code의 달콤함 뒤에 **디버깅 비용**이 숨어있었음
+- **대체 경로 판단 기준**: "GA4+Looker로 불가능한 게 하나라도 있으면 자체 DB" — 이 세션에서 전환율 Scorecard 정확도가 GA4 구조상 해결 불가로 확정되면서 판단 명확해짐
+
 ## Pending
 - [x] 🟢 쉬운 KPI 차트 6/6 완성 ✔️ 2026-04-22 (#16 분포 바차트 6개)
-- [~] 🟡 계산식 KPI 6개 (#1~#3 전환율, #7, #9, #12) — **Neon Event 도입 후 SQL로 직접 계산** (Looker Blend 경로 폐기)
-- [~] 🔴 난이도 KPI 4개 (#4, #5, #6, #14) — **Neon 경로 후 재개**
-- [~] `result_viewed`·`share_result` 델타 파라미터 추가 — **Neon Event 구현 시 함께 진행**
+- [→] 🟡 계산식 KPI 6개 (#1~#3 전환율, #7, #9, #12) — **Supabase 연결 후 SQL 직접 계산** (`supabase-migration` unit으로 이관)
+- [→] 🔴 난이도 KPI 4개 (#4, #5, #6, #14) — **Supabase 경로 후 재개** (`supabase-migration` unit으로 이관)
+- [→] `result_viewed`·`share_result` 델타 파라미터 추가 — **Supabase Event 구현 시 함께 진행** (`supabase-migration` unit으로 이관)
 - [ ] Looker Studio 기간 컨트롤 상단 배치 — 기존 🟢 차트 운영용으로만 유지
 - [~] GA4 DebugView 확인 원할 시 "Google Analytics Debugger" Chrome 확장 — 선택사항
-- [ ] **[재개 조건 충족 시]** Prisma `bun run db migrate dev --name init_events` 실행 + `src/lib/db.ts` + `src/app/api/events/route.ts` + `gtag.ts` 병행 호출 구현 (기획 확정 or Phase 2/3 진입 or 일 이벤트 > 100건)
+- [→] **[재개 조건 충족]** Prisma migrate + `src/app/api/events/route.ts` + `gtag.ts` 병행 호출 → **`supabase-migration` unit에서 실행 예정**
 
 ## Notes
 - GA4 property ID: `G-B7F0E8527V`

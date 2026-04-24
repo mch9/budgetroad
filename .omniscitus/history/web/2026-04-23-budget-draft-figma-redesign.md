@@ -66,13 +66,36 @@
 - **도메인 제약 vs 스펙 충실도 트레이드오프**: 같은 스텝 내 카드 크기가 다른 카드들과 다르면 "인지적으로 이상해보인다"(사용자 표현). Figma가 미완이면 스펙 적용 범위를 지목 요소로 엄격 제한하고, 부모 컨테이너는 프로젝트 내 통계적 다수에 맞추는 게 실전 원칙
 - **구분선 위치 통일 3요소 분해**: 두 화면의 하단 고정 요소 구분선 위치를 맞추려면 (a) 내부 버튼 명시 높이 (b) 박스 padding 동일 (c) 배경 opacity/blur 동일 — 특히 `env(safe-area-inset-bottom)`이 한 쪽만 있으면 iOS Safari에서 어긋남
 
+### 2026-04-24
+**Focus**: QA round 2 피드백 반영 + 타이포 토큰 도입 + 하이브리드 경계 결정 + 프로덕션 배포
+
+- **타이포 토큰 시스템 도입** (PR #20의 커밋 08985c4/2ef247c): `globals.css` `--text-*` 토큰을 `clamp()` 기반 반응형으로 전환. PM 부트캠프 강사 권고표 적용 (h1 28→48, h2 22→36, h3 18→30, body 16 고정, caption 13→14, display 40→65). `design/README.md` Typography 섹션 + 결정 근거 + 사용 가이드 + 폰트 패밀리 정돈 (기존 "Geist" 오기 → Pretendard Variable 정정)
+- **QA round 2 수정 커밋 체인** (PR #19 → auto-close → PR #20 복구판 → MERGED):
+  - 아코디언 기본 닫힘 (was: 전체 펼침) + 화살표 방향 ▽/△ (`rotate-180`)
+  - `%` 값 금액 하단 우측 정렬 (화살표 우측 별도 컬럼 분리)
+  - 공유 아이콘 Share2 (점 3개 연결) / 다시하기 RotateCw (단순 원형) 인라인 SVG 교체
+  - **Windows Chrome 공유 모달 도입** (`navigator.share` 제거): 커스텀 Dialog + 텍스트 미리보기 + 복사 버튼 → 한 번 클릭으로 폼 표시
+  - 공유 문구 갱신 ("💍 우리 결혼식, 미리 그려봤어요 / 예상 총 비용 X원 / 나도 내 예산 그려보기 👉"). `summary` 파라미터·`summarizeSelections` 헬퍼 제거
+  - 결과 페이지 모바일 폰트 (11곳 토큰 치환 시도) → CTO Council 후 **Figma px로 revert** (커밋 2a4f89e)
+  - CTA `min-h-[78px]` 중복 적용 (PR #18 본체의 같은 수정이 stacked 브랜치에 자동 반영 안 되어 회귀 발생)
+  - 다시하기 아이콘 방향 반전 (RotateCcw → RotateCw, 팀원 QA 피드백 "Figma 방향 일치")
+- **하이브리드 타이포 경계 결정** (/cto-council 후 반영): 결과 페이지는 **Figma 원안 px 고정** (11, 13.57, 15.5, 25.6, 42, 65 등 그리드 계산값 보존), 랜딩·입력 스텝·범용 컴포넌트는 토큰. `design/README.md`에 "하이브리드 경계" 섹션 추가
+- **Stacked PR 3함정 경험 + 메모리화** (`feedback_stacked_pr_base_fix` 확장): (1) base 수정은 stacked 브랜치에 중복 적용 필요, (2) `gh pr merge --delete-branch`는 child PR 자동 close, (3) squash merge 후 rebase는 충돌 폭발 → cherry-pick이 정답. PR #19 CLOSED 후 `fix/budget-draft-qa-round2-v2` 브랜치에 cherry-pick 6개 (revert 쌍 2c4cc58/2a4f89e 제외) → PR #20 재생성 → auto-merge
+- **프로덕션 배포**: PR #18 (본체 + 3 chore 커밋: page.tsx 후속 / omniscitus 누적 / council 산출물) → `41d3b56` 1차 배포. PR #20 (QA 복구) → `dccf135` 2차 배포. https://budgetroad.vercel.app 최종 반영
+
+**Learned**:
+- **하이브리드 경계 원칙**: 토큰은 반응형 규칙(clamp), Figma px는 그리드 계산. **다른 레이어**라 경쟁 아님. 화면 성격("브랜드 얼굴" vs "범용 컴포넌트")에 따라 경계 설정. "디자인 시스템은 완성이 아니라 진화".
+- **Stacked PR + squash merge 함정**: squash merge로 생성된 새 commit hash는 원본 commit과 diff가 같아도 Git은 동일성 인식 못함 → rebase 시 "이미 merged된 commit을 다시 적용"하려다 충돌 폭발. cherry-pick은 main HEAD 위에 개별 적용이라 3-way 병합으로 자연 해소.
+- **moving goalpost 해결 단서**: 평가 기준이 매번 바뀌는 건 체계 문제가 아니라 평가자 문제. 외부 근거 자료(업계 사례·공개 문서)로 기준을 외부화하는 전략 유효 (CTO Council에서 Shape Up·DHH·YC 다층 권위 배치 전략 수립)
+
 ## Pending
-- [~] 팀원 Vercel Preview URL QA 피드백 수집 (PR #18 댓글) — Vercel Auth 해제로 접근 차단은 해소, 실 피드백 수집은 계속
-- [x] **(신규)** Vercel Settings → Deployment Protection → "Vercel Authentication: Disabled" 적용 (QA 루프 단축) ✔️ 2026-04-24
-- [ ] QA 통과 시 PR #18에 이번 세션 수정(sticky 네비·CTA 복구·신혼여행 정리·카드 94px 통일) 추가 커밋 후 merge → 프로덕션 배포
-- [ ] `.claude/temp/budget-draft-redesign-mapping.md` 임시 노트 삭제
-- [ ] `.omniscitus/*` 및 기타 기존 main 브랜치 unstaged 변경은 별도 커밋/PR로 분리 — 이번 세션에 `_index.yaml`, `neon-db-setup.md`, 유닛 append 등 추가 발생
-- [~] 모바일 QA — 402px 뷰포트 headless Chrome 실측으로 간접 확인(구분선 89px, 카드 94px, 입력박스 42px). 실기기 iPhone 확인은 미진행
+- [~] 팀원 Vercel Preview URL QA 피드백 수집 — 일부 반영 완료 (CTA min-h·아이콘 방향). 프로덕션 배포 후 추가 피드백 루프 계속
+- [x] **(신규)** Vercel Settings → Deployment Protection → "Vercel Authentication: Disabled" 적용 ✔️ 2026-04-24
+- [x] QA 통과 시 PR #18 후속 커밋 + merge → 프로덕션 배포 ✔️ 2026-04-24 (PR #18 + PR #20)
+- [x] `.claude/temp/budget-draft-redesign-mapping.md` 삭제 ✔️ 2026-04-24
+- [x] `.omniscitus/*` 및 기타 unstaged 변경 분리 커밋 ✔️ 2026-04-24 (PR #18에 chore 커밋 3개)
+- [~] 모바일 QA — 프로덕션 배포됨, 실기기 iPhone QA는 팀원 진행 단계
+- [ ] **(신규)** 프로덕션 GA4 이벤트 실제 수집 검증 → `supabase-migration` unit에서 Supabase 연동 후 통합 관측
 
 ## Notes
 - 관련 메모리: `feedback_figma_comparison` (좌/우 비교 포맷), `feedback_subtitle_anchoring` (UX 카피 앵커링 회피), **`feedback_figma_partial_reference` (Figma 미완 시 지목 요소만 적용, 이번 세션 신규)**
