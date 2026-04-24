@@ -1,15 +1,18 @@
 version: 1
-updated: 2026-04-24T13:41:49.867Z
+updated: 2026-04-24T17:23:17.134Z
 
 files:
   "prisma/schema.prisma":
     status: active
     source: "claude"
     created: 
-    last_modified: 2026-04-24T13:41:49.867Z
-    change_count: 7
+    last_modified: 2026-04-24T17:23:17.134Z
+    change_count: 8
     purpose: "Prisma DB 스키마 — Postgres 연결 설정(DATABASE_URL pooled + DIRECT_URL). Event 모델 2026-04-24 Supabase에 baseline으로 재구축(events 테이블 + 3 indexes). 스펙 근거는 docs/prd/analytics/event-schema-options.md 옵션 A, 구축 맥락은 supabase-migration unit 참조."
     change_log:
+      - date: 2026-04-24T17:23:17.134Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-24T13:41:49.867Z
         action: edit
         source: "claude:mincheol.kim"
