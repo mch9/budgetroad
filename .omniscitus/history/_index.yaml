@@ -1,16 +1,27 @@
 units:
+  - id: budget-draft-figma-redesign
+    file: web/2026-04-23-budget-draft-figma-redesign.md
+    domain: web
+    status: open
+    created: 2026-04-23
+    last_updated: 2026-04-23
+    session_count: 2
+    title: "예산 초안 10-step 플로우 피그마 기반 리디자인"
   - id: project-scaffold-setup
     file: devops/2026-04-11-project-scaffold-setup.md
     domain: devops
-    status: open
+    status: closed
     created: 2026-04-11
     last_updated: 2026-04-11
+    closed: 2026-04-22
     session_count: 1
     title: "프로젝트 스캐폴딩 및 초기 설정"
   - id: budget-draft-prd
     file: product/2026-04-11-budget-draft-prd.md
     domain: product
     status: open
+    deferred: true
+    resume_when: "Phase 2(공유) 또는 Phase 3(저장) 진입 시점"
     created: 2026-04-11
     last_updated: 2026-04-11
     session_count: 1
@@ -26,9 +37,10 @@ units:
   - id: og-image-social-sharing
     file: web/2026-04-13-og-image-social-sharing.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-13
     last_updated: 2026-04-17
+    closed: 2026-04-22
     session_count: 2
     title: "OG 이미지 및 소셜 공유 최적화"
   - id: rebrand-budgetroad
@@ -42,23 +54,28 @@ units:
   - id: step-flow-rebuild
     file: web/2026-04-14-step-flow-rebuild.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-14
     last_updated: 2026-04-19
+    closed: 2026-04-22
     session_count: 4
     title: "예산 초안 6단계 STEP 플로우 재구축"
   - id: design-directory-setup
     file: devops/2026-04-15-design-directory-setup.md
     domain: devops
-    status: open
+    status: closed
     created: 2026-04-15
     last_updated: 2026-04-15
+    closed: 2026-04-20
     session_count: 2
     title: "디자인 디렉토리 구조 및 피그마 이전"
+    superseded_by: claude-design-adoption
   - id: blog-prd
     file: product/2026-04-15-blog-prd.md
     domain: product
     status: open
+    deferred: true
+    resume_when: "실사용자 피드백에서 '가이드/해설 콘텐츠 필요' 신호 3회 이상 누적될 때"
     created: 2026-04-15
     last_updated: 2026-04-18
     session_count: 2
@@ -66,15 +83,19 @@ units:
   - id: analytics-dashboard-prd
     file: product/2026-04-16-analytics-dashboard-prd.md
     domain: product
-    status: open
+    status: closed
     created: 2026-04-16
     last_updated: 2026-04-19
+    closed: 2026-04-22
     session_count: 3
     title: "운영 분석 대시보드 PRD"
+    note: "MVP는 GA4+Looker 피벗 결정. 자체 DB 구현은 Phase 2/3에 자연 합류"
   - id: neon-db-setup
     file: devops/2026-04-17-neon-db-setup.md
     domain: devops
     status: open
+    deferred: true
+    resume_when: "Phase 2/3 진입 또는 일 이벤트 > 100건 돌파 (Event 모델 및 /api/events 구축 재개)"
     created: 2026-04-17
     last_updated: 2026-04-17
     session_count: 1
@@ -82,51 +103,77 @@ units:
   - id: visitor-tracking
     file: web/2026-04-16-visitor-tracking.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-16
     last_updated: 2026-04-16
+    closed: 2026-04-22
     session_count: 1
     title: "비로그인 방문자 식별 및 재방문 추적"
   - id: landing-page-redesign
     file: web/2026-04-14-landing-page-redesign.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-14
     last_updated: 2026-04-16
+    closed: 2026-04-22
     session_count: 3
     title: "랜딩 페이지 피그마 기반 리디자인"
   - id: mobile-floating-ctas-and-favicon
     file: web/2026-04-18-mobile-floating-ctas-and-favicon.md
     domain: web
-    status: open
+    status: closed
     created: 2026-04-18
     last_updated: 2026-04-18
+    closed: 2026-04-22
     session_count: 1
     title: "모바일 플로팅 CTA + 파비콘 리브랜딩"
   - id: blueprint-v1-and-meta-tools
     file: devops/2026-04-18-blueprint-v1-and-meta-tools.md
     domain: devops
-    status: open
+    status: closed
     created: 2026-04-18
     last_updated: 2026-04-18
+    closed: 2026-04-22
     session_count: 1
     title: "Blueprint v1 마이그레이션 + find-context skill"
   - id: ci-lint-and-slack-fixes
     file: devops/2026-04-18-ci-lint-and-slack-fixes.md
     domain: devops
-    status: open
+    status: closed
     created: 2026-04-18
     last_updated: 2026-04-18
+    closed: 2026-04-22
     session_count: 1
     title: "CI Lint 에러 + Slack 알림 스팸 해결"
   - id: ga4-looker-analytics-setup
     file: devops/2026-04-19-ga4-looker-analytics-setup.md
     domain: devops
     status: open
+    deferred: true
+    resume_when: "🟡 계산식 KPI·🔴 난이도 KPI는 Neon Event 도입 후 SQL로 직접 계산. 현재는 🟢 6/6 + 퍼널 3~4개만 운영"
     created: 2026-04-19
-    last_updated: 2026-04-19
-    session_count: 1
+    last_updated: 2026-04-22
+    session_count: 3
     title: "GA4 + Looker Studio 분석 파이프라인 구축"
+  - id: claude-design-adoption
+    file: devops/2026-04-20-claude-design-adoption.md
+    domain: devops
+    status: closed
+    created: 2026-04-20
+    last_updated: 2026-04-21
+    closed: 2026-04-22
+    session_count: 4
+    title: "Claude Design 도입 + 디자인 시스템 레이어 정립"
+    note: "Phase A+B 완료. Phase C 하드코딩 hex 마이그레이션은 실사용자 확보 후 별도 unit으로 재시작"
+  - id: market-entry-pivot
+    file: product/2026-04-22-market-entry-pivot.md
+    domain: product
+    status: open
+    created: 2026-04-22
+    last_updated: 2026-04-22
+    session_count: 1
+    title: "검증 → 시장 진입 모드 전환 + 체계 대청소"
+    note: "Council 2회 소집 후 14 open → 10 close + 4 deferred. Doc-Freeze 발효 (~2026-06-03)"
 
 weekly_summaries:
   - week: "2026-W16"

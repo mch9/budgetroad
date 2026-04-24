@@ -1,9 +1,15 @@
 version: 1
-updated: 2026-04-17T00:00:00.000Z
+updated: 2026-04-22T06:11:12.703Z
 
 files:
   "prisma/schema.prisma":
     status: active
     source: "claude"
-    change_count: 2
-    purpose: "Prisma DB 스키마 — Neon Postgres 연결 설정 (DATABASE_URL pooled + DATABASE_URL_UNPOOLED direct), 모델은 Event 스키마 옵션 A로 추가 예정"
+    created: 
+    last_modified: 2026-04-22T06:11:12.703Z
+    change_count: 3
+    purpose: "Prisma DB 스키마 — Neon Postgres 연결 설정(DATABASE_URL pooled + DATABASE_URL_UNPOOLED direct) + Event 모델(옵션 A 기반, snake_case @map + isDev 플래그 포함, migrate 보류 상태)"
+    change_log:
+      - date: 2026-04-22T06:11:12.703Z
+        action: edit
+        source: "claude:mincheol.kim"

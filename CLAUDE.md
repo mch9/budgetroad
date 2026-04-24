@@ -120,6 +120,11 @@ wedding-budget/
 - 세부 조건: 식장(호텔/웨딩홀/스몰웨딩/야외), 신혼여행(국내/동남아/유럽/기타)
 - 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
 
+## 데이터 수집
+- 이벤트: Neon Postgres 직접 적재 + GA4 병행 (`Promise.allSettled`로 독립 처리)
+- 운영 원칙 (파일 위치·주의사항·확장 경로): `docs/prd/analytics/event-pipeline.md`
+- 테이블 스키마 결정: `docs/prd/analytics/event-schema-options.md` (옵션 A — 플랫 JSON 단일 테이블)
+
 ## 디자인 시스템
 - 컬러: Primary Accent `#AAC7E1` (선택 상태), Action `#373737` (CTA·헤드라인), Background `#F9FAFB` — 상세는 `src/app/globals.css`
 - 폰트: Pretendard Variable (본문·금액 공통, `src/app/fonts/PretendardVariable.woff2`). 금액은 `tabular-nums`로 자릿수 정렬.

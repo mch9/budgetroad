@@ -48,19 +48,24 @@
 ```prisma
 model Event {
   id          BigInt   @id @default(autoincrement())
-  timestamp   DateTime @default(now()) @db.Timestamptz
-  visitorId   String   @db.VarChar(64)
-  sessionId   String?  @db.VarChar(64)
-  eventName   String   @db.VarChar(64)
+  visitorId   String   @map("visitor_id")  @db.VarChar(64)
+  sessionId   String?  @map("session_id")  @db.VarChar(64)
+  eventName   String   @map("event_name")  @db.VarChar(64)
   properties  Json?
-  createdAt   DateTime @default(now())
+  isDev       Boolean  @default(false) @map("is_dev")
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
 
-  @@index([timestamp(sort: Desc)])
-  @@index([visitorId, timestamp(sort: Desc)])
-  @@index([eventName, timestamp(sort: Desc)])
+  @@index([createdAt(sort: Desc)], map: "idx_event_created_at")
+  @@index([visitorId, createdAt(sort: Desc)], map: "idx_event_visitor_created_at")
+  @@index([eventName, createdAt(sort: Desc)], map: "idx_event_name_created_at")
   @@map("events")
 }
 ```
+
+> **2026-04-22 구현 착수 시 반영된 조정 3가지**:
+> 1. `timestamp` 제거, `createdAt` 하나로 통합 — 둘 다 서버 `now()`라 의미 중복
+> 2. `@map`으로 DB 컬럼명 snake_case 매핑 — SQL 쿼리·Looker Studio 가독성 확보
+> 3. `isDev` 플래그 추가 — GA4의 `?debug_mode=1` 패턴과 병행하여 개발·테스트 이벤트를 운영 데이터와 격리. 모든 평시 쿼리는 `WHERE is_dev = false` 기본 필터
 
 **장점**
 - 새 이벤트 추가 시 마이그레이션 불필요 → 실험 속도 빠름
