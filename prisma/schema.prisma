@@ -5,8 +5,20 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL_UNPOOLED")
+  directUrl = env("DIRECT_URL")
 }
 
-// No models yet. Neon Postgres is provisioned but unused until
-// Phase 2/3 resume (trigger: visitors > 50 or 2026-06-03).
+model Event {
+  id         BigInt   @id @default(autoincrement())
+  visitorId  String   @map("visitor_id") @db.VarChar(64)
+  sessionId  String?  @map("session_id") @db.VarChar(64)
+  eventName  String   @map("event_name") @db.VarChar(64)
+  properties Json?
+  isDev      Boolean  @default(false) @map("is_dev")
+  createdAt  DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  @@index([createdAt(sort: Desc)], map: "events_created_at_desc_idx")
+  @@index([visitorId, createdAt(sort: Desc)], map: "events_visitor_created_at_desc_idx")
+  @@index([eventName, createdAt(sort: Desc)], map: "events_name_created_at_desc_idx")
+  @@map("events")
+}

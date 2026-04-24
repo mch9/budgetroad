@@ -1,18 +1,49 @@
 version: 1
-updated: 2026-04-24T11:15:10.021Z
+updated: 2026-04-24T13:41:49.867Z
 
 files:
   "prisma/schema.prisma":
     status: active
     source: "claude"
     created: 
-    last_modified: 2026-04-24T11:15:10.021Z
-    change_count: 4
-    purpose: "Prisma DB 스키마 — Neon Postgres 연결 설정(DATABASE_URL pooled + DATABASE_URL_UNPOOLED direct) + Event 모델(옵션 A 기반, snake_case @map + isDev 플래그 포함, migrate 보류 상태)"
+    last_modified: 2026-04-24T13:41:49.867Z
+    change_count: 7
+    purpose: "Prisma DB 스키마 — Postgres 연결 설정(DATABASE_URL pooled + DIRECT_URL). Event 모델 2026-04-24 Supabase에 baseline으로 재구축(events 테이블 + 3 indexes). 스펙 근거는 docs/prd/analytics/event-schema-options.md 옵션 A, 구축 맥락은 supabase-migration unit 참조."
     change_log:
+      - date: 2026-04-24T13:41:49.867Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T13:24:53.957Z
+        action: edit
+        source: "claude:mincheol.kim"
+      - date: 2026-04-24T13:15:34.635Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-24T11:15:10.021Z
         action: edit
         source: "claude:mincheol.kim"
       - date: 2026-04-22T06:11:12.703Z
         action: edit
+        source: "claude:mincheol.kim"
+  "prisma/migrations/migration_lock.toml":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-24
+    last_modified: 2026-04-24T13:24:54.726Z
+    change_count: 1
+    purpose: "Prisma migrate 잠금 파일 — provider 고정(postgresql). Prisma CLI가 자동 관리."
+    change_log:
+      - date: 2026-04-24T13:24:54.726Z
+        action: write
+        source: "claude:mincheol.kim"
+  "prisma/migrations/20260424000000_init_events/migration.sql":
+    status: active
+    source: "claude:mincheol.kim"
+    created: 2026-04-24
+    last_modified: 2026-04-24T13:24:57.741Z
+    change_count: 1
+    purpose: "events 테이블 + 3 인덱스 baseline 마이그레이션. MCP로 Supabase에 이미 적용됨 → Prisma는 migrate resolve --applied로 기록. 향후 스키마 변경은 bun prisma migrate dev 경로."
+    change_log:
+      - date: 2026-04-24T13:24:57.741Z
+        action: write
         source: "claude:mincheol.kim"
