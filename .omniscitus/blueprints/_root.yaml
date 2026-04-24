@@ -1,15 +1,18 @@
 version: 1
-updated: 2026-04-22T12:47:25.015Z
+updated: 2026-04-24T11:15:25.368Z
 
 files:
   "CLAUDE.md":
     status: active
     source: "user:mincheol.kim"
     created: 
-    last_modified: 2026-04-22T05:07:17.347Z
-    change_count: 5
+    last_modified: 2026-04-24T11:15:25.368Z
+    change_count: 6
     purpose: "프로젝트 설계도 — Claude가 참조하는 프로젝트 개요, 기술 스택, 구조, 작업 원칙 정의"
     change_log:
+      - date: 2026-04-24T11:15:25.368Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-22T05:07:17.347Z
         action: edit
         source: "claude:mincheol.kim"

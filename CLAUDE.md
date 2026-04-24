@@ -121,9 +121,8 @@ wedding-budget/
 - 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
 
 ## 데이터 수집
-- 이벤트: Neon Postgres 직접 적재 + GA4 병행 (`Promise.allSettled`로 독립 처리)
-- 운영 원칙 (파일 위치·주의사항·확장 경로): `docs/prd/analytics/event-pipeline.md`
-- 테이블 스키마 결정: `docs/prd/analytics/event-schema-options.md` (옵션 A — 플랫 JSON 단일 테이블)
+- 이벤트: 현재 GA4 + Vercel Analytics만 운영 (Neon Postgres 자체 수집은 Phase 2/3 보류)
+- 과거 스키마 결정(Phase 2/3 재개 시 참고): `docs/prd/analytics/event-schema-options.md` (옵션 A — 플랫 JSON 단일 테이블)
 
 ## 디자인 시스템
 - 컬러: Primary Accent `#AAC7E1` (선택 상태), Action `#373737` (CTA·헤드라인), Background `#F9FAFB` — 상세는 `src/app/globals.css`
