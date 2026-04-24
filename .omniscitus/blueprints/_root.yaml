@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-24T16:51:07.298Z
+updated: 2026-04-24T17:06:02.995Z
 
 files:
   "CLAUDE.md":
@@ -59,11 +59,13 @@ files:
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 
-    change_count: 0
+    last_modified: 2026-04-24T17:06:02.995Z
+    change_count: 1
     purpose: "프로젝트 의존성 및 스크립트 정의 (검증된 helper 버전으로 덮어씀)"
     change_log:
-      []
+      - date: 2026-04-24T17:06:02.995Z
+        action: edit
+        source: "claude:mincheol.kim"
   "bun.lock":
     status: active
     source: "auto:bun"

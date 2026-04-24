@@ -65,12 +65,12 @@
 - [x] **(다음 세션, MCP 활성 후)** Prisma schema Event 모델 복원 + events 테이블 migrate ✔️ 2026-04-24 (MCP `apply_migration` 경로로 `bun run db migrate dev` 대체. 스키마·인덱스 3개 `list_tables` + `pg_indexes`로 검증 완료. RLS는 서버사이드 전용이라 disabled 유지 — 클라이언트 직접 쿼리 도입 시 재검토)
 - [x] `src/app/api/events/route.ts` POST 엔드포인트 구현 ✔️ 2026-04-24 (Prisma client singleton `src/lib/db.ts` + isDev flag + fire-and-forget 500 swallow). curl 테스트 id:1 row 생성 확인
 - [x] `src/lib/gtag.ts` `trackEvent` 확장 ✔️ 2026-04-24 (GA4 유지 + `fetch('/api/events', { keepalive: true })` 병렬 호출, `.catch(() => {})`로 실패 무시)
-- [ ] Vercel 환경변수 `DATABASE_URL` + `DATABASE_URL_UNPOOLED` 추가 (Production + Preview + Development 3개 환경 모두)
+- [x] Vercel 환경변수 Supabase `DATABASE_URL` + `DIRECT_URL` 추가 ✔️ 2026-04-25 (Production + Preview. Development는 팀원 합류 시 보강. 중간에 Neon Marketplace 통합의 자동 재주입으로 3번 덮어써진 뒤 통합 제거로 해결)
+- [x] 프로덕션 배포 후 실제 이벤트 수집 확인 ✔️ 2026-04-25 (curl → `https://budgetroad.vercel.app/api/events` 200 OK, Supabase events id:8 `is_dev: false` 확인 후 정리 삭제)
+- [x] **Neon 프로비저닝 처분** ✔️ 2026-04-25 (조건부 pending 조기 해소. Vercel Marketplace 통합이 DATABASE_URL을 Neon URL로 자동 재주입하는 것이 원인으로 확인 → 통합 제거 시 Neon DB 자동 삭제됨. 실 데이터 0건이라 손실 없음. market-entry-pivot 2026-04-22 Council 결정의 "Neon 유지"는 간섭 비용이 드러나면서 조정됨)
+- [x] **(검토 필요)** `.agents/`, `skills-lock.json` → `.gitignore` 추가 ✔️ 2026-04-24 (commit `f5f8f78`)
 - [ ] Looker Studio → PostgreSQL connector → Supabase 연결 → KPI 퍼널 리포트 1개 (전환율 Scorecard 3개)
-- [ ] 프로덕션 배포 후 실제 이벤트 수집 확인 (GA4 DebugView + Supabase events 테이블 양쪽에서 동일 이벤트 검증)
 - [ ] GA4 Data Blending 이슈 우회 확인 — Looker가 Supabase 단일 소스 쿼리로 Scorecard 정확도 나오는지 검증
-- [ ] **(조건부)** 방문자 50명 도달 후 Supabase 안정 확인 시 Neon 프로비저닝 처분 여부 결정 (현재는 비용 0이므로 방치)
-- [ ] **(검토 필요)** `.agents/`, `skills-lock.json` untracked 파일을 `.gitignore`에 추가할지 팀원 공유 여부 결정
 
 ## Notes
 
