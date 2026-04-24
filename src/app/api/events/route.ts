@@ -23,7 +23,16 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (e) {
-    console.error('[api/events] insert failed', e);
+    const err = e as { code?: string; meta?: unknown };
+    const host = process.env.DATABASE_URL
+      ? new URL(process.env.DATABASE_URL).hostname
+      : 'MISSING';
+    console.error('[api/events] insert failed', {
+      code: err.code,
+      meta: err.meta,
+      dbHost: host,
+      message: e instanceof Error ? e.message : String(e),
+    });
     return NextResponse.json({ error: 'insert failed' }, { status: 500 });
   }
 }
