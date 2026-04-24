@@ -135,7 +135,7 @@ files:
     created: 2026-04-13
     last_modified: 2026-04-24T13:59:29.963Z
     change_count: 3
-    purpose: "Google Analytics gtag 헬퍼 — 모든 이벤트에 visitor_id 자동 포함"
+    purpose: "trackEvent 이중 트랙 헬퍼 — GA4 `gtag('event', ...)` + Supabase `fetch('/api/events', { keepalive: true })` 병렬 호출. 실패는 `.catch(() => {})`로 swallow (GA4가 중복 수집 중이라 단일 실패 허용). 모든 이벤트에 visitor_id 자동 포함."
     change_log:
       - date: 2026-04-24T13:59:29.963Z
         action: write
@@ -755,7 +755,7 @@ files:
     created: 2026-04-24
     last_modified: 2026-04-24T13:59:24.977Z
     change_count: 1
-    purpose: ""
+    purpose: "Prisma client singleton (globalThis 캐시로 Next.js hot-reload 시 connection 폭증 방지). Supabase Postgres에 접속하는 모든 서버사이드 코드의 단일 진입점."
     change_log:
       - date: 2026-04-24T13:59:24.977Z
         action: write
@@ -766,7 +766,7 @@ files:
     created: 2026-04-24
     last_modified: 2026-04-24T17:36:23.399Z
     change_count: 2
-    purpose: ""
+    purpose: "POST 이벤트 수집 엔드포인트 — gtag.ts의 trackEvent가 GA4와 병렬 호출 → Prisma로 Supabase events 테이블 insert. isDev는 NODE_ENV 기반 자동 분기. 에러 시 err.meta + dbHost 확장 로깅 후 500 반환 (클라이언트는 .catch로 swallow하므로 운영엔 영향 없음)."
     change_log:
       - date: 2026-04-24T17:36:23.399Z
         action: edit

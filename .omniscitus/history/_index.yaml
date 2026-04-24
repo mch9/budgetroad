@@ -173,19 +173,19 @@ units:
     domain: product
     status: open
     created: 2026-04-22
-    last_updated: 2026-04-24
-    session_count: 2
+    last_updated: 2026-04-25
+    session_count: 3
     title: "검증 → 시장 진입 모드 전환 + 체계 대청소"
-    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정"
+    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정. 2026-04-25: Phase 2/3 앵커링 Level 2 cleanup (ROADMAP+CLAUDE.md 정돈 + blog-prd/budget-draft-prd close)"
   - id: supabase-migration
     file: devops/2026-04-24-supabase-migration.md
     domain: devops
     status: open
     created: 2026-04-24
-    last_updated: 2026-04-24
+    last_updated: 2026-04-25
     session_count: 2
     title: "Supabase 마이그레이션 (Neon → Supabase) + MCP 연결"
-    note: "팀 맥락(PM 7명) + Phase 3 로그인 대비 + Data Blending 이슈 해결로 피벗. MCP 인증 완료, events 테이블 + 3 indexes 구축 완료 (2026-04-24). 다음: /api/events route + gtag.ts 확장 + env 추가"
+    note: "팀 맥락(PM 7명) + Phase 3 로그인 대비 + Data Blending 해결로 피벗. 2026-04-25: Event 파이프라인 구축 완료 + 3중 실패 후 프로덕션 배포 성공 + Neon Marketplace 통합 제거. 남은 작업은 Looker Studio Supabase 연결(Step C)"
 
 weekly_summaries:
   - week: "2026-W16"

@@ -90,6 +90,25 @@
 - **Moving goalpost 평가의 원인 구분**: 체계 문제 vs 평가자 문제. 외부 근거(Shape Up·DHH·YC·Basecamp)로 기준 외부화하면 평가자 임의성 줄어듦. 팀장이 "팀 보호" 역할할 때 강력한 무기
 - **Shape Up이 이 팀에 수학적으로 맞는 이유**: 6+2 cycle = 7~8주, 팀 7명, 주간 출시 — 모두 Basecamp의 100명 미만 팀용 설계와 1:1 매핑. 강사님 7-layer (분기·반기 cycle용)는 규모·주기 모두 미스매치
 
+### 2026-04-25
+**Focus**: Phase 2/3 1인 초안 본격 제거 (Level 2 cleanup) + blog-prd·budget-draft-prd unit close — "팀 합의 왜곡 방지" 목적
+
+- **사용자 문제 제기**: "Phase 2, 3 등은 진짜 앞으로 안 쓸 것 같아서 삭제하는 게 나을까? 팀원들과 결정한 내용으로 진행할 예정이라 기존 초안이 고려되면 이슈"
+- **문서 4개 정돈** (commit `178bc1d`):
+  - `docs/prd/ROADMAP.md` — Phase 2/3 테이블 (경험 #2·#3·#4·#5) 완전 제거 → "이후 방향: 팀 합의 전이라 미확정" 한 줄로 축약. T1 운영 도구 라인도 "자체 DB(Supabase)는 supabase-migration unit에서 진행 중"으로 갱신
+  - `docs/prd/budget-builder/budget-draft-v0.md` — `(Phase 2)` 라벨 2곳 제거 (공유 버튼은 PR #20에서 이미 구현된 stale 표기)
+  - `docs/prd/analytics/event-schema-options.md` — "Phase 2/3 재개 시 참고용" 주석 → "supabase-migration에서 실제 구현에 사용됨" (현재성 복원)
+  - `CLAUDE.md` — "SQLite (로컬) / Neon Postgres (배포)" 전 스택 설명 + "Neon Postgres 자체 수집은 Phase 2/3 보류" 잔재 모두 Supabase 통합으로 갱신
+- **2개 unit close**:
+  - `blog-prd` — base PRD (`blog/blog-v0.md`)가 PR #22에서 이미 삭제됐는데 unit은 deferred로 남아있던 cross-unit drift 해소. `_index.yaml` status: closed + note에 "base PRD deleted in PR #22"
+  - `budget-draft-prd` — MVP PRD(v0) 완료 + Phase 2/3 작성 방침이 "팀 합의 후 /prd-collab으로 재작성"으로 변경됐음을 status 라인으로 명시
+- **연관 수정**: `.agents/`·`skills-lock.json` gitignore 처리 (Claude Code skills install 산출물)
+
+**Learned**:
+- **앵커링 제거의 핵심은 ROADMAP.md 한 곳**: 다른 문서는 "MVP 구현 역사 기록"으로 중립적으로 읽히지만, ROADMAP은 "미래 방향 제안"처럼 읽혀서 **팀 합의 왜곡의 최대 위험원**. budget-draft-v0.md처럼 구현 기록 문서는 보존하되 stale 라벨(`(Phase 2)`)만 제거하는 접근이 실용적 — 역사 맥락 + 앵커링 방지 양립
+- **Cross-unit drift 자동 감지의 한계**: blog-prd의 Pending 5개가 base PRD 삭제 후에도 deferred로 남아있었음. 파일 시스템과 unit 인덱스의 drift는 `/follow-up` skill로만 잡힘. 정기 follow-up이 drift 누적 방지에 필수
+- **"현재성 복원"이 "참고용 주석"보다 낫다**: event-schema-options.md를 "Phase 2/3 재개 시 참고"로 표기하면 문서 가치가 "미래의 어느 날"로 미뤄짐 → 실질 미운영. "**supabase-migration에서 지금 구현에 사용됨**"으로 현재성 부여하면 같은 파일이 생산 문서로 복귀
+
 ## Pending
 
 - [x] `_index.yaml` 14 open → 10 close + 4 deferred 대청소 ✔️ 2026-04-22
@@ -99,6 +118,7 @@
 - [ ] **[조건부]** 사용자 요청이 3회 이상 반복 수집되면 해당 기능 우선순위 상향 조정 (Phase 2/3 재활성화 판단 트리거)
 - [→] 기획 확정 시 `neon-db-setup` + `ga4-looker-analytics-setup` 동시 재개 → **2026-04-24 `supabase-migration` unit으로 피벗 재개 결정** (팀 맥락에서 "개발 역할 내 구축"으로 해석 확장)
 - [x] 학습부채 실제 정리 (Phase 2/3 관련 문서·스키마·PRD 제거) ✔️ 2026-04-24 (PR #21 + PR #22)
+- [x] Phase 2/3 앵커링 Level 2 cleanup (ROADMAP 테이블 제거 + blog-prd/budget-draft-prd unit close + CLAUDE.md stale 잔재 제거) ✔️ 2026-04-25 (commit `178bc1d`)
 - [ ] **(신규)** Supabase 구축 완료 후 실사용자 KPI 측정 가능 상태에서 방문자 50명 트리거 관측
 - [ ] **(신규)** 팀 합류 시 강사님 7-layer 체계 → Shape Up 전환 설득 (Level 1 스크립트 기반. 필요 시 Level 2~3 에스컬레이션)
 
