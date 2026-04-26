@@ -44,7 +44,7 @@ export default function BudgetDraftPage() {
   const [selections, setSelections] = useState<StepSelections>(DEFAULT_SELECTIONS);
   const [result, setResult] = useState<BudgetResult | null>(null);
   const [enteredAt] = useState(() => Date.now());
-  const inputStarted = useRef(false);
+  const firstInputAt = useRef<number | null>(null);
 
   // Restore result from sessionStorage on mount. setState inside this effect
   // is intentional — lazy useState initializer would break SSR hydration
@@ -73,9 +73,9 @@ export default function BudgetDraftPage() {
   /* eslint-enable react-hooks/set-state-in-effect */
 
   function trackFirstInput() {
-    if (inputStarted.current) return;
-    inputStarted.current = true;
-    const elapsed = Math.round((Date.now() - enteredAt) / 1000);
+    if (firstInputAt.current !== null) return;
+    firstInputAt.current = Date.now();
+    const elapsed = Math.round((firstInputAt.current - enteredAt) / 1000);
     trackEvent('input_started', { time_to_start_sec: elapsed });
   }
 
@@ -99,6 +99,9 @@ export default function BudgetDraftPage() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       const r = calculateBudget(selections);
+      const timeInSteps = firstInputAt.current
+        ? Math.round((Date.now() - firstInputAt.current) / 1000)
+        : 0;
       trackEvent('result_viewed', {
         total_amount: r.total,
         region: selections.region,
@@ -111,6 +114,7 @@ export default function BudgetDraftPage() {
         meal_cost: selections.mealCost,
         yemul_tier: selections.yemulTier,
         honeymoon_choice: selections.honeymoonChoice,
+        time_in_steps_sec: timeInSteps,
       });
       setResult(r);
       setStep(TOTAL_STEPS);
