@@ -82,8 +82,8 @@ PM 부트캠프 7명 팀의 Pro·Max 두 명이 클로드 요금제로 합류하
   - [ ] 합류자 onboarding 메시지 1통 (collaborator 초대 + clone + `/team-init` 3단계)
 - [ ] **Tier 2 (Cycle 2 안)**: Vitest 1개 함수 (`calculateBudget`) 도입. 부트캠프 안에선 풀 e2e 무리, 0→1 진보가 가장 큼
 - [ ] **Tier 3 (부트캠프 후 / 필요 시)**: e2e (Playwright), Storybook, Husky 재고려, Renovate/Dependabot
-- [ ] (선택) `package.json` name 정리: `fearnot-ai` → `budgetroad` (잔재)
-- [ ] (선택) CLAUDE.md / `.omniscitus/history/...` 본문에 남은 `wedding-budget` 텍스트 잔재 정리
+- [x] (선택) `package.json` name 정리: `fearnot-ai` → `budgetroad` ✔️ 2026-04-29 (PR `chore/rename-residue-cleanup`)
+- [x] (선택) CLAUDE.md 디렉토리 트리 `wedding-budget` → `budgetroad` ✔️ 2026-04-29 (동일 PR). `.omniscitus/history/...` 과거 기록은 *시점별 사실*이라 보존
 - [ ] **Cycle 2 Bet 후보 정식 결정**: "회귀 기대감 가설 — 결과 저장 기능" Pitch 작성(Max 영역). KPI #4 7일 재방문 1% 신호 직격
 
 ## Notes

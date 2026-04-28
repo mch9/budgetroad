@@ -37,7 +37,7 @@ Entered → Input Started → Result Viewed → Intent Created (Save/Share) → 
 
 ## 프로젝트 구조
 ```
-wedding-budget/
+budgetroad/
 ├── src/
 │   ├── app/              # Next.js App Router (페이지 + 레이아웃)
 │   │   ├── api/          # API 라우트

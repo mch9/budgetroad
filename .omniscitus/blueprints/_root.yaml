@@ -1,15 +1,18 @@
 version: 1
-updated: 2026-04-24T17:06:02.995Z
+updated: 2026-04-28T16:24:12.794Z
 
 files:
   "CLAUDE.md":
     status: active
     source: "user:mincheol.kim"
     created: 
-    last_modified: 2026-04-24T13:47:21.745Z
-    change_count: 9
+    last_modified: 2026-04-28T16:24:12.794Z
+    change_count: 10
     purpose: "프로젝트 설계도 — Claude가 참조하는 프로젝트 개요, 기술 스택, 구조, 작업 원칙 정의"
     change_log:
+      - date: 2026-04-28T16:24:12.794Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-24T13:47:21.745Z
         action: edit
         source: "claude:mincheol.kim"
@@ -59,10 +62,13 @@ files:
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 2026-04-24T17:06:02.995Z
-    change_count: 1
+    last_modified: 2026-04-28T16:24:09.962Z
+    change_count: 2
     purpose: "프로젝트 의존성 및 스크립트 정의 (검증된 helper 버전으로 덮어씀)"
     change_log:
+      - date: 2026-04-28T16:24:09.962Z
+        action: edit
+        source: "claude:mincheol.kim"
       - date: 2026-04-24T17:06:02.995Z
         action: edit
         source: "claude:mincheol.kim"
