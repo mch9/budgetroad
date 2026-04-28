@@ -95,7 +95,7 @@
 - [x] `.claude/temp/budget-draft-redesign-mapping.md` 삭제 ✔️ 2026-04-24
 - [x] `.omniscitus/*` 및 기타 unstaged 변경 분리 커밋 ✔️ 2026-04-24 (PR #18에 chore 커밋 3개)
 - [~] 모바일 QA — 프로덕션 배포됨, 실기기 iPhone QA는 팀원 진행 단계
-- [ ] **(신규)** 프로덕션 GA4 이벤트 실제 수집 검증 → `supabase-migration` unit에서 Supabase 연동 후 통합 관측
+- [x] **(신규)** 프로덕션 GA4 이벤트 실제 수집 검증 ✔️ 2026-04-25 (`supabase-migration` end-to-end 검증: 시크릿 창 10-step 완주 → events 6 rows `is_dev:false` + 단일 UUID + `result_viewed` 11개 파라미터 정확 캡처)
 
 ## Notes
 - 관련 메모리: `feedback_figma_comparison` (좌/우 비교 포맷), `feedback_subtitle_anchoring` (UX 카피 앵커링 회피), **`feedback_figma_partial_reference` (Figma 미완 시 지목 요소만 적용, 이번 세션 신규)**

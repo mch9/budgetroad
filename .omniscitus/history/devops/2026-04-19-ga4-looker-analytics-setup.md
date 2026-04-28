@@ -1,5 +1,7 @@
 # GA4 + Looker Studio 분석 파이프라인 구축
 
+**Status**: closed (2026-04-29) — 본 unit의 핵심 목적(16개 KPI 측정 가능 상태)은 `supabase-migration` unit에서 16/16 KPI 운영 진입으로 완전 흡수됨. 남은 pending 3건은 모두 nice-to-have 성격(`time_on_result_sec` 별도 파라미터 / Looker 기간 컨트롤 UX / GA Debugger Chrome 확장)으로 현재 우선순위 낮음. 필요 시 개별 작업으로 재개.
+
 **Participants**: claude, mincheol.kim
 
 ## Summary
@@ -121,9 +123,9 @@
 - [x] 🟡 계산식 KPI 6개 (#1~#3 전환율, #7, #9, #12) ✔️ 2026-04-26 (`supabase-migration`에서 KPI Funnel Rates SQL + Scorecard 운영)
 - [x] 🔴 난이도 KPI 4개 (#4, #5, #6, #14) ✔️ 2026-04-26 (`supabase-migration`에서 Scorecard 운영, 16/16 진입)
 - [x] `result_viewed` 델타 파라미터 `time_in_steps_sec` ✔️ 2026-04-26 (commit `3603807`)
-- [ ] `result_viewed`·`share_result` 델타 파라미터 `time_on_result_sec` — 미구현 (resultViewedAt ref + share_result 발화 시 델타 계산 필요)
-- [ ] Looker Studio 기간 컨트롤 상단 배치 — 기존 🟢 차트 운영용으로만 유지
-- [~] GA4 DebugView 확인 원할 시 "Google Analytics Debugger" Chrome 확장 — 선택사항
+- [~] `result_viewed`·`share_result` 델타 파라미터 `time_on_result_sec` — **deferred 2026-04-29** (KPI #15 `time_in_steps_sec`가 운영 중이라 결과 페이지 체류는 별도 측정 필요. 우선순위 낮음, 필요 시 개별 작업 재개)
+- [~] Looker Studio 기간 컨트롤 상단 배치 — **deferred 2026-04-29** (UX 편의성, 차트 개별 기간 설정으로 충분)
+- [~] GA4 DebugView 확인 원할 시 "Google Analytics Debugger" Chrome 확장 — 선택사항 (디버깅 시점에만)
 - [x] **[재개 조건 충족]** Prisma migrate + `src/app/api/events/route.ts` + `gtag.ts` 병행 호출 ✔️ 2026-04-25 (`supabase-migration`에서 실행, commits `2891029` `15a6dde` `3a34c09` `f5f8f78`)
 
 ## Notes

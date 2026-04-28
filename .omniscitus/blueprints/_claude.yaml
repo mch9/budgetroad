@@ -135,11 +135,12 @@ files:
     change_count: 1
     purpose: "PRD 협업 워크플로우 — 추상→구체 12단계로 하나의 유저 경험 단위 기획 완성"
   ".claude/skills/prd-onepager/SKILL.md":
-    status: active
+    status: deleted
     source: "user:mincheol.kim"
     created: 2026-04-16
-    change_count: 1
-    purpose: "작은 기능 단위의 One-Pager PRD 작성 (prd-collab이 과할 때)"
+    deleted: 2026-04-28
+    change_count: 2
+    purpose: "작은 기능 단위의 One-Pager PRD 작성 (prd-collab이 과할 때) — 사용 안 해 제거(2026-04-28)"
   ".claude/skills/prd-split/SKILL.md":
     status: active
     source: "user:mincheol.kim"

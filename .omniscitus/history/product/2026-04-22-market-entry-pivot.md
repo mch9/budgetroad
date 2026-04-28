@@ -1,5 +1,7 @@
 # 검증 → 시장 진입 모드 전환 + 체계 대청소
 
+**Status**: closed (2026-04-28) — 50명 트리거 2026-04-28에 223명으로 충족(4.4배). Doc Freeze 해제 + Pro/Max 합류 + 강사님 스타일 1+1 cycle 채택. 후속은 별도 unit (2026-04-29 팀 skill 작성 + Tier 1 합류 셋업) 으로 분리.
+
 **Participants**: mincheol.kim, claude
 
 ## Summary
@@ -129,19 +131,54 @@
 - **Shape Up "근본"의 정체 = 시간 고정 + scope 변동**: 토스 1주 cycle의 "근본 없는 것 같다"는 직관은 정확함. 1주는 가설 단위가 작아져 task management로 변질되는 게 본질. Shape Up이 근본 있는 이유는 "**달력이 끝낼 때까지 cycle 진행, scope을 잘라내서 시간 지킴**"이라는 단일 원칙이 모든 활동을 정렬하기 때문. 9주 부트캠프 환경에 정통 6+2 그대로는 안 맞지만 **2+1 미니 변형이 9주에 정확히 3 cycle**로 떨어지는 산술적 적합도가 변형 정당성의 근거
 - **PRD 도구(`/prd-collab`)와 Shape Up은 다른 layer**: PRD = WHAT(산출물 정교화), Shape Up = HOW WE WORK(시간 고정 운영). 한 도구로 다른 layer 문제 풀려고 하면 어느 한 쪽이 변질됨. 부트캠프 학습 관점에선 두 layer를 의식적으로 분리해서 산출물 내는 것 자체가 메타 학습 산출물
 
+### 2026-04-28
+**Focus**: 50명 트리거 충족(223명) → Doc Freeze 해제 + Pro/Max 합류 셋업 결정 + 강사님 스타일 1+1 cycle 채택 (Shape Up 변형안 폐기) → unit close
+
+- **트리거 충족 확인**: GA4 대시보드 어제 222명 + 활성 209명 + 평균 참여 59초 + 이벤트 2.4천. KPI #1 67% / #2 61% / #3 91% / #14 9초 / #15 55초 등 16/16 운영 데이터 정상. 50명 트리거 4.4배 초과
+- **CTO Council 세션** (2026-04-28):
+  - "Vercel → AWS EC2 보안 이전" 강사 제안 검토 → **이전 안 함** 결정. 근거: Vercel은 PaaS로 OS 패치·DDoS·WAF·SOC 2 컴플라이언스 자동 커버. 우리 데이터 자산은 익명 visitor_id + 결혼 선택값 (PII 0건)이라 위협 표면 작음. EC2 이전 시 Cycle 2가 통째로 인프라에 들어가 가설 검증 0
+  - "보안 점수 올릴 액션" 5종 도출: 개인정보처리방침 페이지 + 동의 배너 + Supabase RLS(Phase 3) + Vercel Firewall+BotID + .env 위생. 합 1시간 미만
+- **팀 합류 의사결정** (Pro 학생/글쓰기·데이터 정리 강점, Max 경영·세무/정리·탐구 강점 — 둘 다 코딩 경험 0):
+  - **영역 분담**: 본인=Core PM(코어 플로우·인프라·KPI) / Pro=UX·콘텐츠 PM(카피·UX writing·정성 정리) / Max=확장·분석 PM(Cycle Pitch·KPI SQL·새 가설 PRD). 모두 PM+개발 동일 역할
+  - **wrap-up 권한**: Cycle 1 본인 단독 → Cycle 2 각자 초안+본인 검토 → Cycle 3 각자 PR commit 점진 확대
+  - **메모리 정책**: 개인 메모리 자유 / 프로젝트 합의는 CLAUDE.md·skills·omniscitus(git 추적)
+  - **CLAUDE.md 한도**: 250줄 1차 → docs/AI-DELEGATION.md 분리 / 350줄 2차 → docs/CONTRIBUTING.md 분리
+- **Cycle 모델 변경**: 미니 Shape Up 9주 변형안(2주 Build + 1주 Cool-down × 3) **폐기**. 강사님 스타일 7-layer + **1주 빌드 + 1주 관찰** cycle 채택. PM 부트캠프 평가 정합성·외부 표준 정렬이 결정 근거. 별도 skill로 정형화 예정 (2026-04-29 팀과 함께)
+- **Doc Freeze 해제**: 50명 트리거 충족으로 자연 만료. `feedback_doc_freeze.md` 메모리 삭제. 새 PRD·skill·docs 자유
+- **Tier 1 셋업 결정** (합류 직후 1주 안):
+  - README.md 재작성 (next-app 기본 템플릿 → 30분 onboarding)
+  - `.github/PULL_REQUEST_TEMPLATE.md` 추가 (AI assistance 칸 포함)
+  - main branch protection 활성화 (PR + 1 review + CI)
+  - CLAUDE.md "AI 역할 분담 (Delegation Levels L0~L3)" 섹션
+  - CLAUDE.md "Skill 관리 정책" 섹션 (글로벌/프로젝트/승격 기준)
+- **Tier 2 보류**: Husky+lint-staged 도입 안 함(입문자 학습부담). Vitest 1개 함수만 도입 권장(`calculateBudget`)
+- **Git 협업 모델**: collaborator 직접 clone (fork 아님). 근거: Vercel Preview URL 자동 생성·CI secrets 공유 위해 same-repo PR 필수
+- **메모리·unit 정리**:
+  - `feedback_doc_freeze.md` 삭제
+  - `project_2026-04-22-council-decision.md` "후속 결정 (2026-04-28 트리거 발동 후)" 섹션 추가
+  - `MEMORY.md` 인덱스 갱신 (Doc Freeze 항목 제거 + Council 항목 RESOLVED 표기)
+  - 본 unit Pending 5건 처리(3건 충족 ✔️ + 2건 obsolete) → close
+
+**Learned**:
+- **외부 트리거 도달 시점이 "재평가하자"가 아니라 "재평가가 끝나는 시점"이어야 함** — 223명이라는 4.4배 초과 신호는 트리거 발동을 명확히 했고, 그 자리에서 후속 결정(팀 합류 + cycle 모델 + Tier 1 셋업)까지 이루어져야 가속이 끊기지 않음. "조건 충족했네 → 다음에 결정하자"는 모드 전환의 가장 흔한 실패 패턴
+- **PM 부트캠프 환경에서 외부 권위 정렬이 학습 가치를 극대화**: 4/24 Council의 "Shape Up 외부 권위 다층 배치" 전략은 *팀에 강사님 7-layer를 거부할 때*의 무기였음. 본인이 강사님 스타일에 정렬하기로 했으니 그 무기 자체가 불필요. 결정의 *맥락 변경*이 일어나면 같은 결정도 재검토 필요
+- **코딩 경험 0인 합류자 두 명에게 frontend/backend 분리는 부적합**. PM 부트캠프 환경에선 *기술축*이 아니라 *기획축* 분리가 자연. 본인 직감(기존 업그레이드 vs 확장)이 정확했고, Claude의 첫 권장(frontend vs backend)은 잘못된 축이었음. 사용자 맥락(PM 부트캠프 + 코딩 0)을 충분히 가중하지 않은 권장
+- **Vercel vs EC2 보안 결정의 핵심은 "지키는 자산 × 막는 위협"**: 우리 자산이 익명 행동 로그(PII 0건)라 위협 표면이 작음. PaaS → IaaS 이전은 *운영 책임 이전*이지 *보안 자동 향상*이 아님. 1인 운영 환경에서 EC2는 보통 보안을 *떨어뜨림*(OS 패치·SSH 노출·키 회전 등 새 공격면). 호스팅 위치보다 *코드 위생·데이터 위생*이 99% 결정 요인
+- **collaborator vs fork**: 사내 팀 협업은 collaborator 직접 clone, 외부 기여는 fork. CI secrets·Vercel Preview URL 공유가 결정적 차이. Pro/Max 같은 초대된 팀원에게 fork를 시키면 부트캠프 9주 안에 QA 루프가 깨짐
+
 ## Pending
 
 - [x] `_index.yaml` 14 open → 10 close + 4 deferred 대청소 ✔️ 2026-04-22
 - [x] project memory + feedback memory 2건 신규 저장 ✔️ 2026-04-22
 - [x] MEMORY.md 인덱스 업데이트 ✔️ 2026-04-22
-- [ ] **[재평가 트리거]** 2026-06-03 도달 또는 방문자 50명 돌파 시 이 전환 결정 재검토 (현재 2026-04-24, 40일 남음)
-- [ ] **[조건부]** 사용자 요청이 3회 이상 반복 수집되면 해당 기능 우선순위 상향 조정 (Phase 2/3 재활성화 판단 트리거)
+- [x] **[재평가 트리거]** 2026-06-03 도달 또는 방문자 50명 돌파 시 이 전환 결정 재검토 ✔️ 2026-04-28 (50명 트리거 발동 — 223명 달성, 4.4배 초과)
+- [x] **[조건부]** 사용자 요청이 3회 이상 반복 수집되면 해당 기능 우선순위 상향 조정 ✔️ 2026-04-28 (시장 진입 모드 종료로 흡수 — Cycle 단위 Bet으로 Phase 2/3 자연 합류 경로 확정)
 - [→] 기획 확정 시 `neon-db-setup` + `ga4-looker-analytics-setup` 동시 재개 → **2026-04-24 `supabase-migration` unit으로 피벗 재개 결정** (팀 맥락에서 "개발 역할 내 구축"으로 해석 확장)
 - [x] 학습부채 실제 정리 (Phase 2/3 관련 문서·스키마·PRD 제거) ✔️ 2026-04-24 (PR #21 + PR #22)
 - [x] Phase 2/3 앵커링 Level 2 cleanup (ROADMAP 테이블 제거 + blog-prd/budget-draft-prd unit close + CLAUDE.md stale 잔재 제거) ✔️ 2026-04-25 (commit `178bc1d`)
-- [ ] **(신규)** Supabase 구축 완료 후 실사용자 KPI 측정 가능 상태에서 방문자 50명 트리거 관측
-- [ ] **(신규)** 팀 합류 시 강사님 7-layer 체계 → 미니 Shape Up 전환 설득 (9주 부트캠프 변형안 = 3 cycle × [2주 Build + 1주 Cool-down] 기반. Level 1 스크립트, 필요 시 Level 2~3 에스컬레이션)
-- [ ] **(2026-04-25 추가)** 미니 Shape Up 9주 변형안 본격 정리 + Cycle 1 Pitch 초안 작성 (부트캠프 시작 전. Hill chart 도구·팀 설득 스크립트·정통 vs 변형 차이 본문 포함)
+- [x] **(신규)** Supabase 구축 완료 후 실사용자 KPI 측정 가능 상태에서 방문자 50명 트리거 관측 ✔️ 2026-04-28 (Supabase 16/16 KPI 운영 + 223명 달성)
+- [~] **(obsolete 2026-04-28)** 팀 합류 시 강사님 7-layer 체계 → 미니 Shape Up 전환 설득 — **폐기**. 본인이 Pro/Max와 정렬해 강사님 스타일 채택 결정. 설득 작업 자체가 무효화됨
+- [~] **(obsolete 2026-04-28)** 미니 Shape Up 9주 변형안 본격 정리 + Cycle 1 Pitch 초안 작성 — **폐기**. Shape Up 자체 미채택으로 변형안 정리 불필요. 강사님 스타일 1+1 cycle용 skill을 2026-04-29에 팀과 함께 작성
 
 ## Notes
 

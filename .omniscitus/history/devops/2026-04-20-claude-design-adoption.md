@@ -144,7 +144,7 @@
 - [ ] repo에만 있고 생성물에 없는 Option Card 추출 → `src/components/ui/option-card.tsx`로 분리 후 생성물에도 spec 추가 권장
 - [ ] Brand Grid Motif 존재 여부 확인 및 에셋 준비
 - [ ] Phase C: `budget-draft/page.tsx`의 하드코딩 hex 73곳 → semantic 토큰 마이그레이션 (grep 재측정 결과 73건)
-- [ ] Looker Studio 실행: #8 Scorecard 구축 → #10/#11/#13 복제 → #16 분포 바차트 7개 (다음 세션 예정, `ga4-looker-analytics-setup` unit 본체에 상세)
+- [x] Looker Studio 실행: #8 Scorecard 구축 → #10/#11/#13 복제 → #16 분포 바차트 7개 ✔️ 2026-04-26 (`supabase-migration`에서 16/16 KPI 통합 운영 진입으로 일괄 종결, `ga4-looker-analytics-setup` unit 본체 참조)
 
 ## Notes
 - 관련 unit: `design-directory-setup`(.pen 3계층 폐지됨, 본 unit으로 승계)

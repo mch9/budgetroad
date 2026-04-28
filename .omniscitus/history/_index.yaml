@@ -151,13 +151,14 @@ units:
   - id: ga4-looker-analytics-setup
     file: devops/2026-04-19-ga4-looker-analytics-setup.md
     domain: devops
-    status: open
-    deferred: true
-    resume_when: "🟡 계산식 KPI·🔴 난이도 KPI는 Supabase Event 연결 후 SQL로 직접 계산 (supabase-migration unit에서 진행). 현재 🟢 6/6은 운영 유지"
+    status: closed
     created: 2026-04-19
-    last_updated: 2026-04-24
+    last_updated: 2026-04-29
+    closed: 2026-04-29
     session_count: 4
     title: "GA4 + Looker Studio 분석 파이프라인 구축"
+    superseded_by: supabase-migration
+    note: "본 unit의 핵심 목적(16개 KPI 측정 가능 상태)은 supabase-migration에서 16/16 KPI 운영 진입으로 완전 흡수. 남은 3건(time_on_result_sec / Looker 기간 컨트롤 / GA Debugger 확장)은 nice-to-have로 deferred"
   - id: claude-design-adoption
     file: devops/2026-04-20-claude-design-adoption.md
     domain: devops
@@ -171,12 +172,13 @@ units:
   - id: market-entry-pivot
     file: product/2026-04-22-market-entry-pivot.md
     domain: product
-    status: open
+    status: closed
     created: 2026-04-22
-    last_updated: 2026-04-25
-    session_count: 3
+    last_updated: 2026-04-28
+    closed: 2026-04-28
+    session_count: 4
     title: "검증 → 시장 진입 모드 전환 + 체계 대청소"
-    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정. 2026-04-25: Phase 2/3 앵커링 Level 2 cleanup + 미니 Shape Up 9주 부트캠프 변형안 검토(미완)"
+    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정. 2026-04-25: Phase 2/3 앵커링 Level 2 cleanup. 2026-04-28: 50명 트리거 충족(223명) → Doc Freeze 해제 + Pro/Max 합류 + 강사님 스타일 1+1 cycle 채택. Shape Up 변형안 폐기. 후속은 별도 unit으로 분리"
   - id: supabase-migration
     file: devops/2026-04-24-supabase-migration.md
     domain: devops
@@ -187,8 +189,32 @@ units:
     session_count: 4
     title: "Supabase 마이그레이션 (Neon → Supabase) + MCP 연결"
     note: "팀 맥락(PM 7명) + Phase 3 로그인 대비 + Data Blending 해결로 피벗. 2026-04-25: Event 파이프라인 구축 완료 + 프로덕션 배포 성공 + Neon Marketplace 통합 제거. 2026-04-26: Looker 단일 보고서 통합(GA4 + Supabase) + KPI 16개 매핑표 본문화 + #15 time_in_steps_sec 코드/SQL/Scorecard 완결 → 16/16 KPI 운영 진입. Pending 12건 모두 완료로 close."
+  - id: tooling-rotation-and-rename-prep
+    file: devops/2026-04-28-tooling-rotation-and-rename-prep.md
+    domain: devops
+    status: open
+    created: 2026-04-28
+    last_updated: 2026-04-28
+    session_count: 1
+    title: "Tooling 워크플로우 로테이션 + 폴더 리네임 준비"
+  - id: team-collab-setup
+    file: product/2026-04-28-team-collab-setup.md
+    domain: product
+    status: open
+    created: 2026-04-28
+    last_updated: 2026-04-29
+    session_count: 2
+    title: "팀 합류 운영 모델 + 강사님 스타일 cycle 결정"
+    note: "50명 트리거(223명) 충족으로 Doc Freeze 해제 + Pro/Max 합류. CTO Council로 Vercel 유지 + 영역 분담·wrap-up·메모리·CLAUDE.md 한도·cycle 모델 5건 결정. Shape Up 변형안 폐기, 강사님 스타일 7-layer + 1+1 cycle 채택. 후속 unit (Tier 1 셋업·skill 작성)은 합류 후 새 unit으로 분리 예정"
 
 weekly_summaries:
+  - week: "2026-W17"
+    file: "_weekly/2026-W17.md"
+    start: "2026-04-20"
+    end: "2026-04-26"
+    unit_count: 8
+    domains: [devops, product, web]
+    generated_at: "2026-04-28"
   - week: "2026-W16"
     file: "_weekly/2026-W16.md"
     start: "2026-04-13"
