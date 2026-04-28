@@ -176,16 +176,17 @@ units:
     last_updated: 2026-04-25
     session_count: 3
     title: "검증 → 시장 진입 모드 전환 + 체계 대청소"
-    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정. 2026-04-25: Phase 2/3 앵커링 Level 2 cleanup (ROADMAP+CLAUDE.md 정돈 + blog-prd/budget-draft-prd close)"
+    note: "Council 2회 소집 → 14→10 close + 4 deferred (2026-04-22). 2026-04-24: 학습부채 실제 정리(PR #21+#22) + 팀 맥락 재정립 + Supabase 피벗 결정. 2026-04-25: Phase 2/3 앵커링 Level 2 cleanup + 미니 Shape Up 9주 부트캠프 변형안 검토(미완)"
   - id: supabase-migration
     file: devops/2026-04-24-supabase-migration.md
     domain: devops
-    status: open
+    status: closed
     created: 2026-04-24
-    last_updated: 2026-04-25
-    session_count: 2
+    last_updated: 2026-04-26
+    closed: 2026-04-26
+    session_count: 4
     title: "Supabase 마이그레이션 (Neon → Supabase) + MCP 연결"
-    note: "팀 맥락(PM 7명) + Phase 3 로그인 대비 + Data Blending 해결로 피벗. 2026-04-25: Event 파이프라인 구축 완료 + 3중 실패 후 프로덕션 배포 성공 + Neon Marketplace 통합 제거. 남은 작업은 Looker Studio Supabase 연결(Step C)"
+    note: "팀 맥락(PM 7명) + Phase 3 로그인 대비 + Data Blending 해결로 피벗. 2026-04-25: Event 파이프라인 구축 완료 + 프로덕션 배포 성공 + Neon Marketplace 통합 제거. 2026-04-26: Looker 단일 보고서 통합(GA4 + Supabase) + KPI 16개 매핑표 본문화 + #15 time_in_steps_sec 코드/SQL/Scorecard 완결 → 16/16 KPI 운영 진입. Pending 12건 모두 완료로 close."
 
 weekly_summaries:
   - week: "2026-W16"

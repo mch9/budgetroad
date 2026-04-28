@@ -3,7 +3,7 @@
 **Participants**: mincheol.kim, claude
 
 ## Summary
-KPI 측정용 DB를 Neon Postgres에서 Supabase로 피벗. 팀 맥락(PM 7명) + Phase 3 로그인/저장 대비 + Data Blending 365% 이상치 구조적 해결이 동기. 2026-04-24 MCP 등록·인증 준비, 2026-04-25 Event 테이블 구축 + `/api/events` 파이프라인 + Vercel 프로덕션 배포 + Neon Marketplace 통합 제거까지 완료 (실 데이터 수신 개시). 남은 작업은 Looker Studio Supabase 직접 연결(Step C).
+KPI 측정용 DB를 Neon Postgres에서 Supabase로 피벗. 팀 맥락(PM 7명) + Phase 3 로그인/저장 대비 + Data Blending 365% 이상치 구조적 해결이 동기. 2026-04-24 MCP 등록·인증 준비, 2026-04-25 Event 테이블 구축 + `/api/events` 파이프라인 + Vercel 프로덕션 배포 + Neon Marketplace 통합 제거, 2026-04-26 Looker 단일 보고서 통합 + 16 KPI 매핑표 본문화 + #15 `time_in_steps_sec` 코드/SQL/Scorecard 완결로 **16/16 KPI 운영 진입**.
 
 ## Context
 
@@ -92,17 +92,53 @@ KPI 측정용 DB를 Neon Postgres에서 Supabase로 피벗. 팀 맥락(PM 7명) 
 - **`budget_draft_entered` 중복 발화**: 프로덕션에서 2회 찍힘 (StrictMode 아님). Effect dep 배열 또는 페이지 진입 경로 이슈 의심. 별도 과제
 - **Council 결정의 암묵 전제 재검토 패턴**: market-entry-pivot 2026-04-22 "Neon 유지" 결정이 오늘 뒤집힘. 틀려서가 아니라 **당시 보이지 않던 요인(auto-heal 간섭)**이 실전에서 표면화. 결정을 dogma로 취급하지 말고 새 정보 시 재평가하는 자세 — 실전 기록
 
+### 2026-04-26
+**Focus**: 16 KPI Looker 단일 보고서 통합 + 매핑표 본문화 + 15/16 KPI 운영 진입 (Cycle 1 Bet "방문자 측정 인프라" 사실상 완성) → **#15 `time_in_steps_sec` 코드+SQL+Scorecard 완결로 16/16 진입**
+
+- `/follow-up` 점검 + 미니 Shape Up 9주 변형안 검토 (`market-entry-pivot` 2026-04-25 entry에 기록)
+- **Looker 단일 보고서 통합**:
+  - 기존 GA4 "Budgetroad MVP KPI" 보고서에 Supabase 데이터 소스 2개 추가 (events 테이블 직접 + KPI Funnel Rates 맞춤 쿼리)
+  - 페이지 2개 신규: "핵심 4 퍼널 KPI" (Supabase Scorecard) + "GA4 트래픽·페이지 분석" (GA4 차트)
+  - 길 A 채택 (기존 GA4 보고서를 base로 + Supabase 추가) — 길 B(새 보고서) 대비 차트 18개 마이그레이션 비용 회피
+  - 임시 보고서 "버짓로드 MVP KPI 대시보드"는 통합 후 삭제 예정
+- **KPI Funnel Rates 단일 SQL**로 13개 KPI 통합 계산 → Scorecard 11개 (#1, #2, #3, #4, #5, #6, #7, #9, #10, #13, #14)
+- **GA4 페이지** 차트 4종 + 분포 6개 = **10개** 재구성 (#8, #11, #12, #16 분포 region/venue/studio/dress/makeup/yemul)
+- **budget_draft_entered 중복 발화 디버깅**: Visitor 1 시퀀스 `array_agg(event_name ORDER BY created_at)` SQL로 진단 → **버그 아님 확정**. Next.js App Router의 page navigation 시 unmount/remount 정상 동작이고, 1ms 차이는 fire-and-forget 네트워크 jitter. KPI 계산은 `COUNT(DISTINCT visitor_id)`로 자동 무결화 (5→2→2→1→1→1 단조 감소 funnel 입증)
+- **GA4 Data Blending 365% 이상치 우회 검증 완료**: Supabase 단일 소스 + COUNT DISTINCT 패턴이 정확한 비율 산출을 첫 시도에 보장. 4월 22일에 제기됐던 구조적 문제가 4일 만에 완전 해소
+- **16 KPI 매핑표 본문화** (Notes에 추가 — 그동안 대화 맥락에만 있던 자료를 부트캠프 자료 기반으로 정식 기록)
+- **결과**: 16개 중 **15개 운영 가능** (Supabase Scorecard 11 + GA4 차트 10. #15만 코드 수정 미구현)
+- **(후속 세션) #15 `time_in_steps_sec` 완결**:
+  - `/follow-up` 3 open unit 점검 → grep으로 #15 코드 미시작 확정 (`firstInputAt` ref·`time_in_steps_sec` 파라미터 0건)
+  - `src/app/budget-draft/page.tsx`: `inputStarted: boolean` ref → `firstInputAt: number | null` ref로 통합 (null-presence가 gate, timestamp가 KPI #14·#15 둘 다 재활용). `result_viewed`에 `time_in_steps_sec` 파라미터 추가
+  - 로컬 dev 검증: row id:30, `is_dev: true`, `time_in_steps_sec: 2` 캡처 정상
+  - commit `3603807` push → Vercel auto-deploy → 프로덕션 검증: row id:35, `is_dev: false`, `time_in_steps_sec: 0`. 같은 visitor의 input_started→result_viewed 282ms 간격이라 반올림 0초가 정확값
+  - KPI Funnel Rates 쿼리 확장: `visitor_stages` CTE에 `avg_time_in_steps` (KPI #14 패턴 carbon-copy) + outer SELECT에 `kpi15_avg_time_in_steps_sec`. 첫 시도 LEFT JOIN drop 실수 → 즉시 복구. MCP `execute_sql`로 모든 KPI row 정상 검증
+  - Looker Studio Scorecard 1개 추가 (`#15 First Action → Result`) → **16/16 KPI 운영 진입**
+
+**Learned**:
+- **단일 SQL + 단일 row + 다중 Scorecard 패턴**이 Looker Data Blending 함정을 구조적으로 우회. 모든 비율이 같은 쿼리에서 계산되니 차트 간 숫자 불일치 0. 이게 자체 DB가 GA4 대비 결정적으로 우월한 지점 — "투명성"을 무료 + no-code의 달콤함이 못 흉내냄
+- **Looker "행이 너무 많음" 에러는 Supabase에서도 발생** (시계열 차트의 측정기준-X축 + 기간 측정기준에 같은 `created_at` 동시 사용 시 dimension 2개로 인식되어 카디널리티 폭증으로 해석). 시계열 차트는 **기간 측정기준 1개만** 사용이 정통
+- **차트 19개를 1.5시간 안에 만든 비결**: "단일 SQL + 차트 복사 + 측정값만 변경" 패턴. 새 차트 첫 1개의 비용은 크지만 2번째부터 5초 — 디자인 시스템과 동일한 "재사용성" 원칙이 데이터 시각화에도 적용
+- **부트캠프 시점에 16 KPI 매핑표가 history unit Notes에 정식 본문화**된 게 학습 가치의 핵심. 차트 만드는 작업은 보존되지만 "왜 이 KPI인가"의 정의 작업은 기록되지 않으면 사라짐. 미래 follow-up에서 PRD 합의 시 단단한 baseline
+- **Next.js App Router의 unmount/remount 정상 동작**을 "버그"로 오판한 경험: KPI 측정 이벤트는 `COUNT(*)` 기준으로 보면 중복으로 보이지만 `COUNT(DISTINCT visitor_id)` 기준이 진짜 funnel. 기준 결정이 기술 결정에 우선
+- **두 ref → 한 ref 통합의 가독성**: `inputStarted: boolean` + `firstInputAt: Date` 두 ref 따로 만들 수도 있었지만 `useRef<number | null>(null)` 단일로 충분. null-presence가 gate 역할 + timestamp 저장이 동시에 처리되고, 같은 timestamp를 KPI #14·#15 계산에 둘 다 재활용해 미세한 시간 정밀도까지 향상
+- **`time_in_steps_sec: 0`의 진단적 가치**: `next()` 함수가 `trackFirstInput()`을 호출 안 함 → DEFAULT_SELECTIONS로 9번 next 클릭 후 마지막 step에서 첫 selection만 변경하면 input_started→result_viewed 간격이 ms 단위. 이게 "버그"가 아니라 default-acceptance 사용자 행동 패턴 노출. KPI #15가 측정 도구이면서 동시에 사용자 인터랙션 패턴 진단 도구로도 작동
+- **CTE 패턴의 carbon-copy 안전성**: 기존 `avg_time_to_start` (KPI #14)와 동일 구조로 `avg_time_in_steps` 추가 → 검증 비용 최소화. 새 패턴 도입 vs 기존 패턴 복제의 트레이드오프에서 후자가 단연 빠르고 안전. SQL 확장 시 "이미 작동하는 형제 컬럼"을 템플릿으로 삼는 습관
+
 ## Pending
 
-- [x] **(다음 세션, MCP 활성 후)** Prisma schema Event 모델 복원 + events 테이블 migrate ✔️ 2026-04-24 (MCP `apply_migration` 경로로 `bun run db migrate dev` 대체. 스키마·인덱스 3개 `list_tables` + `pg_indexes`로 검증 완료. RLS는 서버사이드 전용이라 disabled 유지 — 클라이언트 직접 쿼리 도입 시 재검토)
-- [x] `src/app/api/events/route.ts` POST 엔드포인트 구현 ✔️ 2026-04-24 (Prisma client singleton `src/lib/db.ts` + isDev flag + fire-and-forget 500 swallow). curl 테스트 id:1 row 생성 확인
-- [x] `src/lib/gtag.ts` `trackEvent` 확장 ✔️ 2026-04-24 (GA4 유지 + `fetch('/api/events', { keepalive: true })` 병렬 호출, `.catch(() => {})`로 실패 무시)
-- [x] Vercel 환경변수 Supabase `DATABASE_URL` + `DIRECT_URL` 추가 ✔️ 2026-04-25 (Production + Preview. Development는 팀원 합류 시 보강. 중간에 Neon Marketplace 통합의 자동 재주입으로 3번 덮어써진 뒤 통합 제거로 해결)
-- [x] 프로덕션 배포 후 실제 이벤트 수집 확인 ✔️ 2026-04-25 (curl → `https://budgetroad.vercel.app/api/events` 200 OK, Supabase events id:8 `is_dev: false` 확인 후 정리 삭제)
-- [x] **Neon 프로비저닝 처분** ✔️ 2026-04-25 (조건부 pending 조기 해소. Vercel Marketplace 통합이 DATABASE_URL을 Neon URL로 자동 재주입하는 것이 원인으로 확인 → 통합 제거 시 Neon DB 자동 삭제됨. 실 데이터 0건이라 손실 없음. market-entry-pivot 2026-04-22 Council 결정의 "Neon 유지"는 간섭 비용이 드러나면서 조정됨)
-- [x] **(검토 필요)** `.agents/`, `skills-lock.json` → `.gitignore` 추가 ✔️ 2026-04-24 (commit `f5f8f78`)
-- [ ] Looker Studio → PostgreSQL connector → Supabase 연결 → KPI 퍼널 리포트 1개 (전환율 Scorecard 3개)
-- [ ] GA4 Data Blending 이슈 우회 확인 — Looker가 Supabase 단일 소스 쿼리로 Scorecard 정확도 나오는지 검증
+- [x] **(다음 세션, MCP 활성 후)** Prisma schema Event 모델 복원 + events 테이블 migrate ✔️ 2026-04-24
+- [x] `src/app/api/events/route.ts` POST 엔드포인트 구현 ✔️ 2026-04-24
+- [x] `src/lib/gtag.ts` `trackEvent` 확장 ✔️ 2026-04-24
+- [x] Vercel 환경변수 Supabase `DATABASE_URL` + `DIRECT_URL` 추가 ✔️ 2026-04-25
+- [x] 프로덕션 배포 후 실제 이벤트 수집 확인 ✔️ 2026-04-25
+- [x] **Neon 프로비저닝 처분** ✔️ 2026-04-25
+- [x] **(검토 필요)** `.agents/`, `skills-lock.json` → `.gitignore` 추가 ✔️ 2026-04-24
+- [x] Looker Studio → PostgreSQL connector → Supabase 연결 → KPI 퍼널 리포트 ✔️ 2026-04-25 (단순 events) → 2026-04-26 (KPI Funnel Rates 맞춤 쿼리로 11개 Scorecard 확장)
+- [x] GA4 Data Blending 이슈 우회 검증 ✔️ 2026-04-26 (단조 감소 funnel + COUNT DISTINCT visitor_id 정확도 입증)
+- [x] 16 KPI 매핑표 본문화 ✔️ 2026-04-26 (위 Notes에 추가)
+- [x] **(신규 2026-04-26)** **#15 `time_in_steps_sec` 이벤트 파라미터 추가** — `src/app/budget-draft/page.tsx`에 `firstInputAt` ref 추가 + `result_viewed` 발화 시 `time_in_steps_sec` 파라미터 포함. 코드 + 빌드/배포 + KPI Funnel Rates SQL 라인 + Scorecard 1개 ✔️ 2026-04-26 (commit `3603807`, 16/16 KPI 운영 진입)
+- [x] **(신규 2026-04-26)** 임시 보고서 "버짓로드 MVP KPI 대시보드" 삭제 ✔️ 2026-04-26 (단일 보고서 운영 시작)
 
 ## Notes
 
@@ -114,6 +150,47 @@ KPI 측정용 DB를 Neon Postgres에서 Supabase로 피벗. 팀 맥락(PM 7명) 
   - `devops/2026-04-19-ga4-looker-analytics-setup` — Data Blending 365% 이상치 원인 분석 출발점. Supabase 연결로 구조적 해결 예정
   - `product/2026-04-22-market-entry-pivot` — 이번 DB 구축을 "개발 역할 내 합리적 구축"으로 허용한 팀 맥락 재정립의 맥락
   - `web/2026-04-23-budget-draft-figma-redesign` — Windows Chrome 공유 모달 도입 시 GA4 `share_result` 이벤트 수집 로직. Supabase 병렬 호출 추가 대상
+
+- **16 KPI 매핑표** (2026-04-26 부트캠프 자료 기반 — 그동안 대화 맥락에만 존재했던 매핑을 정식 기록):
+
+  **전환 (3)** — Supabase 단일 소스 SQL
+  - #1 P(First Action | Entered) — `input_started ÷ service_entered` (visitor 단위)
+  - #2 P(Result Viewed | Entered) — `result_viewed ÷ service_entered`
+  - #3 P(Result Viewed | First Action) — `result_viewed ÷ input_started`
+
+  **리텐션/재진입 (3)** — Supabase + 시간 누적
+  - #4 7일 내 재진입률 — 같은 visitor가 7일 이내 재방문 비율
+  - #5 P(Revisited | Result Viewed) — 결과 본 사용자 중 재방문 비율
+  - #6 P(Revisited | Intent Created) — 공유한 사용자 중 재방문 비율
+
+  **링크 생성/공유 (2)**
+  - #7 P(Intent Created | Result Viewed) — `share_result ÷ result_viewed` (Supabase)
+  - #8 공유 버튼 클릭 수 — `share_result` count (GA4 또는 Supabase)
+
+  **이전 버튼 (2)** — back_clicked 이벤트 + sequence
+  - #9 특정 두 페이지 간 오가는 확률 — back_clicked → next 패턴
+  - #10 이전 버튼 클릭 후 이탈률 — back_clicked 후 추가 이벤트 없음 비율
+
+  **페이지 체류 (1)**
+  - #11 페이지당 평균 체류시간 — GA4 native (평균 세션 시간)
+
+  **스크롤 (1)**
+  - #12 스크롤 이벤트 수 — GA4 Enhanced Measurement 자동 수집
+
+  **결과 생성 (1)**
+  - #13 한 사용자당 결과 생성 개수 — `COUNT(result_viewed) per visitor` 평균 (Phase 2/3 저장 기능 도입 시 의미 확장)
+
+  **효율 (2)**
+  - #14 Entered → First Action 평균 시간 — `time_to_start_sec` 파라미터 (이미 수집 중)
+  - #15 First Action → Result Viewed 평균 시간 — `time_in_steps_sec` 파라미터 (**미구현, 코드 수정 필요**)
+
+  **분포 (6 차트, 1 KPI 카테고리로 카운트 시 #16)**
+  - #16 선택 분포 6개 (region · venue_type · studio_tier · dress_tier · makeup_tier · yemul_tier) — properties JSON 추출
+
+  **현재 운영 가능 여부 (2026-04-26 기준 16/16)**:
+  - ✅ Supabase Scorecard 12개 (KPI Funnel Rates 단일 SQL): #1, #2, #3, #4, #5, #6, #7, #9, #10, #13, #14, **#15** (2026-04-26 후속 세션 추가)
+  - ✅ GA4 Scorecard·차트 4개: #8, #11, #12, #16 (분포 6 차트)
+  - ⚠️ 운영 주의: #15는 `next()`가 `trackFirstInput()`을 호출 안 해 default-acceptance 사용자에서 0초로 찍힘. 측정값이면서 동시에 사용자 행동 패턴(능동 입력 vs default 수용) 진단 신호로 해석 필요
 - **관련 메모리**:
   - `feedback_stacked_pr_base_fix` — PR #20 복구 과정에서 체계화된 stacked PR 3함정
   - `project_2026-04-22-council-decision` — 재평가 트리거 명시 (여전히 유효)

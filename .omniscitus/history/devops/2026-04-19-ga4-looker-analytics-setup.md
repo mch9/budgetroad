@@ -118,12 +118,13 @@
 
 ## Pending
 - [x] 🟢 쉬운 KPI 차트 6/6 완성 ✔️ 2026-04-22 (#16 분포 바차트 6개)
-- [→] 🟡 계산식 KPI 6개 (#1~#3 전환율, #7, #9, #12) — **Supabase 연결 후 SQL 직접 계산** (`supabase-migration` unit으로 이관)
-- [→] 🔴 난이도 KPI 4개 (#4, #5, #6, #14) — **Supabase 경로 후 재개** (`supabase-migration` unit으로 이관)
-- [→] `result_viewed`·`share_result` 델타 파라미터 추가 — **Supabase Event 구현 시 함께 진행** (`supabase-migration` unit으로 이관)
+- [x] 🟡 계산식 KPI 6개 (#1~#3 전환율, #7, #9, #12) ✔️ 2026-04-26 (`supabase-migration`에서 KPI Funnel Rates SQL + Scorecard 운영)
+- [x] 🔴 난이도 KPI 4개 (#4, #5, #6, #14) ✔️ 2026-04-26 (`supabase-migration`에서 Scorecard 운영, 16/16 진입)
+- [x] `result_viewed` 델타 파라미터 `time_in_steps_sec` ✔️ 2026-04-26 (commit `3603807`)
+- [ ] `result_viewed`·`share_result` 델타 파라미터 `time_on_result_sec` — 미구현 (resultViewedAt ref + share_result 발화 시 델타 계산 필요)
 - [ ] Looker Studio 기간 컨트롤 상단 배치 — 기존 🟢 차트 운영용으로만 유지
 - [~] GA4 DebugView 확인 원할 시 "Google Analytics Debugger" Chrome 확장 — 선택사항
-- [→] **[재개 조건 충족]** Prisma migrate + `src/app/api/events/route.ts` + `gtag.ts` 병행 호출 → **`supabase-migration` unit에서 실행 예정**
+- [x] **[재개 조건 충족]** Prisma migrate + `src/app/api/events/route.ts` + `gtag.ts` 병행 호출 ✔️ 2026-04-25 (`supabase-migration`에서 실행, commits `2891029` `15a6dde` `3a34c09` `f5f8f78`)
 
 ## Notes
 - GA4 property ID: `G-B7F0E8527V`

@@ -91,7 +91,7 @@
 - **Shape Up이 이 팀에 수학적으로 맞는 이유**: 6+2 cycle = 7~8주, 팀 7명, 주간 출시 — 모두 Basecamp의 100명 미만 팀용 설계와 1:1 매핑. 강사님 7-layer (분기·반기 cycle용)는 규모·주기 모두 미스매치
 
 ### 2026-04-25
-**Focus**: Phase 2/3 1인 초안 본격 제거 (Level 2 cleanup) + blog-prd·budget-draft-prd unit close — "팀 합의 왜곡 방지" 목적
+**Focus**: Phase 2/3 1인 초안 본격 제거 (Level 2 cleanup) + blog-prd·budget-draft-prd unit close — "팀 합의 왜곡 방지" 목적 + 미니 Shape Up 9주 부트캠프 변형안 검토(미완, 더 정리 예정)
 
 - **사용자 문제 제기**: "Phase 2, 3 등은 진짜 앞으로 안 쓸 것 같아서 삭제하는 게 나을까? 팀원들과 결정한 내용으로 진행할 예정이라 기존 초안이 고려되면 이슈"
 - **문서 4개 정돈** (commit `178bc1d`):
@@ -104,10 +104,30 @@
   - `budget-draft-prd` — MVP PRD(v0) 완료 + Phase 2/3 작성 방침이 "팀 합의 후 /prd-collab으로 재작성"으로 변경됐음을 status 라인으로 명시
 - **연관 수정**: `.agents/`·`skills-lock.json` gitignore 처리 (Claude Code skills install 산출물)
 
+- **(후속 세션) 미니 Shape Up 9주 부트캠프 변형안 검토** (미완, 본격 정리는 부트캠프 시작 전 별도 작업):
+  - **환경 제약**: PM 부트캠프 9주 (예상 일정 2026-04-27 ~ 2026-06-28), PM 7명 팀, 시니어 부재(Claude 페어로 대체)
+  - **수학적 fit**: 9주 = 미니 Shape Up 3 cycle 정확 매핑 (각 cycle = 2주 Build + 1주 Cool-down)
+  - **4 활동 정의**:
+    - **Shape**: Pitch 작성 (PO 1명 + Claude 페어, 30분~2시간). 6개 질문 — 가설 / 왜 지금 / Appetite 2주 고정 / 해결책 윤곽 / Rabbit holes / No-gos
+    - **Bet**: Betting Table 미팅 (PM 7명 전원, 1~2시간). 단일 Bet 결정 + 반대 의견 1줄씩 기록. 결정 후 2주간 변경 금지
+    - **Build**: 2주 Build + 매주 ceremony (월 Kickoff 30분 / 목 데모 + Hill chart 30분 / 2주차 월 scope hammering 30분)
+    - **Cool-down**: 1주, 측정·회고·다음 Pitch 준비. 새 기능 만들지 않음
+  - **출시 후 수정 3분기 원칙**: 명백한 버그·스코프 마무리 → Build 안 / 작은 보완·UI 튜닝 → Cool-down / 큰 변경·가설 재고 → 다음 Bet
+  - **조기 출시 패턴**: Build 1주차 금요일에 1차 출시 → 운영 관찰 시간 ~2주 확보 (Build 2주차 + Cool-down)
+  - **PRD 도구(`/prd-collab` 등)와의 관계**: 다른 layer (PRD = 산출물 정교화 / Shape Up = 시간 고정 운영). 사용자 판단으로 **이번 부트캠프엔 결합 안 하기**로 — Shape Up 단독 운영
+  - **Cycle별 Bet 후보(잠정)**:
+    - Cycle 1 (4/27~5/17): "방문자 30명 + 첫 funnel 측정" (Looker connector·인스타 홍보·작은 UX 튜닝)
+    - Cycle 2 (5/18~6/7): Cycle 1 데이터 기반 결정 (유력: 회귀 기대감 가설 — 결과 저장 기능)
+    - Cycle 3 (6/8~6/28): 누적 데이터 기반 최종 학습 가설 + 마지막 주는 부트캠프 발표·회고
+  - **시니어 부재 대응**: Claude 페어가 보완 가능한 영역 — 기술 윤곽·해결책 비교·prototyping·위험 식별. 사람 PM 필수 영역 — 비즈니스 우선순위·사용자 인사이트 해석·팀 역량 판단
+  - **보류 사항**: Cycle 1 Pitch 초안 작성, 팀 설득 스크립트, Hill chart 도구 결정(Notion·종이·스프레드시트 후보), 정통 Shape Up vs 변형 차이 정리 본문
+
 **Learned**:
 - **앵커링 제거의 핵심은 ROADMAP.md 한 곳**: 다른 문서는 "MVP 구현 역사 기록"으로 중립적으로 읽히지만, ROADMAP은 "미래 방향 제안"처럼 읽혀서 **팀 합의 왜곡의 최대 위험원**. budget-draft-v0.md처럼 구현 기록 문서는 보존하되 stale 라벨(`(Phase 2)`)만 제거하는 접근이 실용적 — 역사 맥락 + 앵커링 방지 양립
 - **Cross-unit drift 자동 감지의 한계**: blog-prd의 Pending 5개가 base PRD 삭제 후에도 deferred로 남아있었음. 파일 시스템과 unit 인덱스의 drift는 `/follow-up` skill로만 잡힘. 정기 follow-up이 drift 누적 방지에 필수
 - **"현재성 복원"이 "참고용 주석"보다 낫다**: event-schema-options.md를 "Phase 2/3 재개 시 참고"로 표기하면 문서 가치가 "미래의 어느 날"로 미뤄짐 → 실질 미운영. "**supabase-migration에서 지금 구현에 사용됨**"으로 현재성 부여하면 같은 파일이 생산 문서로 복귀
+- **Shape Up "근본"의 정체 = 시간 고정 + scope 변동**: 토스 1주 cycle의 "근본 없는 것 같다"는 직관은 정확함. 1주는 가설 단위가 작아져 task management로 변질되는 게 본질. Shape Up이 근본 있는 이유는 "**달력이 끝낼 때까지 cycle 진행, scope을 잘라내서 시간 지킴**"이라는 단일 원칙이 모든 활동을 정렬하기 때문. 9주 부트캠프 환경에 정통 6+2 그대로는 안 맞지만 **2+1 미니 변형이 9주에 정확히 3 cycle**로 떨어지는 산술적 적합도가 변형 정당성의 근거
+- **PRD 도구(`/prd-collab`)와 Shape Up은 다른 layer**: PRD = WHAT(산출물 정교화), Shape Up = HOW WE WORK(시간 고정 운영). 한 도구로 다른 layer 문제 풀려고 하면 어느 한 쪽이 변질됨. 부트캠프 학습 관점에선 두 layer를 의식적으로 분리해서 산출물 내는 것 자체가 메타 학습 산출물
 
 ## Pending
 
@@ -120,7 +140,8 @@
 - [x] 학습부채 실제 정리 (Phase 2/3 관련 문서·스키마·PRD 제거) ✔️ 2026-04-24 (PR #21 + PR #22)
 - [x] Phase 2/3 앵커링 Level 2 cleanup (ROADMAP 테이블 제거 + blog-prd/budget-draft-prd unit close + CLAUDE.md stale 잔재 제거) ✔️ 2026-04-25 (commit `178bc1d`)
 - [ ] **(신규)** Supabase 구축 완료 후 실사용자 KPI 측정 가능 상태에서 방문자 50명 트리거 관측
-- [ ] **(신규)** 팀 합류 시 강사님 7-layer 체계 → Shape Up 전환 설득 (Level 1 스크립트 기반. 필요 시 Level 2~3 에스컬레이션)
+- [ ] **(신규)** 팀 합류 시 강사님 7-layer 체계 → 미니 Shape Up 전환 설득 (9주 부트캠프 변형안 = 3 cycle × [2주 Build + 1주 Cool-down] 기반. Level 1 스크립트, 필요 시 Level 2~3 에스컬레이션)
+- [ ] **(2026-04-25 추가)** 미니 Shape Up 9주 변형안 본격 정리 + Cycle 1 Pitch 초안 작성 (부트캠프 시작 전. Hill chart 도구·팀 설득 스크립트·정통 vs 변형 차이 본문 포함)
 
 ## Notes
 
