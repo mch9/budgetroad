@@ -69,6 +69,18 @@ PM 부트캠프 7명 팀의 Pro·Max 두 명이 클로드 요금제로 합류하
 **Learned**:
 - **재브리핑은 작업 단위 아닌 *결정 종류*로 재구조화하는 게 효과적** — 시간순 나열은 어제 본 내용 반복이지만, "팀 구성 / Cycle / Git / AI native / 운영" 카테고리로 재배치하면 합류자에게 공유 가능한 자료로 자동 변환됨
 
+### 2026-04-29 (이어서)
+**Focus**: pending triage + 잔재 정리 5분 PR 처리 + Branch protection 결정 보류
+
+- **Pending triage (12 항목 → 5 클러스터)**: (a) Branch protection 블로커 — *결정 보류* (b) 강사님 스타일 7-layer skill — Pro·Max와 함께 진행 (c) Tier 1 합류 자료 묶음 6건 — 합류 직후 1주 (d) 잔재 정리 묶음 #11+#12 — 즉시 처리 (e) Cycle 2 항목 (Bet pitch + Vitest) — 5/18 시작에 맞춰. Tier 3은 이미 deferred 합의로 추적 불필요.
+- **Branch protection 보류 결정**: GitHub Pro $4/mo vs public 전환 vs 무보호 + CI 게이팅 3안 비교. 즉답 안 하기로 결정 — Pro/Max 합류 직전에 재검토. 보류 자체가 명시적 선택이라 pending에 유지.
+- **잔재 정리 PR (#23) 처리**: #11(`package.json` name) + #12(CLAUDE.md 디렉토리 트리) 5분 PR로 묶음 처리. `tooling-rotation-and-rename-prep` unit과 짝맞춤. 절차: origin/main 동기화 → /follow-up tracking docs commit → branch off → cleanup commit → PR.
+- **다음 우선순위 후보 정리**: T1 묶음 시작점은 *CLAUDE.md Delegation Levels 섹션*이 가장 우선 (PR 리뷰 강도 결정 기준이라 합류 *전* 박아둘 것). 그 다음 PR template + Skill 관리 정책.
+
+**Learned**:
+- **"정리"의 가치는 keep할 항목보다 drop·defer할 항목을 고르는 데 있음** — 12개 다 keep하면 사실상 정리가 아니고, 부트캠프 9주 timebox에선 Tier 1만 해도 빡빡함. 클러스터링(5묶음) → 시급도(즉시/이번주/Cycle2/deferred) → 의사결정(keep/defer/drop)의 3단계 pass가 있어야 진짜 정리.
+- **블로커 *보류*도 명시적 결정** — "결정 안 함"이 기본 모드가 되면 흔적이 사라짐. pending에 *보류* 표시로 유지하면 다음 follow-up에서 다시 표면화 가능. 이번 Branch protection이 그 사례.
+
 ## Pending
 
 - [x] **(긴급)** 폴더 리네임 5단계 실행 ✔️ 2026-04-29 검증 (cwd · 메모리 디렉토리 · Vercel 프로젝트 이름 모두 `budgetroad`로 정합화 완료, 현재 세션이 정상 동작)

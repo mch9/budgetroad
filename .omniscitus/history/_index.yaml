@@ -192,20 +192,32 @@ units:
   - id: tooling-rotation-and-rename-prep
     file: devops/2026-04-28-tooling-rotation-and-rename-prep.md
     domain: devops
-    status: open
+    status: closed
     created: 2026-04-28
-    last_updated: 2026-04-28
-    session_count: 1
+    last_updated: 2026-04-29
+    closed: 2026-04-29
+    session_count: 2
     title: "Tooling 워크플로우 로테이션 + 폴더 리네임 준비"
+    note: "5단계 리네임 전부 완료(폴더·메모리·Vercel·재시작) + 잔재 정리 PR #23(package.json + CLAUDE.md 디렉토리 트리)로 Pending 5건 모두 close"
   - id: team-collab-setup
     file: product/2026-04-28-team-collab-setup.md
     domain: product
     status: open
     created: 2026-04-28
     last_updated: 2026-04-29
-    session_count: 2
+    session_count: 3
     title: "팀 합류 운영 모델 + 강사님 스타일 cycle 결정"
-    note: "50명 트리거(223명) 충족으로 Doc Freeze 해제 + Pro/Max 합류. CTO Council로 Vercel 유지 + 영역 분담·wrap-up·메모리·CLAUDE.md 한도·cycle 모델 5건 결정. Shape Up 변형안 폐기, 강사님 스타일 7-layer + 1+1 cycle 채택. 후속 unit (Tier 1 셋업·skill 작성)은 합류 후 새 unit으로 분리 예정"
+    note: "50명 트리거(223명) 충족으로 Doc Freeze 해제 + Pro/Max 합류. CTO Council로 Vercel 유지 + 영역 분담·wrap-up·메모리·CLAUDE.md 한도·cycle 모델 5건 결정. Shape Up 변형안 폐기, 강사님 스타일 7-layer + 1+1 cycle 채택. 2026-04-29: pending 12건 triage(5클러스터) + 잔재 정리 #11+#12 처리 완료, Branch protection은 결정 보류. 후속 unit (Tier 1 셋업·skill 작성)은 합류 후 새 unit으로 분리 예정"
+  - id: og-image-404-investigation
+    file: web/2026-04-29-og-image-404-investigation.md
+    domain: web
+    status: closed
+    created: 2026-04-29
+    last_updated: 2026-04-29
+    closed: 2026-04-29
+    session_count: 1
+    title: "GA4 /og-image 404 추적 + 팀 공유 자료 작성"
+    note: "회의 중 발견된 1회성 404를 코드·git history·외부 신호 3축으로 추적해 우리 코드 무관 확인. 사용자 본인이 회의 중 OG 이미지 보려고 추측 입력한 typo로 결론. 무대응 결정 + 팀 공유용 마크다운 자료 작성"
 
 weekly_summaries:
   - week: "2026-W17"
