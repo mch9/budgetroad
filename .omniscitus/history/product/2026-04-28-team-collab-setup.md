@@ -71,7 +71,7 @@ PM 부트캠프 7명 팀의 Pro·Max 두 명이 클로드 요금제로 합류하
 
 ## Pending
 
-- [ ] **(긴급)** 폴더 리네임 5단계 실행 (별도 셸): `mv ~/Documents/GitHub/wedding-budget ~/Documents/GitHub/budgetroad` + `~/.claude/projects/-Users-mch-Documents-GitHub-wedding-budget` → `...-budgetroad` 동시 이전 + Vercel 프로젝트 이름 변경 + Claude Code 재시작. **Pro/Max 합류 전 처리 필수** — 두 분이 `git clone`하면 자동 `budgetroad` 폴더로 받게 되는데 본인만 `wedding-budget`이면 경로 인용·wrap-up 본문에서 혼란
+- [x] **(긴급)** 폴더 리네임 5단계 실행 ✔️ 2026-04-29 검증 (cwd · 메모리 디렉토리 · Vercel 프로젝트 이름 모두 `budgetroad`로 정합화 완료, 현재 세션이 정상 동작)
 - [ ] 강사님 스타일 7-layer + 1+1 cycle용 skill 작성 (Pro·Max와 함께, 2026-04-29 예정). `.claude/skills/{name}/`에 git commit으로 자동 공유. 강사님이 1+1 cycle용 *경량 변형*을 명시 제시했는지 또는 본인이 7-layer를 줄일지 1회 confirm 권장 (부트캠프 평가 리스크 헤지)
 - [ ] **Tier 1 (합류 직후 1주)**:
   - [ ] Branch protection 활성화 (GitHub Settings → Branches → main: PR + 1 review + CI 통과 + Restrict pushes)
