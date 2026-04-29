@@ -118,17 +118,6 @@ files:
       - date: 2026-04-22T05:07:03.823Z
         action: write
         source: "claude:mincheol.kim"
-  "docs/prd/honeymoon/honeymoon-worldcup-v0.md":
-    status: active
-    source: "claude:mincheol.kim"
-    created: 2026-04-29
-    last_modified: 2026-04-29T06:54:17.449Z
-    change_count: 1
-    purpose: ""
-    change_log:
-      - date: 2026-04-29T06:54:17.449Z
-        action: write
-        source: "claude:mincheol.kim"
   "docs/WORKFLOW.md":
     status: active
     source: "claude:mincheol.kim"
