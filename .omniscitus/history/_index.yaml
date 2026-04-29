@@ -1,4 +1,13 @@
 units:
+  - id: team-baselines-vp-and-workflow
+    file: product/2026-04-30-team-baselines-vp-and-workflow.md
+    domain: product
+    status: open
+    created: 2026-04-30
+    last_updated: 2026-04-30
+    session_count: 1
+    title: "팀 공유 기준선 — Value Proposition + 학습·결정 워크플로우"
+    note: "team-collab-setup 후속 베이스라인. VP는 워크숍 4-step 결과(Statement + 5 Layer + Position + Philosophy), WORKFLOW은 8단계 + 단계별 skill 매핑(plugin vs 프로젝트 구분)"
   - id: budget-draft-figma-redesign
     file: web/2026-04-23-budget-draft-figma-redesign.md
     domain: web
