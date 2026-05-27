@@ -1,6 +1,7 @@
-// 온보딩 v6.0 — 13문항 + 진입 라우팅 + 2축 사분면 분류
+// 온보딩 v6.0 — 13문항 + 2축 사분면 분류
 // spec: docs/questionnaire design.md
 // algo: docs/Result Page Calculation Algorithm.md (STAGE 1·2)
+// note: 진입 라우팅 화면은 팀 기획 외라 제외 (사용자 결정 2026-05-27)
 
 // ── Types ──
 
@@ -11,13 +12,6 @@ export type PersonaType =
   | '본질미니멀'
   | '탐색미결정';
 
-export type EntryStage =
-  | 'before'
-  | 'comparing'
-  | 'partial'
-  | 'mostly'
-  | 'unsure';
-
 export type QuestionId =
   | 'Q1' | 'Q2' | 'Q3' | 'Q4' | 'Q7' | 'Q8'
   | 'T2' | 'T5' | 'T7'
@@ -27,22 +21,11 @@ export type ChoiceId = 'A' | 'B' | 'C' | 'D';
 
 export type AxisScore = { a: number; b: number };
 
-export type OnboardingAnswers = {
-  entryStage: EntryStage | null;
-} & Record<QuestionId, ChoiceId | null>;
+export type OnboardingAnswers = Record<QuestionId, ChoiceId | null>;
 
-export type EntryOption = { id: EntryStage; label: string };
 export type Option = { id: ChoiceId; label: string; scoreA?: number; scoreB?: number };
 
-export type EntryStepMeta = {
-  type: 'entry';
-  id: 'entry';
-  title: string;
-  subtitle?: string;
-  options: EntryOption[];
-};
-
-export type QuestionStepMeta = {
+export type StepMeta = {
   type: 'main' | 'tag' | 'modifier';
   id: QuestionId;
   title: string;
@@ -50,38 +33,21 @@ export type QuestionStepMeta = {
   options: Option[];
 };
 
-export type StepMeta = EntryStepMeta | QuestionStepMeta;
-
 // ── Constants ──
 
-export const TOTAL_STEPS = 14;
+export const TOTAL_STEPS = 13;
 export const MAIN_QUESTION_IDS: QuestionId[] = ['Q1', 'Q2', 'Q3', 'Q4', 'Q7', 'Q8'];
 
 export const EMPTY_ANSWERS: OnboardingAnswers = {
-  entryStage: null,
   Q1: null, Q2: null, Q3: null, Q4: null, Q7: null, Q8: null,
   T2: null, T5: null, T7: null,
   M1: null, M2: null, M3: null, M5: null,
 };
 
-// ── 14 Steps (진입 1 + 메인 6 + 태그 3 + Modifier 4) ──
+// ── 13 Steps (메인 6 + 태그 3 + Modifier 4) ──
 
 export const STEPS: StepMeta[] = [
-  // [0] 진입 라우팅
-  {
-    type: 'entry',
-    id: 'entry',
-    title: '결혼 준비, 어디까지 진행하셨나요?',
-    options: [
-      { id: 'before', label: '아직 시작 전이에요' },
-      { id: 'comparing', label: '여러 곳 비교하는 중이에요' },
-      { id: 'partial', label: '일부 항목 계약했어요' },
-      { id: 'mostly', label: '대부분 계약했어요' },
-      { id: 'unsure', label: '아직 잘 모르겠어요' },
-    ],
-  },
-
-  // [1] Q1 — 메인 (축 B / 돈)
+  // [0] Q1 — 메인 (축 B / 돈)
   {
     type: 'main',
     id: 'Q1',
@@ -94,7 +60,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [2] Q2 — 메인 (축 B / 감정, 내용 기준 보정)
+  // [1] Q2 — 메인 (축 B / 감정, 내용 기준 보정)
   {
     type: 'main',
     id: 'Q2',
@@ -105,7 +71,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [3] Q3 — 메인 (축 B / 행동)
+  // [2] Q3 — 메인 (축 B / 행동)
   {
     type: 'main',
     id: 'Q3',
@@ -116,7 +82,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [4] Q4 — 메인 (축 A / 돈)
+  // [3] Q4 — 메인 (축 A / 돈)
   {
     type: 'main',
     id: 'Q4',
@@ -129,7 +95,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [5] Q7 — 메인 (축 A / 돈)
+  // [4] Q7 — 메인 (축 A / 돈)
   {
     type: 'main',
     id: 'Q7',
@@ -142,7 +108,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [6] Q8 — 메인 (축 A / 간접 측정)
+  // [5] Q8 — 메인 (축 A / 간접 측정)
   {
     type: 'main',
     id: 'Q8',
@@ -155,7 +121,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [7] T2 — 태그
+  // [6] T2 — 태그
   {
     type: 'tag',
     id: 'T2',
@@ -167,7 +133,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [8] T5 — 태그
+  // [7] T5 — 태그
   {
     type: 'tag',
     id: 'T5',
@@ -179,7 +145,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [9] T7 — 태그
+  // [8] T7 — 태그
   {
     type: 'tag',
     id: 'T7',
@@ -192,7 +158,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [10] M1 — Modifier
+  // [9] M1 — Modifier
   {
     type: 'modifier',
     id: 'M1',
@@ -206,7 +172,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [11] M2 — Modifier
+  // [10] M2 — Modifier
   {
     type: 'modifier',
     id: 'M2',
@@ -219,7 +185,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [12] M3 — Modifier
+  // [11] M3 — Modifier
   {
     type: 'modifier',
     id: 'M3',
@@ -231,7 +197,7 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [13] M5 — Modifier
+  // [12] M5 — Modifier
   {
     type: 'modifier',
     id: 'M5',
@@ -296,8 +262,8 @@ export function scoreAxis(answers: OnboardingAnswers): AxisScore {
   for (const qid of MAIN_QUESTION_IDS) {
     const choiceId = answers[qid];
     if (!choiceId) continue;
-    const step = STEPS.find((s) => s.type !== 'entry' && s.id === qid);
-    if (!step || step.type === 'entry') continue;
+    const step = STEPS.find((s) => s.id === qid);
+    if (!step) continue;
     const opt = step.options.find((o) => o.id === choiceId);
     if (!opt) continue;
     a += opt.scoreA ?? 0;

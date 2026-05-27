@@ -16,7 +16,6 @@ import {
   type PersonaType,
   type AxisScore,
   type ChoiceId,
-  type EntryStage,
   type QuestionId,
   type StepMeta,
 } from '@/lib/onboarding-v6';
@@ -47,11 +46,20 @@ export default function BudgetDraftPage() {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved) as SavedState;
-        if (typeof parsed.step === 'number' && parsed.answers) {
+        // step 범위 검증 — 옛 schema(진입 라우팅 포함, step=14 등) 무시
+        if (
+          typeof parsed.step === 'number' &&
+          parsed.step >= 0 &&
+          parsed.step <= TOTAL_STEPS &&
+          parsed.answers &&
+          'Q1' in parsed.answers
+        ) {
           setStep(parsed.step);
           setAnswers(parsed.answers);
           setPersona(parsed.persona ?? null);
           setAxisScore(parsed.axisScore ?? null);
+        } else {
+          sessionStorage.removeItem(STORAGE_KEY);
         }
       }
     } catch {
@@ -61,7 +69,7 @@ export default function BudgetDraftPage() {
   /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
-    if (step === 0 && answers.entryStage === null) return;
+    if (step === 0 && answers.Q1 === null) return;
     try {
       const data: SavedState = { step, answers, persona, axisScore };
       sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -75,15 +83,6 @@ export default function BudgetDraftPage() {
     firstInputAt.current = Date.now();
     const elapsed = Math.round((firstInputAt.current - enteredAt) / 1000);
     trackEvent('input_started', { time_to_start_sec: elapsed });
-  }
-
-  function handleEntrySelect(stageId: EntryStage) {
-    trackFirstInput();
-    setAnswers((prev) => ({ ...prev, entryStage: stageId }));
-    trackEvent('onboarding_question_answered', {
-      question_id: 'entry',
-      choice_id: stageId,
-    });
   }
 
   function handleChoiceSelect(qid: QuestionId, choiceId: ChoiceId) {
@@ -105,9 +104,7 @@ export default function BudgetDraftPage() {
       axis_b: score.b,
       time_in_steps_sec: timeInSteps,
     };
-    if (answers.entryStage) payload.entry_stage = answers.entryStage;
     for (const k of Object.keys(answers) as (keyof OnboardingAnswers)[]) {
-      if (k === 'entryStage') continue;
       const v = answers[k];
       if (v) payload[k.toLowerCase()] = v;
     }
@@ -152,11 +149,7 @@ export default function BudgetDraftPage() {
 
   const isResult = step === TOTAL_STEPS;
   const currentMeta: StepMeta | null = step < TOTAL_STEPS ? STEPS[step] : null;
-  const currentAnswer: string | null = currentMeta
-    ? currentMeta.type === 'entry'
-      ? answers.entryStage
-      : answers[currentMeta.id]
-    : null;
+  const currentAnswer: ChoiceId | null = currentMeta ? answers[currentMeta.id] : null;
   const canProceed = currentAnswer !== null;
 
   return (
@@ -187,7 +180,6 @@ export default function BudgetDraftPage() {
           <QuestionView
             meta={currentMeta}
             currentAnswer={currentAnswer}
-            onEntrySelect={handleEntrySelect}
             onChoiceSelect={handleChoiceSelect}
           />
         )}
@@ -245,42 +237,30 @@ export default function BudgetDraftPage() {
 function QuestionView({
   meta,
   currentAnswer,
-  onEntrySelect,
   onChoiceSelect,
 }: {
   meta: StepMeta;
-  currentAnswer: string | null;
-  onEntrySelect: (id: EntryStage) => void;
+  currentAnswer: ChoiceId | null;
   onChoiceSelect: (qid: QuestionId, choiceId: ChoiceId) => void;
 }) {
-  const prefix = meta.type === 'entry' ? null : `${meta.id}.`;
   return (
     <div className="flex flex-col pb-8 pt-6">
       <div className="space-y-1.5 pb-2 pt-2">
-        {prefix && <p className="text-sm leading-5 text-[#6A7282]">{prefix}</p>}
+        <p className="text-sm leading-5 text-[#6A7282]">{meta.id}.</p>
         <h1 className="text-[30px] font-bold leading-9 text-[#373737]">{meta.title}</h1>
         {meta.subtitle && (
           <p className="pt-2 text-base leading-6 text-[#6A7282]">{meta.subtitle}</p>
         )}
       </div>
       <div className="flex flex-col gap-3 pt-4">
-        {meta.type === 'entry'
-          ? meta.options.map((o) => (
-              <QuestionCard
-                key={o.id}
-                selected={currentAnswer === o.id}
-                label={o.label}
-                onClick={() => onEntrySelect(o.id)}
-              />
-            ))
-          : meta.options.map((o) => (
-              <QuestionCard
-                key={o.id}
-                selected={currentAnswer === o.id}
-                label={o.label}
-                onClick={() => onChoiceSelect(meta.id, o.id)}
-              />
-            ))}
+        {meta.options.map((o) => (
+          <QuestionCard
+            key={o.id}
+            selected={currentAnswer === o.id}
+            label={o.label}
+            onClick={() => onChoiceSelect(meta.id, o.id)}
+          />
+        ))}
       </div>
     </div>
   );

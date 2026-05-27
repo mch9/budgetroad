@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T02:36:35.419Z
+updated: 2026-05-27T15:43:40.766Z
 
 files:
   "src/app/layout.tsx":
@@ -321,10 +321,37 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-05-27T02:36:35.419Z
-    change_count: 101
+    last_modified: 2026-05-27T15:43:40.766Z
+    change_count: 110
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-05-27T15:43:40.766Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:41.273Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:29.357Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:24.110Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:18.385Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:11.728Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:06.688Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:00.688Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:32:15.116Z
+        action: write
+        source: "claude:powel858"
       - date: 2026-05-27T02:36:35.419Z
         action: edit
         source: "claude:powel858"
@@ -792,3 +819,81 @@ files:
       - date: 2026-04-24T13:59:27.968Z
         action: write
         source: "claude:mincheol.kim"
+  "src/lib/onboarding-v6.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T15:42:51.465Z
+    change_count: 16
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T15:42:51.465Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:28.793Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:27.469Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:25.951Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:24.453Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:22.958Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:21.430Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:20.011Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:18.937Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:17.428Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:16.532Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:14.907Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:14.103Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:39:54.410Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:29:31.683Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:26:23.674Z
+        action: write
+        source: "claude:powel858"
+  "src/components/onboarding/progress-bar.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T15:27:54.206Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T15:27:54.206Z
+        action: write
+        source: "claude:powel858"
+  "src/components/onboarding/question-card.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T15:29:01.041Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T15:29:01.041Z
+        action: write
+        source: "claude:powel858"
