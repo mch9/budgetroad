@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T15:55:32.836Z
+updated: 2026-05-27T18:03:52.549Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -164,5 +164,16 @@ files:
         action: write
         source: "claude:powel858"
       - date: 2026-05-27T14:56:27.554Z
+        action: write
+        source: "claude:powel858"
+  "docs/prd/budget-builder/onboarding-v6-step2-plan.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:03:52.549Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:03:52.549Z
         action: write
         source: "claude:powel858"
