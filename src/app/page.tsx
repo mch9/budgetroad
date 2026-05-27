@@ -128,7 +128,7 @@ export default function Home() {
 
         {/* Subtitle — Figma: Pretendard 400 20.47px, color #373737 */}
         <p className="text-sm text-[#373737] sm:text-xl">
-          몇 가지 선택만으로 내 결혼 예산을 바로 확인하세요
+          몇 가지 선택만으로 내 결혼 예산을 1분 만에 확인하세요
         </p>
 
         <CtaLink />
