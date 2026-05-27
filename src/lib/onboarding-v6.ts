@@ -15,7 +15,7 @@ export type PersonaType =
 export type QuestionId =
   | 'Q1' | 'Q2' | 'Q3' | 'Q4' | 'Q7' | 'Q8'
   | 'T2' | 'T5' | 'T7'
-  | 'M1' | 'M2' | 'M3' | 'M5';
+  | 'M1' | 'M2' | 'M3' | 'M4' | 'M5';
 
 export type ChoiceId = 'A' | 'B' | 'C' | 'D';
 
@@ -35,13 +35,13 @@ export type StepMeta = {
 
 // ── Constants ──
 
-export const TOTAL_STEPS = 13;
+export const TOTAL_STEPS = 14;
 export const MAIN_QUESTION_IDS: QuestionId[] = ['Q1', 'Q2', 'Q3', 'Q4', 'Q7', 'Q8'];
 
 export const EMPTY_ANSWERS: OnboardingAnswers = {
   Q1: null, Q2: null, Q3: null, Q4: null, Q7: null, Q8: null,
   T2: null, T5: null, T7: null,
-  M1: null, M2: null, M3: null, M5: null,
+  M1: null, M2: null, M3: null, M4: null, M5: null,
 };
 
 // ── 13 Steps (메인 6 + 태그 3 + Modifier 4) ──
@@ -197,7 +197,19 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [12] M5 — Modifier
+  // [12] M4 — Modifier (시기 — STEP 2 추가, 가격 계산 직결)
+  {
+    type: 'modifier',
+    id: 'M4',
+    title: '예식은 어느 시기에 진행하실 예정인가요?',
+    subtitle: '결혼 시즌에 따라 가격이 달라져요.',
+    options: [
+      { id: 'A', label: '성수기 — 3~6월, 9~11월' },
+      { id: 'B', label: '비성수기 — 7~8월, 12~2월' },
+    ],
+  },
+
+  // [13] M5 — Modifier
   {
     type: 'modifier',
     id: 'M5',

@@ -27,8 +27,8 @@ export function setupVars(persona: PersonaType, answers: OnboardingAnswers): Set
   const m5 = answers.M5;
   const region: UserRegion = m5 ? M5_REGION_MAP[m5] : '수도권';
 
-  // M4는 v6.0 spec엔 없고 STEP 2에서 추가 — 응답 없으면 성수기 default
-  const m4 = (answers as OnboardingAnswers & { M4?: ChoiceId }).M4;
+  // M4 시기 (STEP 2에서 추가). 응답 없으면 성수기 default.
+  const m4 = answers.M4;
   const season: Season = (m4 && M4_SEASON_MAP[m4]) || 'peak';
 
   const guests = answers.M2 ? M2_GUESTS_MAP[answers.M2] : 100;
