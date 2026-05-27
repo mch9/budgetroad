@@ -132,6 +132,7 @@ export default function BudgetDraftPage() {
   }
 
   function reset() {
+    trackEvent('result_reset_clicked');
     setStep(0);
     setSelections(DEFAULT_SELECTIONS);
     setResult(null);
