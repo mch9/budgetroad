@@ -133,7 +133,7 @@ function classifyPersona({a, b}: AxisScore): PersonaType {
 | Header | 87px height, border-bottom 1px `#E5E7EB`, 로고 132×41px |
 | 진행률 라벨 좌측 | `단계 STEP 1 / 3` 14px Pretendard Regular `#6A7282` |
 | 진행률 라벨 우측 | `X% 완료` 14px Regular `#6A7282` text-right |
-| 진행률 바 | 10px height, gap ≈ 7px, 활성 `#AAC7E1` / 비활성 `#E5E7EB`, border-radius full, **14 segment** |
+| 진행률 바 | 10px height, gap ≈ 6px, 활성 `#AAC7E1` / 비활성 `#E5E7EB`, border-radius full, **macro 3 segment** (STEP 1·2·3). sub-progress는 우측 `X% 완료` 라벨로만 표기 |
 | Q 번호 prefix | 14px Pretendard Regular `#6A7282` (예: "Q4.") |
 | 질문 타이틀 | 30px Pretendard Bold `#373737`, line-height 36px |
 | 질문 부제 | 16px Pretendard Regular `#6A7282`, line-height 24px (있을 때만) |
