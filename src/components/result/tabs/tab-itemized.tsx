@@ -120,43 +120,131 @@ export function TabItemized({ result }: Props) {
   );
 }
 
+// 한글 받침 검사 → 조사 'eun' (은/는) 또는 'i' (이/가)
+function withJosa(word: string, subject: 'eun' | 'i' = 'eun'): string {
+  const last = word[word.length - 1];
+  const code = last.charCodeAt(0);
+  if (code < 0xAC00 || code > 0xD7A3) return word + (subject === 'eun' ? '는' : '가');
+  const jong = (code - 0xAC00) % 28;
+  if (subject === 'eun') return word + (jong === 0 ? '는' : '은');
+  return word + (jong === 0 ? '가' : '이');
+}
+
 function CategoryBreakdown({ category, result }: { category: ResultCategory; result: ResultPayload }) {
   if (category === '예식장') {
     const v = result.budget.venueDetail;
     return (
       <div className="flex flex-col gap-1 text-xs text-[#525252]">
-        <Row k="식대" v={`${v.meal.toLocaleString()}만원`} />
-        {v.daegwan > 0 && <Row k="대관 (보증 미달)" v={`${v.daegwan.toLocaleString()}만원`} />}
-        {v.baseDecoration > 0 && (
-          <Row k="기본 장식비" v={`${v.baseDecoration.toLocaleString()}만원`} />
+        <Row
+          k="식대"
+          sub={`${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`}
+          v={`${v.meal.toLocaleString()}만원`}
+        />
+        {v.belowBojeung ? (
+          <Row
+            k="대관"
+            sub={`하객 ${v.guests}명 < 보증 ${v.bojeung}명 → 별도 부과`}
+            v={`${v.daegwan.toLocaleString()}만원`}
+          />
+        ) : (
+          <Row
+            k="대관"
+            sub={`하객 ${v.guests}명 ≥ 보증 ${v.bojeung}명 → 면제`}
+            v="0만원"
+            muted
+          />
         )}
-        <Row k="본식 촬영" v={`${v.bonsik.toLocaleString()}만원`} />
+        <Row
+          k="기본 장식비"
+          v={v.baseDecoration > 0 ? `${v.baseDecoration.toLocaleString()}만원` : '0만원 (포함)'}
+          muted={v.baseDecoration === 0}
+        />
+        <Row
+          k="본식 촬영"
+          sub={result.vars.base.bonsik === 'pro' ? '외부 전문' : '예식장 연계'}
+          v={`${v.bonsik.toLocaleString()}만원`}
+        />
         {v.toggleAddOns > 0 && (
-          <Row k="추가금 옵션" v={`+${v.toggleAddOns.toLocaleString()}만원`} />
+          <Row k="추가금 옵션 합" v={`+${v.toggleAddOns.toLocaleString()}만원`} accent />
         )}
+        <TotalRow v={`${result.budget.categories.예식장.toLocaleString()}만원`} />
       </div>
     );
   }
   if (category === '스드메') {
+    const s = result.budget.sdmDetail;
+    const base = result.vars.base;
     return (
-      <p className="text-xs text-[#525252]">
-        지역 {result.vars.region} · {result.vars.season === 'peak' ? '성수기' : '비성수기'}{' '}
-        시세 기준. 스튜디오·드레스·메이크업 베이스 + 활성 추가금이 합산됩니다.
-      </p>
+      <div className="flex flex-col gap-1 text-xs text-[#525252]">
+        <p className="pb-2 text-[11px] text-[#A1A1A1]">
+          지역 {result.vars.region} · {result.vars.season === 'peak' ? '성수기' : '비성수기'} 평균 단가 기준
+        </p>
+        <Row k="스튜디오 베이스" sub="앨범 + 액자 기본" v={`${s.studioBase.toLocaleString()}만원`} />
+        {s.studioToggles > 0 && (
+          <Row k="스튜디오 추가금" v={`+${s.studioToggles.toLocaleString()}만원`} accent />
+        )}
+        <Row
+          k="드레스 베이스"
+          sub={`${base.dress === '본식만' ? '본식만' : base.dress === '본식촬영' ? '본식+촬영' : '촬영만'}`}
+          v={`${s.dressBase.toLocaleString()}만원`}
+        />
+        {s.dressToggles > 0 && (
+          <Row k="드레스 추가금" v={`+${s.dressToggles.toLocaleString()}만원`} accent />
+        )}
+        <Row
+          k="메이크업 베이스"
+          sub={`${base.makeup} 등급`}
+          v={`${s.makeupBase.toLocaleString()}만원`}
+        />
+        {s.makeupToggles > 0 && (
+          <Row k="메이크업 추가금" v={`+${s.makeupToggles.toLocaleString()}만원`} accent />
+        )}
+        <TotalRow v={`${result.budget.categories.스드메.toLocaleString()}만원`} />
+      </div>
     );
   }
   return (
-    <p className="text-xs text-[#525252]">
-      {category}은(는) 유형 평균 추정값이에요. 향후 AI 맞춤 추천으로 정교화됩니다.
+    <p className="text-xs leading-5 text-[#525252]">
+      {withJosa(category)} 유형 평균 추정값이에요. 향후 AI 맞춤 추천으로 정교화됩니다.
     </p>
   );
 }
 
-function Row({ k, v }: { k: string; v: string }) {
+function Row({
+  k,
+  sub,
+  v,
+  accent,
+  muted,
+}: {
+  k: string;
+  sub?: string;
+  v: string;
+  accent?: boolean;
+  muted?: boolean;
+}) {
   return (
-    <div className="flex items-center justify-between py-1">
-      <span>{k}</span>
-      <span className="font-semibold tabular-nums text-[#171717]">{v}</span>
+    <div className="flex items-center justify-between gap-2 py-1">
+      <div className="flex min-w-0 flex-col">
+        <span className={muted ? 'text-[#A1A1A1]' : ''}>{k}</span>
+        {sub && <span className="text-[10px] text-[#A1A1A1]">{sub}</span>}
+      </div>
+      <span
+        className={`shrink-0 font-semibold tabular-nums ${
+          accent ? 'text-[#7499BA]' : muted ? 'text-[#A1A1A1]' : 'text-[#171717]'
+        }`}
+      >
+        {v}
+      </span>
+    </div>
+  );
+}
+
+function TotalRow({ v }: { v: string }) {
+  return (
+    <div className="mt-2 flex items-center justify-between border-t border-[#E5E5E5] pt-2">
+      <span className="text-xs font-semibold text-[#373737]">소계</span>
+      <span className="text-sm font-bold tabular-nums text-[#171717]">{v}</span>
     </div>
   );
 }

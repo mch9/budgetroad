@@ -79,13 +79,13 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
                     type="button"
                     onClick={() => setToggle(t.id, !on)}
                     aria-pressed={on}
-                    className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${
+                    className={`relative h-7 w-12 shrink-0 appearance-none rounded-full p-0 transition-colors ${
                       on ? 'bg-[#AAC7E1]' : 'bg-[#E5E5E5]'
                     }`}
                   >
                     <span
-                      className={`absolute top-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform ${
-                        on ? 'translate-x-[22px]' : 'translate-x-0.5'
+                      className={`absolute left-0.5 top-0.5 h-6 w-6 rounded-full bg-white shadow-sm transition-transform ${
+                        on ? 'translate-x-[20px]' : 'translate-x-0'
                       }`}
                     />
                   </button>

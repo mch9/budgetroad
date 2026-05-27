@@ -72,11 +72,24 @@ export type CategoryAmount = {
 
 export type VenueBreakdown = {
   meal: number;            // 식대
-  daegwan: number;         // 대관 (보증 미달 시 부과)
+  daegwan: number;         // 대관 (보증 미달 시 부과, 초과면 0 — 면제)
   baseDecoration: number;  // 기본 장식비
   bonsik: number;          // 본식 촬영
   toggleAddOns: number;    // 토글 ON된 예식장 연출/진행 합
   belowBojeung: boolean;   // 하객 < 보증인원 여부
+  // 산출 근거 표시용 메타
+  guests: number;
+  perHead: number;
+  bojeung: number;
+};
+
+export type SdmBreakdown = {
+  studioBase: number;
+  dressBase: number;
+  makeupBase: number;
+  studioToggles: number;
+  dressToggles: number;
+  makeupToggles: number;
 };
 
 export type BudgetResult = {
@@ -85,6 +98,7 @@ export type BudgetResult = {
   total: number;           // core + 기타
   toggleDelta: number;     // 토글 ON된 항목 합
   venueDetail: VenueBreakdown;
+  sdmDetail: SdmBreakdown;
 };
 
 export type ConsistencyStatus = 'WARN' | 'OVER' | 'UNDER' | 'FIT';
