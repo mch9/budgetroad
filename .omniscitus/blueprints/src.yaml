@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T16:26:59.829Z
+updated: 2026-05-27T18:18:36.411Z
 
 files:
   "src/app/layout.tsx":
@@ -913,5 +913,113 @@ files:
     purpose: ""
     change_log:
       - date: 2026-05-27T15:29:01.041Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/types.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:12:01.878Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:12:01.878Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/data/toggles-meta.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:15:17.634Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:15:17.634Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/data/type-config.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:18:18.150Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:18:18.150Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:15:39.416Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage3-variables.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:18:34.546Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:18:34.546Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:15:54.820Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage4-venue.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:18:36.411Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:18:36.411Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:16:19.697Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage5-budget.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:16:36.323Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:16:36.323Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage6-consistency.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:16:46.656Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:16:46.656Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage7-advice.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:17:12.487Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:17:12.487Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/index.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:17:21.025Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:17:21.025Z
         action: write
         source: "claude:powel858"
