@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T18:22:12.084Z
+updated: 2026-05-27T18:26:01.165Z
 
 files:
   "src/app/layout.tsx":
@@ -46,10 +46,13 @@ files:
     status: active
     source: "auto:shadcn"
     created: 
-    last_modified: 2026-04-24T05:30:30.536Z
-    change_count: 5
+    last_modified: 2026-05-27T18:25:00.465Z
+    change_count: 6
     purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
     change_log:
+      - date: 2026-05-27T18:25:00.465Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-24T05:30:30.536Z
         action: edit
         source: "claude:mincheol.kim"
@@ -321,10 +324,28 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-05-27T16:26:41.904Z
-    change_count: 112
+    last_modified: 2026-05-27T18:26:01.165Z
+    change_count: 118
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-05-27T18:26:01.165Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:56.485Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:40.654Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:34.640Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:31.136Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:25.447Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T16:26:41.904Z
         action: edit
         source: "claude:powel858"
@@ -1033,5 +1054,16 @@ files:
     purpose: ""
     change_log:
       - date: 2026-05-27T18:17:21.025Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/loading-view.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:24:47.780Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:24:47.780Z
         action: write
         source: "claude:powel858"

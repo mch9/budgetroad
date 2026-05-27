@@ -115,3 +115,12 @@
     @apply font-sans;
   }
 }
+
+/* 로딩 페이지 그라데이션 배지 wiggle */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-5deg); }
+  50% { transform: rotate(5deg); }
+}
+.wiggle-anim {
+  animation: wiggle 2s ease-in-out infinite;
+}

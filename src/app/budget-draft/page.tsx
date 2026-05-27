@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
 import { ProgressBar } from '@/components/onboarding/progress-bar';
 import { QuestionCard } from '@/components/onboarding/question-card';
+import { LoadingView } from '@/components/result/loading-view';
 import {
   STEPS,
   TOTAL_STEPS,
@@ -47,11 +48,11 @@ export default function BudgetDraftPage() {
       const saved = sessionStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed = JSON.parse(saved) as SavedState;
-        // step 범위 검증 — 옛 schema(진입 라우팅 포함, step=14 등) 무시
+        // step 범위 검증 — 옛 schema는 무시. 현재 유효 범위: 0 ~ TOTAL_STEPS+1 (loading=14, result=15)
         if (
           typeof parsed.step === 'number' &&
           parsed.step >= 0 &&
-          parsed.step <= TOTAL_STEPS &&
+          parsed.step <= TOTAL_STEPS + 1 &&
           parsed.answers &&
           'Q1' in parsed.answers
         ) {
@@ -118,13 +119,18 @@ export default function BudgetDraftPage() {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
+    // 마지막 문항(M5) 답변 완료 → 로딩 화면 진입. 분류·이벤트는 로딩 끝에서.
+    setStep(TOTAL_STEPS);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function onLoadingComplete() {
     const score = scoreAxis(answers);
     const p = classifyPersona(score);
     setAxisScore(score);
     setPersona(p);
-    setStep(TOTAL_STEPS);
+    setStep(TOTAL_STEPS + 1);
     trackEvent('result_viewed', buildResultPayload(p, score));
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function back() {
@@ -148,8 +154,10 @@ export default function BudgetDraftPage() {
     }
   }
 
-  const isResult = step === TOTAL_STEPS;
-  const currentMeta: StepMeta | null = step < TOTAL_STEPS ? STEPS[step] : null;
+  const isLoading = step === TOTAL_STEPS;
+  const isResult = step === TOTAL_STEPS + 1;
+  const isQuestion = step < TOTAL_STEPS;
+  const currentMeta: StepMeta | null = isQuestion ? STEPS[step] : null;
   const currentAnswer: ChoiceId | null = currentMeta ? answers[currentMeta.id] : null;
   const canProceed = currentAnswer !== null;
 
@@ -165,7 +173,7 @@ export default function BudgetDraftPage() {
         </Link>
       </header>
 
-      {!isResult && (
+      {isQuestion && (
         <div className="mx-auto w-full max-w-[576px] px-6 pt-6">
           <ProgressBar
             currentStep={step}
@@ -176,7 +184,7 @@ export default function BudgetDraftPage() {
         </div>
       )}
 
-      <main className="mx-auto flex w-full max-w-[576px] flex-1 flex-col px-6">
+      <main className={`mx-auto flex w-full flex-1 flex-col ${isLoading ? '' : 'max-w-[576px] px-6'}`}>
         {currentMeta && (
           <QuestionView
             meta={currentMeta}
@@ -184,12 +192,13 @@ export default function BudgetDraftPage() {
             onChoiceSelect={handleChoiceSelect}
           />
         )}
+        {isLoading && <LoadingView onComplete={onLoadingComplete} />}
         {isResult && persona && axisScore && (
           <ResultView persona={persona} axisScore={axisScore} onReset={reset} />
         )}
       </main>
 
-      {!isResult && (
+      {isQuestion && (
         <nav className="sticky bottom-0 z-10 border-t border-[#E5E7EB] bg-[#F9FAFB]/90 backdrop-blur-md">
           <div className="mx-auto flex w-full max-w-[576px] items-center justify-between px-6 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <button
