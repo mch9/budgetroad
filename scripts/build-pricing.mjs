@@ -175,14 +175,6 @@ function pricesFor(rows, csvRegions, months, category, items) {
   return result;
 }
 
-// 시즌별 평균 가격
-function seasonAvg(rows, csvRegion, category, items) {
-  return {
-    peak: avg(pricesFor(rows, csvRegion, PEAK_MONTHS, category, items)),
-    offPeak: avg(pricesFor(rows, csvRegion, OFF_PEAK_MONTHS, category, items)),
-  };
-}
-
 // ── 출력 빌더 ──
 
 function buildRegionProfiles(rows) {
@@ -214,9 +206,6 @@ function buildRegionProfiles(rows) {
 // 메이크업: (실장)/(부원장)/(원장)본식+촬영 (유형별 등급)
 function buildCategoryBase(rows) {
   const studioItem = '20페이지 앨범, 20R 액자 제공';
-  const dressItems = ['본식', '본식 + 촬영', '촬영'];
-  const makeupItems = ['(실장)본식+촬영', '(부원장)본식+촬영', '(원장)본식+촬영'];
-
   const out = {};
   for (const [userRegion, csvRegion] of Object.entries(REGION_MAP)) {
     const seasonData = (months) => ({
