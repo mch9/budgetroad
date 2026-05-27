@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T01:30:22.757Z
+updated: 2026-05-27T18:19:01.348Z
 
 files:
   "CLAUDE.md":
@@ -67,10 +67,13 @@ files:
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 2026-04-28T16:24:09.962Z
-    change_count: 2
+    last_modified: 2026-05-27T18:19:01.348Z
+    change_count: 3
     purpose: "프로젝트 의존성 및 스크립트 정의 (검증된 helper 버전으로 덮어씀)"
     change_log:
+      - date: 2026-05-27T18:19:01.348Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-28T16:24:09.962Z
         action: edit
         source: "claude:mincheol.kim"
