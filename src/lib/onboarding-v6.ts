@@ -272,6 +272,17 @@ export function scoreAxis(answers: OnboardingAnswers): AxisScore {
   return { a, b };
 }
 
+// 진행률 바 macro 단계 계산 — 질문 카테고리 기준 (Q형=1 / T형=2 / M형=3).
+// spec의 STEP 1·2·3(온보딩/결과/토글)과는 별개로, 시뮬레이션 화면 내
+// 질문 카테고리를 progress bar에 표시하기 위한 매핑.
+export function getMacroStep(stepIndex: number): 1 | 2 | 3 {
+  const meta = STEPS[stepIndex];
+  if (!meta) return 3;
+  if (meta.type === 'main') return 1;
+  if (meta.type === 'tag') return 2;
+  return 3;
+}
+
 export function classifyPersona({ a, b }: AxisScore): PersonaType {
   if (Math.abs(a) <= 1 && Math.abs(b) <= 1) return '탐색미결정';
   if (a >= 0 && b >= 0) return '전통격식';

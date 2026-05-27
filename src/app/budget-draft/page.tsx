@@ -12,6 +12,7 @@ import {
   PERSONA_DESCRIPTIONS,
   scoreAxis,
   classifyPersona,
+  getMacroStep,
   type OnboardingAnswers,
   type PersonaType,
   type AxisScore,
@@ -169,7 +170,7 @@ export default function BudgetDraftPage() {
           <ProgressBar
             currentStep={step}
             totalSteps={TOTAL_STEPS}
-            macroStep={1}
+            macroStep={getMacroStep(step)}
             macroTotal={3}
           />
         </div>
