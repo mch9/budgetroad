@@ -273,8 +273,8 @@ export const M2_GUESTS_MAP: Record<ChoiceId, number> = {
   D: 350,
 };
 
-// M3 응답 → 양가 압력 레벨 (0·1·2)
-export const M3_YANGGA_MAP: Record<ChoiceId, 0 | 1 | 2> = {
+// M3 응답 → 양가 압력 레벨 (0·1·2). M3는 A/B/C 3지선다라 Partial.
+export const M3_YANGGA_MAP: Partial<Record<ChoiceId, 0 | 1 | 2>> = {
   A: 0, // 당사자 주도
   B: 1, // 조율형
   C: 2, // 양가 압력 高
