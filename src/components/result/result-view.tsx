@@ -39,6 +39,14 @@ export function ResultView({ answers, onReset }: Props) {
     setToggles((prev) => ({ ...prev, [id]: on }));
   }
 
+  function setAllToggles(on: boolean) {
+    setToggles((prev) => {
+      const next = { ...prev };
+      for (const key of Object.keys(next) as ToggleId[]) next[key] = on;
+      return next;
+    });
+  }
+
   function showToast(msg: string) {
     setToast(msg);
     window.setTimeout(() => setToast(null), 2000);
@@ -72,7 +80,12 @@ export function ResultView({ answers, onReset }: Props) {
         {activeTab === 'comprehensive' && <TabComprehensive result={result} />}
         {activeTab === 'itemized' && <TabItemized result={result} />}
         {activeTab === 'care' && (
-          <TabCare result={result} toggles={toggles} setToggle={setToggle} />
+          <TabCare
+            result={result}
+            toggles={toggles}
+            setToggle={setToggle}
+            setAllToggles={setAllToggles}
+          />
         )}
       </main>
 
