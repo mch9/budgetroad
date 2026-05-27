@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-29T15:57:24.033Z
+updated: 2026-05-27T15:20:09.844Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -140,3 +140,26 @@ files:
       - date: 2026-04-29T15:57:24.033Z
         action: write
         source: "claude:mincheol.kim"
+  "docs/prd/budget-builder/onboarding-v6-step1-plan.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T15:20:09.844Z
+    change_count: 5
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T15:20:09.844Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:20:04.422Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:12:30.004Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T15:07:43.432Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T14:56:27.554Z
+        action: write
+        source: "claude:powel858"

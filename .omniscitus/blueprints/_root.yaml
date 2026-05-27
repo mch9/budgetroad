@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-28T16:24:12.794Z
+updated: 2026-05-27T01:30:22.757Z
 
 files:
   "CLAUDE.md":
@@ -53,11 +53,16 @@ files:
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 
-    change_count: 0
+    last_modified: 2026-05-27T01:30:22.757Z
+    change_count: 2
     purpose: "프로젝트 소개 및 시작 가이드"
     change_log:
-      []
+      - date: 2026-05-27T01:30:22.757Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T01:28:00.984Z
+        action: write
+        source: "claude:powel858"
   "package.json":
     status: active
     source: "auto:create-next-app"
