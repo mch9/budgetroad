@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T18:26:01.165Z
+updated: 2026-05-27T18:30:00.987Z
 
 files:
   "src/app/layout.tsx":
@@ -324,10 +324,25 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-05-27T18:26:01.165Z
-    change_count: 118
+    last_modified: 2026-05-27T18:30:00.987Z
+    change_count: 123
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-05-27T18:30:00.987Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:29:49.474Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:29:29.731Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:28:24.971Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:28:21.694Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T18:26:01.165Z
         action: edit
         source: "claude:powel858"
@@ -1065,5 +1080,71 @@ files:
     purpose: ""
     change_log:
       - date: 2026-05-27T18:24:47.780Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/ui/toast.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:33.496Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:33.496Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/footer.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:40.532Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:40.532Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/tabs/tab-comprehensive.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:45.572Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:45.572Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/tabs/tab-itemized.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:50.161Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:50.161Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/tabs/tab-care.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:58.274Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:58.274Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/result-view.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:28:20.023Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:28:20.023Z
         action: write
         source: "claude:powel858"
