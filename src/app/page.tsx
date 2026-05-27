@@ -123,7 +123,7 @@ export default function Home() {
             />
           </span>
           <br />
-          어디서부터 시작할까?
+          어디서부터 시작해볼까?
         </h1>
 
         {/* Subtitle — Figma: Pretendard 400 20.47px, color #373737 */}
