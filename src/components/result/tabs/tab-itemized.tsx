@@ -45,8 +45,8 @@ export function TabItemized({ result }: Props) {
 
   return (
     <div className="flex flex-col gap-5 px-5 pb-6 pt-6">
-      {/* 도넛 + 레전드 */}
-      <div className="flex flex-col items-center gap-4 rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
+      {/* 도넛 + 레전드 — 모바일 세로 / 데스크톱 가로 분할 */}
+      <div className="flex flex-col items-center gap-4 rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5 sm:flex-row sm:justify-center sm:gap-8">
         <DonutChart
           data={donutData}
           size={180}
@@ -54,7 +54,7 @@ export function TabItemized({ result }: Props) {
           centerLabel="총 예산"
           centerValue={`${result.budget.total.toLocaleString()}만원`}
         />
-        <div className="grid grid-cols-2 gap-x-4 gap-y-2 self-stretch">
+        <div className="grid grid-cols-2 gap-x-4 gap-y-2 self-stretch sm:flex sm:flex-col sm:gap-3 sm:self-auto sm:min-w-[200px]">
           {categories.map((cat) => (
             <div key={cat} className="flex items-center gap-2">
               <span
