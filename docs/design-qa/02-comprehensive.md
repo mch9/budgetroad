@@ -15,12 +15,21 @@
 
 ## 2. 적용 diff
 
-### F1. 정합성 진단 카드
+### F1. 정합성 진단 카드 (2회 조정)
+
+**1차 (25b4d8a)**:
 ```diff
 -      <p className="mt-2 text-sm leading-6">{result.consistency.body}</p>
 +      <p className="mt-1 text-sm leading-6">{result.consistency.body}</p>
 ```
-headline ↔ body 간격 8px → 4px. body의 leading-6(24px)와 합쳐져 한 paragraph 느낌으로 통합.
+8px → 4px. body의 leading-6(24px)와 합쳐져 한 paragraph 느낌으로 통합.
+
+**2차 추가 (디자이너 추가 피드백 — 1-2 간격과 2-3 간격이 시각상 다름)**:
+```diff
+-      <p className="mt-1 text-sm leading-6">{result.consistency.body}</p>
++      <p className="text-sm leading-6">{result.consistency.body}</p>
+```
+mt 자체 제거. 같은 4px도 line-height inner padding 누적 차이로 2-3이 더 떨어져 보이던 문제 해소.
 
 ### F2. 준비 TOP 3 — 전체 폰트 +2px
 

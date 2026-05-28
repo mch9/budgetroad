@@ -197,7 +197,7 @@ function DiagnosisCard({ result }: { result: ResultPayload }) {
         <span className="text-xs">진단</span>
       </div>
       <h3 className="text-base font-bold">{result.consistency.headline}</h3>
-      <p className="mt-1 text-sm leading-6">{result.consistency.body}</p>
+      <p className="text-sm leading-6">{result.consistency.body}</p>
     </section>
   );
 }
