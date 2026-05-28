@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-28T05:18:01.810Z
+updated: 2026-05-28T06:39:56.418Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -192,10 +192,60 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T05:18:01.810Z
-    change_count: 1
+    last_modified: 2026-05-28T06:39:16.174Z
+    change_count: 6
     purpose: ""
     change_log:
+      - date: 2026-05-28T06:39:16.174Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:14.250Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:12.217Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:09.115Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:01.094Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T05:18:01.810Z
+        action: write
+        source: "claude:powel858"
+  "docs/design-qa/01-simulation.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T06:39:56.418Z
+    change_count: 9
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T06:39:56.418Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:37.496Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:30:00.249Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:28:51.981Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:28:40.315Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:22:07.124Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:15:18.039Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:15:00.313Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:09:47.554Z
         action: write
         source: "claude:powel858"

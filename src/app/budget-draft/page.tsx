@@ -162,12 +162,12 @@ export default function BudgetDraftPage() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-[#F9FAFB]">
-      <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/80 px-6 backdrop-blur-sm sm:h-[87px] sm:px-8">
+      <header className="sticky top-0 z-10 flex h-[88px] items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/80 px-6 backdrop-blur-sm sm:px-8">
         <Link href="/">
           <img
             src="/brand/logo-ko-nav.png"
             alt="버짓로드"
-            className="h-[28px] w-auto sm:h-[36px]"
+            className="h-[41px] w-auto"
           />
         </Link>
       </header>
@@ -200,9 +200,14 @@ export default function BudgetDraftPage() {
               type="button"
               onClick={back}
               disabled={step === 0}
-              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40"
+              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40 sm:text-lg"
             >
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <svg
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden
+                className="h-[25px] w-[25px] sm:h-7 sm:w-7"
+              >
                 <path
                   d="M10 4L6 8L10 12"
                   stroke="currentColor"
@@ -217,10 +222,15 @@ export default function BudgetDraftPage() {
               type="button"
               onClick={next}
               disabled={!canProceed}
-              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40"
+              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40 sm:text-lg"
             >
               {step === TOTAL_STEPS - 1 ? '결과 보기' : '다음'}
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <svg
+                viewBox="0 0 16 16"
+                fill="none"
+                aria-hidden
+                className="h-[25px] w-[25px] sm:h-7 sm:w-7"
+              >
                 <path
                   d="M6 4L10 8L6 12"
                   stroke="currentColor"
@@ -252,9 +262,11 @@ function QuestionView({
 }) {
   return (
     <div className="flex flex-col pb-8 pt-6">
-      <div className="space-y-1.5 pb-2 pt-2">
+      <div className="space-y-2 pb-2 pt-2">
         <p className="text-sm leading-5 text-[#6A7282]">Q{stepNumber}.</p>
-        <h1 className="text-[30px] font-bold leading-9 text-[#373737]">{meta.title}</h1>
+        <h1 className="text-[28px] font-bold leading-9 text-[#373737] sm:text-[30px]">
+          {meta.title}
+        </h1>
         {meta.subtitle && (
           <p className="pt-2 text-base leading-6 text-[#6A7282]">{meta.subtitle}</p>
         )}

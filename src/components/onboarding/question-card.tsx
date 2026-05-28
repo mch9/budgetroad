@@ -11,7 +11,7 @@ type Props = {
 
 // 카드 / 원형 크기는 선택·미선택 동일. 차이는 색·border뿐.
 const CARD_HEIGHT = 'min-h-[74px]';
-const INDICATOR_SIZE = 'h-7 w-7';
+const INDICATOR_SIZE = 'h-8 w-8';
 
 export function QuestionCard({ selected, label, desc, disabled, onClick }: Props) {
   if (disabled) {
@@ -56,7 +56,7 @@ export function QuestionCard({ selected, label, desc, disabled, onClick }: Props
         <div
           className={`flex ${INDICATOR_SIZE} shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]`}
         >
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
+          <svg width="20" height="20" viewBox="0 0 18 18" fill="none" aria-hidden>
             <path
               d="M4.5 9L7.5 12L13.5 6"
               stroke="white"
