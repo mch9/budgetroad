@@ -305,8 +305,10 @@
 
 | ID | 위치 | 차이 요약 | 결정 | 비고 |
 |:---:|---|---|:---:|---|
-| H1 | 헤더 높이 (mobile) | 56 → 88 | ✅ 수정 | mobile/desktop 일관성 |
-| H4 | 로고 크기 | 28/36 → 41 | ✅ 수정 | Figma는 mobile/desktop 동일 41 |
+| H1 | 헤더 높이 (mobile) | 56 → 88 → **56 (재조정)** | ⚠️ 부분 revert | 모바일만 컴팩트, sm+ 88 유지. 사용자 피드백 (헤더 너무 큼) |
+| H4 | 로고 크기 | 28/36 → 41 → **28 / sm+ 41 (재조정)** | ⚠️ 부분 revert | 동일 이유 |
+| **H6** | **모바일 nav padding** | 16 → **8** | ✅ 신규 수정 | 콘텐츠 영역 +24px 확보 |
+| **H7** | **모바일 nav 버튼 높이** | 56 → **48** | ✅ 신규 수정 | 동일 — 합 +56px 가용 영역 |
 | Q2 | 질문 타이틀 (mobile) | 30 → 28 | ✅ 수정 | mobile wrap 빈도 ↓ |
 | Q6 | Q번호↔타이틀 간격 | 6 → 8 | ✅ 수정 | `space-y-2` |
 | O2/O3 | 옵션 카드 높이 분리 | 74 통일 유지 | ❌ 보존 | 사용자 명시 — "클릭 시 미세 움직임 거슬림" |
@@ -357,16 +359,19 @@
 - [ ] 모바일 width 402px에서 정렬 확인 → **Vercel preview** (사용자 확인)
 - [ ] 데스크탑 width 1440px에서 정렬 확인 → **Vercel preview** (사용자 확인)
 - [x] `텍스트 스타일 현황 (2026-05-28).md` 갱신
-- [ ] commit + push → Vercel preview 확인
+- [x] commit + push 완료 → Vercel preview 자동 deploy 대기
 
 ### 5-3. 커밋
-*(commit 직후 hash 기록)*
+
+- **hash**: `a68005d`
+- **branch**: `feature/onboarding-v6-step1` (PR #29)
+- **메시지**: `refactor: Figma 시뮬레이션 디자인 일치 적용 (Q4 기준 정밀 분석)`
 
 ### 5-4. 롤백 방법
 
-이 PR의 디자인 변경만 되돌리려면:
+이 변경만 되돌리려면:
 ```
-git revert <hash>
-git push
+git revert a68005d
+git push origin feature/onboarding-v6-step1
 ```
 1 commit으로 묶여 있어 한 번에 원상복귀. PR #29 안의 다른 commit은 영향 없음.

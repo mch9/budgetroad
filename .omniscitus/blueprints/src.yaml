@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-28T06:38:29.152Z
+updated: 2026-05-28T06:53:56.547Z
 
 files:
   "src/app/layout.tsx":
@@ -324,10 +324,19 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-05-28T06:38:29.152Z
-    change_count: 130
+    last_modified: 2026-05-28T06:53:56.547Z
+    change_count: 133
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-05-28T06:53:56.547Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:53:51.493Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:53:40.076Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T06:38:29.152Z
         action: edit
         source: "claude:powel858"

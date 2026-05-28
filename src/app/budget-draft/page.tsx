@@ -162,12 +162,12 @@ export default function BudgetDraftPage() {
 
   return (
     <div className="flex min-h-dvh flex-col bg-[#F9FAFB]">
-      <header className="sticky top-0 z-10 flex h-[88px] items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/80 px-6 backdrop-blur-sm sm:px-8">
+      <header className="sticky top-0 z-10 flex h-14 items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/80 px-6 backdrop-blur-sm sm:h-[88px] sm:px-8">
         <Link href="/">
           <img
             src="/brand/logo-ko-nav.png"
             alt="버짓로드"
-            className="h-[41px] w-auto"
+            className="h-7 w-auto sm:h-[41px]"
           />
         </Link>
       </header>
@@ -195,12 +195,12 @@ export default function BudgetDraftPage() {
 
       {isQuestion && (
         <nav className="sticky bottom-0 z-10 border-t border-[#E5E7EB] bg-[#F9FAFB]/90 backdrop-blur-md">
-          <div className="mx-auto flex w-full max-w-[576px] items-center justify-between px-6 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))]">
+          <div className="mx-auto flex w-full max-w-[576px] items-center justify-between px-6 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))] sm:py-4 sm:pb-[calc(1rem+env(safe-area-inset-bottom))]">
             <button
               type="button"
               onClick={back}
               disabled={step === 0}
-              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40 sm:text-lg"
+              className="flex h-12 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40 sm:h-14 sm:text-lg"
             >
               <svg
                 viewBox="0 0 16 16"
@@ -222,7 +222,7 @@ export default function BudgetDraftPage() {
               type="button"
               onClick={next}
               disabled={!canProceed}
-              className="flex h-14 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40 sm:text-lg"
+              className="flex h-12 items-center gap-2 text-base font-bold text-[#373737] transition-opacity disabled:opacity-40 sm:h-14 sm:text-lg"
             >
               {step === TOTAL_STEPS - 1 ? '결과 보기' : '다음'}
               <svg
