@@ -31,7 +31,16 @@
 - `result-view.tsx:79`의 `max-w-[576px]` 때문에 데스크톱도 폭이 모바일과 같음 → 분기 의미 없음
 - 디자인 시스템 일관성 유지
 
-## 4. 적용 diff
+## 4. 적용 diff (2회 조정)
+
+**2차 조정 (디자이너 추가 피드백 — 라벨/배지 줄과 sub 줄 행간이 좁아 숨막힘)**:
+```diff
+- <div className="flex min-w-0 flex-1 flex-col">
++ <div className="flex min-w-0 flex-1 flex-col gap-1">
+```
+배지 `py-0.5`로 라벨 줄 박스가 살짝 큰 상태 + sub와 gap 0이라 붙어 보이던 문제 해소. 두 줄 사이 4px gap 확보.
+
+### 1차 diff
 
 ```diff
 - <div className="flex min-w-0 flex-1 flex-col">

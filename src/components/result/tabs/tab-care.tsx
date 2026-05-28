@@ -73,7 +73,7 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
                       <path d="M12 7v5l3 2" />
                     </svg>
                   </div>
-                  <div className="flex min-w-0 flex-1 flex-col">
+                  <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <div className="flex items-center gap-2">
                       <span className="truncate text-sm font-semibold text-[#171717]">{t.label}</span>
                       {isAutoApplied && (
