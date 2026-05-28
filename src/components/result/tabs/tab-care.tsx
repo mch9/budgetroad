@@ -51,7 +51,9 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
           <div className="overflow-hidden rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white">
             {grouped[group].map((t, idx) => {
               const on = toggles[t.id];
-              const isDefaultOn = t.defaultByType[result.vars.persona] === true;
+              // result.vars.toggleDefaults는 persona 기본 매트릭스 + M3/T2 응답 보정까지
+              // 모두 반영된 "초기 자동 적용" 상태. 양가 압력·인생샷 보정으로 켜진 토글도 잡힘.
+              const isDefaultOn = result.vars.toggleDefaults[t.id] === true;
               const isAutoApplied = on && isDefaultOn;
               const price =
                 TOGGLE_PRICES[t.id]?.[result.vars.region]?.[result.vars.season] ?? null;
