@@ -80,7 +80,7 @@ export function TabItemized({ result }: Props) {
                 <div className="flex items-center gap-3">
                   <span
                     className="h-8 w-8 shrink-0 rounded-lg"
-                    style={{ backgroundColor: CATEGORY_COLORS[cat], opacity: 0.3 }}
+                    style={{ backgroundColor: CATEGORY_COLORS[cat] }}
                   />
                   <span className="text-base font-medium text-[#171717]">{cat}</span>
                 </div>
