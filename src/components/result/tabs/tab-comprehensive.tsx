@@ -96,7 +96,7 @@ export function TabComprehensive({ result }: Props) {
           <ul className="flex flex-col gap-3">
             {result.advice.save.map((item, i) => (
               <li key={i} className="flex gap-3">
-                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1] text-[10px] font-bold text-[#171717]">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#7499BA] text-[10px] font-bold text-white">
                   {String(i + 1).padStart(2, '0')}
                 </span>
                 <div>
