@@ -23,22 +23,25 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
 
   return (
     <div className="flex flex-col gap-4 px-5 pb-6 pt-5">
-      {/* 컨트롤 바 — 좌 모두 끄기(검정 secondary) / 우 전체 켜기(액센트 primary) */}
+      {/* 컨트롤 바 — 좌 "전체 옵션" 라벨 / 우 그룹: [모두 끄기 검정] [전체 켜기 액센트] */}
       <div className="flex items-center justify-between px-1">
-        <button
-          type="button"
-          onClick={() => setAllToggles(false)}
-          className="text-sm font-medium text-[#373737]"
-        >
-          모두 끄기
-        </button>
-        <button
-          type="button"
-          onClick={() => setAllToggles(true)}
-          className="text-sm font-bold text-[#7499BA]"
-        >
-          전체 켜기
-        </button>
+        <span className="text-sm font-medium text-[#737373]">전체 옵션</span>
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={() => setAllToggles(false)}
+            className="text-sm font-medium text-[#373737]"
+          >
+            모두 끄기
+          </button>
+          <button
+            type="button"
+            onClick={() => setAllToggles(true)}
+            className="text-sm font-bold text-[#7499BA]"
+          >
+            전체 켜기
+          </button>
+        </div>
       </div>
 
       {/* 4 그룹 */}
