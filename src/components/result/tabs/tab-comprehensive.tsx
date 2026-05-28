@@ -17,19 +17,28 @@ export function TabComprehensive({ result }: Props) {
           <p className="text-xs font-semibold text-[#737373]">우리 커플은</p>
           <h2 className="mt-1 text-2xl font-bold leading-8 text-[#373737]">{config.title}</h2>
           <p className="mt-4 text-[15px] leading-7 text-[#373737]">{config.desc}</p>
-          <p className="mt-4 text-sm leading-6 text-[#AAC7E1]">{config.tags.join(' ')}</p>
-          <div className="mt-5 flex items-start gap-2 rounded-xl bg-[rgba(170,199,225,0.18)] px-4 py-3">
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {config.tags.map((tag, i) => (
+              <span
+                key={i}
+                className="rounded-full bg-[rgba(170,199,225,0.22)] px-3 py-1 text-xs font-semibold text-[#7499BA]"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+          <div className="mt-5 flex items-center gap-3 rounded-xl bg-[rgba(170,199,225,0.18)] px-4 py-3">
             <span className="shrink-0 text-xs font-semibold text-[#7499BA]">추천 식장</span>
-            <div className="min-w-0">
+            <div className="min-w-0 flex-1">
               <p className="text-sm font-semibold text-[#171717]">{result.venue.form}</p>
               <p className="mt-0.5 text-xs text-[#737373]">대안 · {result.venue.alt}</p>
-              {result.vars.persona === '본질미니멀' && (
-                <p className="mt-2 text-xs leading-5 text-[#525252]">
-                  국가유산청·시구 공공시설 결혼식장 100만원대도 함께 검토해보세요
-                </p>
-              )}
             </div>
           </div>
+          {result.vars.persona === '본질미니멀' && (
+            <p className="mt-3 text-xs leading-5 text-[#525252]">
+              국가유산청·시구 공공시설 결혼식장 100만원대도 함께 검토해보세요
+            </p>
+          )}
         </div>
       </section>
 

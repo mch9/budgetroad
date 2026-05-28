@@ -114,10 +114,10 @@ export const STEPS: StepMeta[] = [
     id: 'Q8',
     title: '여러 식장 후보를 둘러볼 때, 첫눈에 가장 끌리는 곳은 어디인가요?',
     options: [
-      { id: 'A', label: '호텔·로비가 으리으리한 곳 — 격식 있는 분위기가 느껴져서', scoreA: 2, scoreB: 1 },
-      { id: 'B', label: '후기 평점·견적이 괜찮은 곳 — 조건이 괜찮은지 확인하고 싶어서', scoreA: -1, scoreB: 0 },
-      { id: 'C', label: '분위기·조명이 예쁜 곳 — 우리가 원하는 무드인지 보여주고 싶어서', scoreA: 1, scoreB: -1 },
-      { id: 'D', label: '가격이 가장 합리적인 곳 — 예산을 얼마나 아낄 수 있는지 확인하고 싶어서', scoreA: -2, scoreB: 0 },
+      { id: 'A', label: '호텔·로비가 으리으리한 곳', scoreA: 2, scoreB: 1 },
+      { id: 'B', label: '후기 평점·견적이 괜찮은 곳', scoreA: -1, scoreB: 0 },
+      { id: 'C', label: '분위기·조명이 예쁜 곳', scoreA: 1, scoreB: -1 },
+      { id: 'D', label: '가격이 가장 합리적인 곳', scoreA: -2, scoreB: 0 },
     ],
   },
 
