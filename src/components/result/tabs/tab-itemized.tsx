@@ -137,7 +137,7 @@ function CategoryBreakdown({ category, result }: { category: ResultCategory; res
       ? `최소 보증인원 ${v.minGuarantee}명으로 계산됨 (실 하객 ${v.guests}명 × ${v.perHead}만원)`
       : `${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`;
     return (
-      <div className="flex flex-col gap-1 text-xs text-[#525252]">
+      <div className="flex flex-col gap-1 text-sm text-[#525252]">
         <Row k="식대" sub={mealSub} v={`${v.meal.toLocaleString()}만원`} />
         <Row
           k="대관"
@@ -166,8 +166,8 @@ function CategoryBreakdown({ category, result }: { category: ResultCategory; res
     const s = result.budget.sdmDetail;
     const base = result.vars.base;
     return (
-      <div className="flex flex-col gap-1 text-xs text-[#525252]">
-        <p className="pb-2 text-[11px] text-[#A1A1A1]">
+      <div className="flex flex-col gap-1 text-sm text-[#525252]">
+        <p className="pb-2 text-xs text-[#A1A1A1]">
           지역 {result.vars.region} · {result.vars.season === 'peak' ? '성수기' : '비성수기'} 평균 단가 기준
         </p>
         <Row k="스튜디오 베이스" sub="앨범 + 액자 기본" v={`${s.studioBase.toLocaleString()}만원`} />
@@ -195,7 +195,7 @@ function CategoryBreakdown({ category, result }: { category: ResultCategory; res
     );
   }
   return (
-    <p className="text-xs leading-5 text-[#525252]">
+    <p className="text-sm leading-6 text-[#525252]">
       {withJosa(category)} 유형 평균 추정값이에요. 향후 AI 맞춤 추천으로 정교화됩니다.
     </p>
   );
@@ -218,7 +218,7 @@ function Row({
     <div className="flex items-center justify-between gap-2 py-1">
       <div className="flex min-w-0 flex-col">
         <span className={muted ? 'text-[#A1A1A1]' : ''}>{k}</span>
-        {sub && <span className="text-[10px] text-[#A1A1A1]">{sub}</span>}
+        {sub && <span className="text-xs text-[#A1A1A1]">{sub}</span>}
       </div>
       <span
         className={`shrink-0 font-semibold tabular-nums ${
@@ -234,8 +234,8 @@ function Row({
 function TotalRow({ v }: { v: string }) {
   return (
     <div className="mt-2 flex items-center justify-between border-t border-[#E5E5E5] pt-2">
-      <span className="text-xs font-semibold text-[#373737]">소계</span>
-      <span className="text-sm font-bold tabular-nums text-[#171717]">{v}</span>
+      <span className="text-sm font-semibold text-[#373737]">소계</span>
+      <span className="text-base font-bold tabular-nums text-[#171717]">{v}</span>
     </div>
   );
 }

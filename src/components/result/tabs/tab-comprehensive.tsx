@@ -112,9 +112,9 @@ export function TabComprehensive({ result }: Props) {
       {/* 추천 식장 별도 카드는 제거 — 위 타입 진단 카드 하단에 한 줄로 흡수.
           reasons는 향후 정식 디자인 도착 시 별도 영역으로 분리 예정. */}
 
-      {/* 6) 준비 TOP 3 (정적) */}
+      {/* 6) 준비 TOP 3 (정적) — 디자이너 피드백으로 전체 폰트 +2 */}
       <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
-        <h3 className="pb-3 text-base font-bold text-[#171717]">지금 당장 해야 할 준비 TOP 3</h3>
+        <h3 className="pb-3 text-lg font-bold text-[#171717]">지금 당장 해야 할 준비 TOP 3</h3>
         <ol className="flex flex-col gap-4">
           <TodoItem
             rank={1}
@@ -197,7 +197,7 @@ function DiagnosisCard({ result }: { result: ResultPayload }) {
         <span className="text-xs">진단</span>
       </div>
       <h3 className="text-base font-bold">{result.consistency.headline}</h3>
-      <p className="mt-2 text-sm leading-6">{result.consistency.body}</p>
+      <p className="mt-1 text-sm leading-6">{result.consistency.body}</p>
     </section>
   );
 }
@@ -217,16 +217,16 @@ function TodoItem({
 }) {
   return (
     <li className="flex gap-3">
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#373737] text-xs font-bold text-white">
+      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#373737] text-sm font-bold text-white">
         {rank}위
       </span>
       <div className="flex-1">
-        <p className="text-sm font-semibold text-[#171717]">{title}</p>
-        <p className="mt-0.5 text-xs text-[#7499BA]">권장 시점: {timing}</p>
-        <p className="mt-2 text-xs leading-5 text-[#525252]">{note}</p>
+        <p className="text-base font-semibold text-[#171717]">{title}</p>
+        <p className="mt-0.5 text-sm text-[#7499BA]">권장 시점: {timing}</p>
+        <p className="mt-2 text-sm leading-6 text-[#525252]">{note}</p>
         <ul className="mt-3 flex flex-col gap-1">
           {checks.map((c, i) => (
-            <li key={i} className="flex items-center gap-2 text-xs text-[#525252]">
+            <li key={i} className="flex items-center gap-2 text-sm text-[#525252]">
               <span className="text-[#AAC7E1]">●</span> {c}
             </li>
           ))}
