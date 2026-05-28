@@ -3,7 +3,7 @@
 import {
   HardDrive, UserCheck, Images, Trees, Sunrise,
   Tag, HandHelping, Repeat, Shirt, Scissors, User,
-  Users, Brush,
+  Users, UserRound,
   Flower2, Flower, Sparkles, Frame, Cake,
   Mic, BookOpen, Music, UserPlus, Utensils, Crown, Palette,
   type LucideIcon,
@@ -26,7 +26,7 @@ const TOGGLE_ICONS: Record<ToggleId, LucideIcon> = {
   '가봉 스냅': Scissors,
   '턱시도 대여': User,
   '혼주 메이크업': Users,
-  '헤어변형': Brush,
+  '헤어변형': UserRound,
   '생화 꽃장식': Flower2,
   '부케': Flower,
   '플라워 샤워': Sparkles,
