@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-27T18:03:52.549Z
+updated: 2026-05-28T05:18:01.810Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -175,5 +175,27 @@ files:
     purpose: ""
     change_log:
       - date: 2026-05-27T18:03:52.549Z
+        action: write
+        source: "claude:powel858"
+  "docs/결과 로직 현황 (2026-05-28).md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T05:04:23.078Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T05:04:23.078Z
+        action: write
+        source: "claude:powel858"
+  "docs/텍스트 스타일 현황 (2026-05-28).md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T05:18:01.810Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T05:18:01.810Z
         action: write
         source: "claude:powel858"
