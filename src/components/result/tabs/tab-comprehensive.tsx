@@ -217,8 +217,8 @@ function TodoItem({
 }) {
   return (
     <li className="flex gap-3">
-      <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#373737] text-sm font-bold text-white">
-        {rank}위
+      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#7499BA] text-[10px] font-bold text-white">
+        {String(rank).padStart(2, '0')}
       </span>
       <div className="flex-1">
         <p className="text-base font-semibold text-[#171717]">{title}</p>
