@@ -15,6 +15,15 @@ const CATEGORY_COLORS: Record<ResultCategory, string> = {
   신혼여행: '#9BB8D4',
 };
 
+// 카테고리별 아이콘 (32×32 SVG with built-in accent bg). 도넛/legend 색상은 별도로 카테고리 식별.
+const CATEGORY_ICONS: Record<ResultCategory, string> = {
+  예식장: '/icons/category/venue.svg',
+  스드메: '/icons/category/sdm.svg',
+  '예물·예단': '/icons/category/yedan.svg',
+  혼수: '/icons/category/furniture.svg',
+  신혼여행: '/icons/category/honeymoon.svg',
+};
+
 export function TabItemized({ result }: Props) {
   const [expanded, setExpanded] = useState<Set<ResultCategory>>(new Set());
 
@@ -78,9 +87,11 @@ export function TabItemized({ result }: Props) {
                 className="flex w-full items-center justify-between px-4 py-3 text-left"
               >
                 <div className="flex items-center gap-3">
-                  <span
-                    className="h-8 w-8 shrink-0 rounded-lg"
-                    style={{ backgroundColor: CATEGORY_COLORS[cat] }}
+                  <img
+                    src={CATEGORY_ICONS[cat]}
+                    alt=""
+                    aria-hidden
+                    className="h-8 w-8 shrink-0"
                   />
                   <span className="text-base font-medium text-[#171717]">{cat}</span>
                 </div>
