@@ -74,19 +74,21 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
                     </svg>
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col">
-                    <span className="truncate text-sm font-semibold text-[#171717]">{t.label}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="truncate text-sm font-semibold text-[#171717]">{t.label}</span>
+                      {isAutoApplied && (
+                        <span
+                          className="shrink-0 rounded-full bg-[rgba(170,199,225,0.22)] px-2 py-0.5 text-[10px] font-semibold text-[#7499BA]"
+                          title="유형별 기본 추천으로 자동 적용된 항목이에요"
+                        >
+                          자동 적용
+                        </span>
+                      )}
+                    </div>
                     <span className="truncate text-xs text-[#737373]">
                       {price !== null ? `+${price.toLocaleString()}만원` : '가격 미정'} · {t.desc}
                     </span>
                   </div>
-                  {isAutoApplied && (
-                    <span
-                      className="shrink-0 rounded-full bg-[rgba(170,199,225,0.22)] px-2 py-0.5 text-[10px] font-semibold text-[#7499BA]"
-                      title="유형별 기본 추천으로 자동 적용된 항목이에요"
-                    >
-                      자동 적용
-                    </span>
-                  )}
                   <button
                     type="button"
                     onClick={() => setToggle(t.id, !on)}

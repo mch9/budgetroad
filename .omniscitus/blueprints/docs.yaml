@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-28T07:41:14.104Z
+updated: 2026-05-28T07:52:27.539Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -192,10 +192,13 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T07:41:06.719Z
-    change_count: 11
+    last_modified: 2026-05-28T07:52:00.339Z
+    change_count: 12
     purpose: ""
     change_log:
+      - date: 2026-05-28T07:52:00.339Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T07:41:06.719Z
         action: edit
         source: "claude:powel858"
@@ -293,5 +296,16 @@ files:
     purpose: ""
     change_log:
       - date: 2026-05-28T07:31:09.326Z
+        action: write
+        source: "claude:powel858"
+  "docs/design-qa/04-care.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T07:52:27.539Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T07:52:27.539Z
         action: write
         source: "claude:powel858"
