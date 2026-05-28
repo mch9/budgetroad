@@ -73,7 +73,7 @@ export function FeedbackCard({ context = {} }: Props) {
       <p className="mt-1 text-xs text-[#525252]">
         평가 한 줄이 다음 사용자에게 큰 도움이 됩니다.
       </p>
-      <div className="mt-4 flex items-center justify-between gap-1">
+      <div className="mt-4 flex items-start justify-between gap-1">
         {FACES.map(({ rating: r, Icon, label }) => {
           const selected = rating === r;
           return (
