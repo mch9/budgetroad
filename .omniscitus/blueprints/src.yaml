@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-28T01:14:55.125Z
+updated: 2026-05-28T01:25:52.457Z
 
 files:
   "src/app/layout.tsx":
@@ -324,10 +324,22 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-05-27T18:30:00.987Z
-    change_count: 123
+    last_modified: 2026-05-28T01:25:39.590Z
+    change_count: 127
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-05-28T01:25:39.590Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:34.081Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:31.568Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:29.259Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T18:30:00.987Z
         action: edit
         source: "claude:powel858"
@@ -865,10 +877,13 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-27T18:22:08.591Z
-    change_count: 20
+    last_modified: 2026-05-28T01:25:52.457Z
+    change_count: 21
     purpose: ""
     change_log:
+      - date: 2026-05-28T01:25:52.457Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T18:22:08.591Z
         action: edit
         source: "claude:powel858"
@@ -933,10 +948,13 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-27T16:26:59.829Z
-    change_count: 4
+    last_modified: 2026-05-28T01:25:21.386Z
+    change_count: 5
     purpose: ""
     change_log:
+      - date: 2026-05-28T01:25:21.386Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T16:26:59.829Z
         action: edit
         source: "claude:powel858"

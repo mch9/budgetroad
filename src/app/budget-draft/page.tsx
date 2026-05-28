@@ -13,7 +13,6 @@ import {
   EMPTY_ANSWERS,
   scoreAxis,
   classifyPersona,
-  getMacroStep,
   type OnboardingAnswers,
   type PersonaType,
   type AxisScore,
@@ -175,12 +174,7 @@ export default function BudgetDraftPage() {
 
       {isQuestion && (
         <div className="mx-auto w-full max-w-[576px] px-6 pt-6">
-          <ProgressBar
-            currentStep={step}
-            totalSteps={TOTAL_STEPS}
-            macroStep={getMacroStep(step)}
-            macroTotal={3}
-          />
+          <ProgressBar currentStep={step} totalSteps={TOTAL_STEPS} />
         </div>
       )}
 
@@ -190,6 +184,7 @@ export default function BudgetDraftPage() {
             meta={currentMeta}
             currentAnswer={currentAnswer}
             onChoiceSelect={handleChoiceSelect}
+            stepNumber={step + 1}
           />
         )}
         {isLoading && <LoadingView onComplete={onLoadingComplete} />}
@@ -248,15 +243,17 @@ function QuestionView({
   meta,
   currentAnswer,
   onChoiceSelect,
+  stepNumber,
 }: {
   meta: StepMeta;
   currentAnswer: ChoiceId | null;
   onChoiceSelect: (qid: QuestionId, choiceId: ChoiceId) => void;
+  stepNumber: number; // 1-based 화면 노출용. 내부 meta.id (Q1·T2·M5 등)와 분리.
 }) {
   return (
     <div className="flex flex-col pb-8 pt-6">
       <div className="space-y-1.5 pb-2 pt-2">
-        <p className="text-sm leading-5 text-[#6A7282]">{meta.id}.</p>
+        <p className="text-sm leading-5 text-[#6A7282]">Q{stepNumber}.</p>
         <h1 className="text-[30px] font-bold leading-9 text-[#373737]">{meta.title}</h1>
         {meta.subtitle && (
           <p className="pt-2 text-base leading-6 text-[#6A7282]">{meta.subtitle}</p>
