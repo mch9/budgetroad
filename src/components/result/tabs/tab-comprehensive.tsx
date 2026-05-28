@@ -10,15 +10,22 @@ export function TabComprehensive({ result }: Props) {
 
   return (
     <div className="flex flex-col gap-5 px-5 pb-6 pt-6">
-      {/* 1) 타입 진단 카드 */}
-      <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-6 text-center">
-        <PersonaIllustration persona={result.vars.persona} />
-        <p className="pt-4 text-xs font-semibold text-[#737373]">우리 커플은</p>
-        <h2 className="pt-1 text-2xl font-bold text-[#373737]">{config.title}</h2>
-        <p className="mx-auto mt-3 max-w-[280px] text-sm leading-6 text-[#373737]">
-          {config.desc}
-        </p>
-        <p className="mt-4 text-sm text-[#7499BA]">{config.tags.join(' ')}</p>
+      {/* 1) 타입 진단 카드 — 일러스트 + 헤딩 + 풍부 설명 + 해시태그 + 추천 식장 한 줄 */}
+      <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white px-6 pb-6 pt-2">
+        <PersonaIllustration illustration={config.illustration} />
+        <div className="pt-2 text-left">
+          <p className="text-xs font-semibold text-[#737373]">우리 커플은</p>
+          <h2 className="mt-1 text-2xl font-bold leading-8 text-[#373737]">{config.title}</h2>
+          <p className="mt-4 text-[15px] leading-7 text-[#373737]">{config.desc}</p>
+          <p className="mt-4 text-sm leading-6 text-[#AAC7E1]">{config.tags.join(' ')}</p>
+          <div className="mt-5 flex items-start gap-2 rounded-xl bg-[rgba(170,199,225,0.18)] px-4 py-3">
+            <span className="shrink-0 text-xs font-semibold text-[#7499BA]">추천 식장</span>
+            <div className="min-w-0">
+              <p className="text-sm font-semibold text-[#171717]">{result.venue.form}</p>
+              <p className="mt-0.5 text-xs text-[#737373]">대안 · {result.venue.alt}</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       {/* 2) 예산 총 합계 + 이유 */}
@@ -88,21 +95,10 @@ export function TabComprehensive({ result }: Props) {
         </section>
       )}
 
-      {/* 6) 추천 식장 */}
-      <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
-        <h3 className="pb-1 text-base font-bold text-[#171717]">추천 식장 형태</h3>
-        <p className="text-sm text-[#7499BA]">{result.venue.form}</p>
-        <p className="pt-1 text-xs text-[#A1A1A1]">대안: {result.venue.alt}</p>
-        <ul className="mt-3 flex flex-col gap-2">
-          {result.venue.reasons.map((r, i) => (
-            <li key={i} className="text-xs text-[#525252]">
-              <span className="font-semibold text-[#373737]">{r.label}</span> · {r.text}
-            </li>
-          ))}
-        </ul>
-      </section>
+      {/* 추천 식장 별도 카드는 제거 — 위 타입 진단 카드 하단에 한 줄로 흡수.
+          reasons는 향후 정식 디자인 도착 시 별도 영역으로 분리 예정. */}
 
-      {/* 7) 준비 TOP 3 (정적) */}
+      {/* 6) 준비 TOP 3 (정적) */}
       <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
         <h3 className="pb-3 text-base font-bold text-[#171717]">지금 당장 해야 할 준비 TOP 3</h3>
         <ol className="flex flex-col gap-4">
@@ -226,27 +222,17 @@ function TodoItem({
   );
 }
 
-function PersonaIllustration({ persona }: { persona: string }) {
-  // 임시 placeholder — 디자인 자산 도착 후 교체
-  const emoji =
-    persona === '전통격식'
-      ? '👰‍♀️'
-      : persona === '표준실용'
-        ? '💼'
-        : persona === '경험연출'
-          ? '📸'
-          : persona === '본질미니멀'
-            ? '🌿'
-            : '🧭';
+function PersonaIllustration({
+  illustration,
+}: {
+  illustration: 'traditional' | 'standard' | 'experience' | 'minimal' | 'undecided';
+}) {
   return (
-    <div
-      className="mx-auto flex h-24 w-24 items-center justify-center rounded-3xl text-5xl"
-      style={{
-        background: 'linear-gradient(135deg, #CEE7FE 0%, #AAC7E1 100%)',
-        boxShadow: '0 10px 25px -10px rgba(170,199,225,0.6)',
-      }}
-    >
-      {emoji}
-    </div>
+    <img
+      src={`/illustrations/persona-${illustration}.svg`}
+      alt=""
+      aria-hidden
+      className="mx-auto block h-auto w-full max-w-[300px]"
+    />
   );
 }

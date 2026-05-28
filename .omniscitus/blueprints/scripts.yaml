@@ -1,15 +1,21 @@
 version: 1
-updated: 2026-05-27T18:17:58.070Z
+updated: 2026-05-27T18:42:30.375Z
 
 files:
   "scripts/build-pricing.mjs":
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-27T18:17:58.070Z
-    change_count: 4
+    last_modified: 2026-05-27T18:42:30.375Z
+    change_count: 6
     purpose: ""
     change_log:
+      - date: 2026-05-27T18:42:30.375Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:42:26.334Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T18:17:58.070Z
         action: edit
         source: "claude:powel858"
