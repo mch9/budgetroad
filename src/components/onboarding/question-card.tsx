@@ -1,5 +1,5 @@
-// 옵션 카드 — Figma: 선택 76px / 미선택 72px / 우측 체크 원형
-// 긴 옵션 라벨이 있는 질문(Q1·Q4·Q7·Q8·T7 등)에 대비해 min-h + wrap 허용
+// 옵션 카드 — 클릭 시 height/size 변화 없이 색상만 즉시 전환.
+// 팀 피드백(2026-05-28): 클릭 시 미세 움직임 거슬림 → 모든 transition 제거.
 
 type Props = {
   selected: boolean;
@@ -9,6 +9,10 @@ type Props = {
   onClick: () => void;
 };
 
+// 카드 / 원형 크기는 선택·미선택 동일. 차이는 색·border뿐.
+const CARD_HEIGHT = 'min-h-[74px]';
+const INDICATOR_SIZE = 'h-7 w-7';
+
 export function QuestionCard({ selected, label, desc, disabled, onClick }: Props) {
   if (disabled) {
     return (
@@ -16,7 +20,7 @@ export function QuestionCard({ selected, label, desc, disabled, onClick }: Props
         type="button"
         disabled
         aria-disabled
-        className="flex min-h-[72px] w-full cursor-not-allowed items-center justify-between rounded-[14px] border-2 border-[#F3F4F6] bg-[#F9FAFB] px-5 py-5 text-left"
+        className={`flex ${CARD_HEIGHT} w-full cursor-not-allowed items-center justify-between rounded-[14px] border-2 border-[#F3F4F6] bg-[#F9FAFB] px-5 py-5 text-left`}
       >
         <span className="text-lg font-medium leading-7 text-[#9CA3AF]">{label}</span>
         <span className="ml-3 shrink-0 rounded-full bg-[#F3F4F6] px-2.5 py-1 text-xs text-[#9CA3AF]">
@@ -30,10 +34,10 @@ export function QuestionCard({ selected, label, desc, disabled, onClick }: Props
     <button
       type="button"
       onClick={onClick}
-      className={`flex w-full items-center justify-between gap-3 rounded-[14px] border-2 px-5 py-5 text-left transition-all ${
+      className={`flex ${CARD_HEIGHT} w-full items-center justify-between gap-3 rounded-[14px] border-2 px-5 py-5 text-left ${
         selected
-          ? 'min-h-[76px] border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]'
-          : 'min-h-[72px] border-[#E5E7EB] bg-white'
+          ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]'
+          : 'border-[#E5E7EB] bg-white'
       }`}
     >
       <div className="flex min-w-0 flex-col">
@@ -49,19 +53,23 @@ export function QuestionCard({ selected, label, desc, disabled, onClick }: Props
         )}
       </div>
       {selected ? (
-        <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden>
+        <div
+          className={`flex ${INDICATOR_SIZE} shrink-0 items-center justify-center rounded-full bg-[#AAC7E1]`}
+        >
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden>
             <path
-              d="M5 10L8.5 13.5L15 6.5"
+              d="M4.5 9L7.5 12L13.5 6"
               stroke="white"
-              strokeWidth="1.67"
+              strokeWidth="1.8"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
         </div>
       ) : (
-        <div className="h-6 w-6 shrink-0 rounded-full border-2 border-[#D1D5DC] bg-white" />
+        <div
+          className={`${INDICATOR_SIZE} shrink-0 rounded-full border-2 border-[#D1D5DC] bg-white`}
+        />
       )}
     </button>
   );
