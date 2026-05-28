@@ -8,7 +8,8 @@
 
 | ID | 위치 | 피드백 | 결정 |
 |:---:|---|---|:---:|
-| F1 | 토글 row — 자동 적용 배지 | 모바일에서 자동 적용 배지가 sub 텍스트(가격·설명)를 가림 | ✅ 수정 |
+| F1 | 토글 row — 자동 적용 배지 | 모바일에서 배지가 sub 텍스트 가림 → 라벨 옆 inline + 행간 조정 | ✅ 수정 (2회) |
+| F2 | 토글 row — 항목 아이콘 | 25개 모두 시계 모양으로 직관성 없음 → 같은 결, 다른 모양 아이콘으로 | ✅ 수정 |
 
 레퍼런스: `IMG_4138.PNG`, `IMG_4139.PNG` (사용자 첨부 — Downloads 폴더)
 
@@ -67,6 +68,19 @@
 + </div>
 + <button>...</button>
 ```
+
+## F2. 25개 토글 아이콘 매핑 (lucide-react)
+
+기존 모든 row의 Clock SVG 제거 → `lucide-react` 도입 후 토글 ID별 매핑:
+
+| 그룹 | 토글 → 아이콘 |
+|---|---|
+| 스튜디오 (5) | 원본 구매 → `HardDrive` · 담당자 지정 → `UserCheck` · 서브 스냅 → `Images` · 야외 촬영 → `Trees` · 얼리스타트 → `Sunrise` |
+| 드레스 (6) | 드레스 지정 → `Tag` · 본식 헬퍼 → `HandHelping` · 2부 드레스 → `Repeat` · 퍼스트웨어 → `Shirt` · 가봉 스냅 → `Scissors` · 턱시도 대여 → `User` |
+| 메이크업 (2) | 혼주 메이크업 → `Users` · 헤어변형 → `Brush` |
+| 예식장 (12) | 생화 꽃장식 → `Flower2` · 부케 → `Flower` · 플라워 샤워 → `Sparkles` · 포토테이블 → `Frame` · 웨딩 케이크 → `Cake` · 본식 사회자 → `Mic` · 주례 → `BookOpen` · 축하공연 섭외 → `Music` · 본식 도우미 → `UserPlus` · 폐백 음식 → `Utensils` · 폐백 수모 → `Crown` · 한복 대여 → `Palette` |
+
+모두 동일한 outline 스타일(stroke-width 2, color `#7499BA`, size 16) — 디자인 결 통일.
 
 ## 5. 변경 후 row 구조
 

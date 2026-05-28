@@ -1,7 +1,45 @@
 'use client';
 
+import {
+  HardDrive, UserCheck, Images, Trees, Sunrise,
+  Tag, HandHelping, Repeat, Shirt, Scissors, User,
+  Users, Brush,
+  Flower2, Flower, Sparkles, Frame, Cake,
+  Mic, BookOpen, Music, UserPlus, Utensils, Crown, Palette,
+  type LucideIcon,
+} from 'lucide-react';
+
 import type { ResultPayload, ToggleId, ToggleState, ToggleGroup } from '@/lib/budget-engine';
 import { TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
+
+// 토글 아이콘 매핑 — 같은 outline 결, 각 항목별 다른 아이콘
+const TOGGLE_ICONS: Record<ToggleId, LucideIcon> = {
+  '원본 구매': HardDrive,
+  '담당자 지정': UserCheck,
+  '서브 스냅': Images,
+  '야외 촬영': Trees,
+  '얼리스타트': Sunrise,
+  '드레스 지정': Tag,
+  '본식 헬퍼': HandHelping,
+  '2부 드레스': Repeat,
+  '퍼스트웨어': Shirt,
+  '가봉 스냅': Scissors,
+  '턱시도 대여': User,
+  '혼주 메이크업': Users,
+  '헤어변형': Brush,
+  '생화 꽃장식': Flower2,
+  '부케': Flower,
+  '플라워 샤워': Sparkles,
+  '포토테이블': Frame,
+  '웨딩 케이크': Cake,
+  '본식 사회자': Mic,
+  '주례': BookOpen,
+  '축하공연 섭외': Music,
+  '본식 도우미': UserPlus,
+  '폐백 음식': Utensils,
+  '폐백 수모': Crown,
+  '한복 대여': Palette,
+};
 
 type Props = {
   result: ResultPayload;
@@ -57,6 +95,7 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
               const isAutoApplied = on && isDefaultOn;
               const price =
                 TOGGLE_PRICES[t.id]?.[result.vars.region]?.[result.vars.season] ?? null;
+              const Icon = TOGGLE_ICONS[t.id];
               return (
                 <div
                   key={t.id}
@@ -68,10 +107,7 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
                     className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                     style={{ background: 'rgba(170,199,225,0.3)' }}
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7499BA" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-                      <circle cx="12" cy="12" r="9" />
-                      <path d="M12 7v5l3 2" />
-                    </svg>
+                    <Icon size={16} color="#7499BA" strokeWidth={2} aria-hidden />
                   </div>
                   <div className="flex min-w-0 flex-1 flex-col gap-1">
                     <div className="flex items-center gap-2">
