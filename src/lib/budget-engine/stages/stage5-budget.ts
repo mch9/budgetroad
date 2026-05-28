@@ -1,6 +1,12 @@
-// STAGE 5 — 예산 계산
-// 식대 보증인원 공식 + 카테고리별 합산
-// 출처: docs/Result Page Calculation Algorithm.md STAGE 5
+// STAGE 5 — 예산 계산 (v3 — 베뉴 타입별 식대·대관료 분기)
+// 출처: docs/Result Page Calculation Algorithm v3 — Venue Type Dispatch.md
+//
+// v2 차이:
+// - 식대 단가(perHead)·기본 장식비는 REGION_PROFILES 그대로 사용 (지역 차이 보존)
+// - 보증인원·대관료는 VENUE_PROFILES 사용 (베뉴 타입별)
+// - 식대 = perHead × max(사용자 선택 하객, 베뉴 최소 보증인원)
+// - 사용자 하객 < 베뉴 보증 → minGuaranteeApplied=true로 UI sub-text 안내
+// - 진단용 core(coreForDiagnosis)는 대관료 제외 → 기존 밴드 안정
 
 import type {
   SetupVars,
@@ -8,27 +14,31 @@ import type {
   BudgetResult,
   VenueBreakdown,
   ResultCategory,
+  VenueType,
 } from '../types';
 import { REGION_PROFILES } from '../data/region-profiles';
 import { CATEGORY_BASE } from '../data/category-base';
 import { TOGGLE_PRICES } from '../data/toggle-prices';
 import { TOGGLES_META } from '../data/toggles-meta';
 import { TYPE_CONFIGS } from '../data/type-config';
+import { VENUE_PROFILES } from '../data/venue-profiles';
 
-// 식대 — 보증인원 방식
-function calcMeal(vars: SetupVars): { meal: number; daegwan: number; belowBojeung: boolean } {
-  const profile = REGION_PROFILES[vars.region][vars.season];
-  if (vars.guests >= profile.bojeung) {
-    return {
-      meal: vars.guests * profile.perHead,
-      daegwan: 0,
-      belowBojeung: false,
-    };
-  }
+// 식대 — 베뉴 타입 최소 보증인원 + 지역 식대 단가
+function calcVenueMeal(vars: SetupVars, venueType: VenueType) {
+  const region = REGION_PROFILES[vars.region][vars.season];
+  const venue = VENUE_PROFILES[venueType];
+  const billableGuests = Math.max(vars.guests, venue.guarantee);
+  const minGuaranteeApplied = vars.guests < venue.guarantee;
+  const meal = billableGuests * region.perHead;
   return {
-    meal: profile.baseMeal,
-    daegwan: profile.daegwan,
-    belowBojeung: true,
+    meal,
+    billableGuests,
+    minGuaranteeApplied,
+    minGuarantee: venue.guarantee,
+    perHead: region.perHead,
+    rental: venue.rentalFee,
+    rentalNote: venue.rentalNote,
+    rentalIsEstimate: venue.isEstimate,
   };
 }
 
@@ -49,35 +59,43 @@ function sumActiveToggles(vars: SetupVars, toggles: ToggleState) {
   };
 }
 
-export function calculateBudget(vars: SetupVars, toggles: ToggleState): BudgetResult {
+export function calculateBudget(
+  vars: SetupVars,
+  toggles: ToggleState,
+  venueType: VenueType,
+): BudgetResult {
   const profile = REGION_PROFILES[vars.region][vars.season];
   const base = CATEGORY_BASE[vars.region][vars.season];
   const config = TYPE_CONFIGS[vars.persona];
 
-  // 예식장 계산
-  const mealCalc = calcMeal(vars);
+  // 예식장 계산 (v3 베뉴 분기)
+  const venueMeal = calcVenueMeal(vars, venueType);
   const toggleSums = sumActiveToggles(vars, toggles);
 
   const venueDetail: VenueBreakdown = {
-    meal: mealCalc.meal,
-    daegwan: mealCalc.daegwan,
+    meal: venueMeal.meal,
+    daegwan: venueMeal.rental,
     baseDecoration: profile.baseDecoration,
     bonsik: config.base.bonsikPrice,
     toggleAddOns: toggleSums.예식장,
-    belowBojeung: mealCalc.belowBojeung,
+    venueType,
     guests: vars.guests,
-    perHead: profile.perHead,
-    bojeung: profile.bojeung,
+    billableGuests: venueMeal.billableGuests,
+    minGuarantee: venueMeal.minGuarantee,
+    minGuaranteeApplied: venueMeal.minGuaranteeApplied,
+    perHead: venueMeal.perHead,
+    rentalNote: venueMeal.rentalNote,
+    rentalIsEstimate: venueMeal.rentalIsEstimate,
   };
 
-  const venueTotal =
+  const venueWithoutRental =
     venueDetail.meal +
-    venueDetail.daegwan +
     venueDetail.baseDecoration +
     venueDetail.bonsik +
     venueDetail.toggleAddOns;
+  const venueTotal = venueWithoutRental + venueDetail.daegwan;
 
-  // 스드메 계산 — 베이스 + 토글
+  // 스드메 — 베이스 + 토글
   const dressBase = base.dress[config.base.dress];
   const makeupBase = base.makeup[config.base.makeup];
   const studioBase = base.studio;
@@ -111,13 +129,15 @@ export function calculateBudget(vars: SetupVars, toggles: ToggleState): BudgetRe
     신혼여행: honeymoon,
   };
 
-  const core = venueTotal + sdmTotal;
+  const core = venueTotal + sdmTotal;                       // 표시용 (대관료 포함)
+  const coreForDiagnosis = venueWithoutRental + sdmTotal;   // 진단용 (대관료 제외, Phase 1 밴드 안정)
   const total = core + yemul + honsu + honeymoon;
   const toggleDelta = toggleSums.total;
 
   return {
     categories,
     core,
+    coreForDiagnosis,
     total,
     toggleDelta,
     venueDetail,

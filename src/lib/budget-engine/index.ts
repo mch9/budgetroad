@@ -25,7 +25,7 @@ export function diagnose(
   const activeToggles = toggles ?? vars.toggleDefaults;
 
   const venue = recommendVenue(vars, answers);
-  const budget = calculateBudget(vars, activeToggles);
+  const budget = calculateBudget(vars, activeToggles, venue.venueType);
   const consistency = diagnoseConsistency(vars, budget);
   const advice = buildAdvice(vars, budget, consistency, activeToggles);
 
@@ -38,3 +38,4 @@ export { TOGGLES_META, TOGGLES_BY_ID } from './data/toggles-meta';
 export { REGION_PROFILES } from './data/region-profiles';
 export { CATEGORY_BASE } from './data/category-base';
 export { TOGGLE_PRICES } from './data/toggle-prices';
+export { VENUE_PROFILES, mapRecommendationToVenueType } from './data/venue-profiles';

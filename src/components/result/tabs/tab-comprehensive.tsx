@@ -23,6 +23,11 @@ export function TabComprehensive({ result }: Props) {
             <div className="min-w-0">
               <p className="text-sm font-semibold text-[#171717]">{result.venue.form}</p>
               <p className="mt-0.5 text-xs text-[#737373]">대안 · {result.venue.alt}</p>
+              {result.vars.persona === '본질미니멀' && (
+                <p className="mt-2 text-xs leading-5 text-[#525252]">
+                  국가유산청·시구 공공시설 결혼식장 100만원대도 함께 검토해보세요
+                </p>
+              )}
             </div>
           </div>
         </div>

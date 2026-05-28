@@ -46,13 +46,17 @@ export function buildAdvice(
   const config = TYPE_CONFIGS[vars.persona];
   const save: AdviceItem[] = [];
 
-  // WARN 케이스 — 스몰 베뉴 변경 권유
+  // WARN 케이스 — 스몰/하우스 베뉴 변경 권유 (v3)
   if (consistency.status === 'WARN') {
-    const venueDelta = budget.venueDetail.daegwan + Math.max(0, budget.venueDetail.meal - vars.guests * 7);
+    const v = budget.venueDetail;
+    // 현재 식대(보증인원 적용) - 만약 스몰로 바꿨을 때 식대(실 하객 기준) + 대관 차이 추정
+    const smallMealEst = vars.guests * v.perHead;
+    const smallRentalEst = 100;
+    const venueDelta = v.meal + v.daegwan - smallMealEst - smallRentalEst;
     save.push({
-      title: '추천한 스몰 베뉴로 변경',
-      desc: `현재 보증인원 미달로 식대·대관 부담이 커요. 스몰 베뉴로 가면 약 ${venueDelta.toLocaleString()}만원 절감 가능해요.`,
-      amount: venueDelta,
+      title: '추천한 스몰·하우스 베뉴로 변경',
+      desc: `현재 보증인원 ${v.minGuarantee}명을 채우는 식대가 그대로 발생해요. 스몰 베뉴로 가면 약 ${Math.max(0, venueDelta).toLocaleString()}만원 절감 가능해요.`,
+      amount: Math.max(0, venueDelta),
     });
   }
 

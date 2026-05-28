@@ -12,6 +12,17 @@ export type Season = 'peak' | 'offPeak';
 
 export type ResultCategory = '예식장' | '스드메' | '예물·예단' | '혼수' | '신혼여행';
 
+// ── 베뉴 타입 (Result Algorithm v3) ──
+
+export type VenueType = 'hotel' | 'hall' | 'house' | 'small';
+
+export type VenueProfile = {
+  guarantee: number;    // 최소 보증인원 (명)
+  rentalFee: number;    // 대관료 (만원)
+  rentalNote: string;   // 사용자 sub-text 안내
+  isEstimate: boolean;  // [추정] 단가 여부 (Phase 2 실측 대상)
+};
+
 // ── 추가금 토글 ──
 
 export type ToggleId =
@@ -63,6 +74,7 @@ export type VenueRecommendation = {
   alt: string;
   reasons: Array<{ label: string; text: string }>;
   pricingAvailable: boolean;
+  venueType: VenueType;  // form → 4 베뉴 타입 자동 매핑
 };
 
 export type CategoryAmount = {
@@ -72,15 +84,19 @@ export type CategoryAmount = {
 
 export type VenueBreakdown = {
   meal: number;            // 식대
-  daegwan: number;         // 대관 (보증 미달 시 부과, 초과면 0 — 면제)
+  daegwan: number;         // 대관 (베뉴별 상수, 호텔만 0)
   baseDecoration: number;  // 기본 장식비
   bonsik: number;          // 본식 촬영
   toggleAddOns: number;    // 토글 ON된 예식장 연출/진행 합
-  belowBojeung: boolean;   // 하객 < 보증인원 여부
-  // 산출 근거 표시용 메타
-  guests: number;
-  perHead: number;
-  bojeung: number;
+  // 식대 산출 근거 표시용
+  venueType: VenueType;
+  guests: number;          // 사용자 응답 하객 수
+  billableGuests: number;  // 실제 식대 청구 기준 (= max(guests, venue.guarantee))
+  minGuarantee: number;    // 베뉴별 최소 보증인원
+  minGuaranteeApplied: boolean; // 사용자 하객 < 베뉴 보증 → 최소 보증인원으로 계산
+  perHead: number;         // 1인당 식대 (지역별)
+  rentalNote: string;      // 대관료 sub-text 안내 (베뉴별)
+  rentalIsEstimate: boolean; // [추정] 베뉴(하우스·스몰) 여부
 };
 
 export type SdmBreakdown = {
@@ -94,7 +110,8 @@ export type SdmBreakdown = {
 
 export type BudgetResult = {
   categories: Record<ResultCategory, number>;
-  core: number;            // 스드메 + 예식장
+  core: number;            // 스드메 + 예식장 (대관료 포함, 표시용)
+  coreForDiagnosis: number; // 스드메 + 예식장(대관료 제외) — Phase 1 기존 밴드 안정용
   total: number;           // core + 기타
   toggleDelta: number;     // 토글 ON된 항목 합
   venueDetail: VenueBreakdown;

@@ -133,27 +133,18 @@ function withJosa(word: string, subject: 'eun' | 'i' = 'eun'): string {
 function CategoryBreakdown({ category, result }: { category: ResultCategory; result: ResultPayload }) {
   if (category === '예식장') {
     const v = result.budget.venueDetail;
+    const mealSub = v.minGuaranteeApplied
+      ? `최소 보증인원 ${v.minGuarantee}명으로 계산됨 (실 하객 ${v.guests}명 × ${v.perHead}만원)`
+      : `${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`;
     return (
       <div className="flex flex-col gap-1 text-xs text-[#525252]">
+        <Row k="식대" sub={mealSub} v={`${v.meal.toLocaleString()}만원`} />
         <Row
-          k="식대"
-          sub={`${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`}
-          v={`${v.meal.toLocaleString()}만원`}
+          k="대관"
+          sub={v.rentalNote}
+          v={`${v.daegwan.toLocaleString()}만원`}
+          muted={v.daegwan === 0}
         />
-        {v.belowBojeung ? (
-          <Row
-            k="대관"
-            sub={`하객 ${v.guests}명 < 보증 ${v.bojeung}명 → 별도 부과`}
-            v={`${v.daegwan.toLocaleString()}만원`}
-          />
-        ) : (
-          <Row
-            k="대관"
-            sub={`하객 ${v.guests}명 ≥ 보증 ${v.bojeung}명 → 면제`}
-            v="0만원"
-            muted
-          />
-        )}
         <Row
           k="기본 장식비"
           v={v.baseDecoration > 0 ? `${v.baseDecoration.toLocaleString()}만원` : '0만원 (포함)'}

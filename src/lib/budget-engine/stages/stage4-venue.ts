@@ -4,6 +4,7 @@
 
 import type { OnboardingAnswers } from '../../onboarding-v6';
 import type { SetupVars, VenueRecommendation } from '../types';
+import { mapRecommendationToVenueType } from '../data/venue-profiles';
 
 function recommendForm(vars: SetupVars): { form: string; alt: string } {
   const { persona, guests, budgetTarget } = vars;
@@ -79,6 +80,7 @@ export function recommendVenue(vars: SetupVars, answers: OnboardingAnswers): Ven
     form,
     alt,
     reasons,
-    pricingAvailable: false, // 형태별 가격 데이터 미보유
+    pricingAvailable: false,
+    venueType: mapRecommendationToVenueType(form),
   };
 }
