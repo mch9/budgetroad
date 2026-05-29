@@ -39,10 +39,18 @@ export function ResultView({ answers, onReset }: Props) {
   const [shareOpen, setShareOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
+  // 이미지 저장은 모바일 레이아웃(<640px, sm: 미적용)에서만 깔끔하게 캡처됨.
+  // 데스크톱은 화면이 sm: 가로 레이아웃이라 캡처가 깨지므로 옵션 자체를 숨김(PDF로 커버).
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     // createPortal(document.body)은 클라이언트에서만 — 마운트 후 렌더 가드
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
+    const mq = window.matchMedia('(max-width: 639px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
   }, []);
 
   // 초기 진단으로 유형별 디폴트 토글 산출
@@ -212,7 +220,7 @@ export function ResultView({ answers, onReset }: Props) {
               아래에서 원하는 방식을 골라주세요
             </p>
             <div className="flex flex-col gap-2.5">
-              {SHARE_ACTIONS.map(({ icon: Icon, label, action }) => (
+              {SHARE_ACTIONS.filter((a) => a.action !== 'image' || isMobile).map(({ icon: Icon, label, action }) => (
                 <button
                   key={label}
                   type="button"
