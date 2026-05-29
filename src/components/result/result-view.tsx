@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { diagnose } from '@/lib/budget-engine';
 import type { ToggleId, ToggleState } from '@/lib/budget-engine';
@@ -12,7 +12,7 @@ import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
 import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
-import { captureNode, downloadCanvas, canvasesToPdf } from '@/lib/export-result';
+import { captureNode, downloadCanvas } from '@/lib/export-result';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -38,11 +38,8 @@ export function ResultView({ answers, onReset }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('comprehensive');
   const [shareOpen, setShareOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [capturing, setCapturing] = useState(false);
-  const captureRef = useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -103,51 +100,42 @@ export function ResultView({ answers, onReset }: Props) {
       return;
     }
     if (action === 'image') {
-      void runExport('image');
+      void runExport();
       return;
     }
     showToast('곧 만나요!'); // expert 후속
   }
 
-  // 실제 화면에 렌더된 탭 콘텐츠를 그대로 캡처. 탭을 전환하며 3탭을 차례로 캡처해
-  // 화면과 동일한 레이아웃·여백·카드를 보존한다. capturing=true 동안 종합설계서는
-  // 만족도 조사 제외, 항목별 내역은 전체 펼침.
-  async function runExport(mode: 'pdf' | 'image') {
-    if (capturing) return;
-    const prevTab = activeTab;
-    setCapturing(true);
-    showToast(mode === 'pdf' ? 'PDF 저장 준비 중…' : '이미지 저장 준비 중…');
-    const tabs: { id: TabId; name: string }[] = [
-      { id: 'comprehensive', name: '종합설계서' },
-      { id: 'itemized', name: '항목별내역' },
-      { id: 'care', name: '추가금케어' },
-    ];
-    const shots: { canvas: HTMLCanvasElement; name: string }[] = [];
+  // 이미지 저장 — PDF와 동일한 #print-root(펼침·만족도 제외·정상 레이아웃)를 화면 밖에서
+  // 잠깐 보이게 한 뒤 3탭 섹션을 각각 PNG로 캡처. force-borders로 캡처 시 카드 테두리 보정.
+  async function runExport() {
+    const root = document.getElementById('print-root');
+    if (!root) {
+      showToast('저장에 실패했어요');
+      return;
+    }
+    showToast('이미지 저장 준비 중…');
+    const sections = Array.from(root.children) as HTMLElement[];
+    const names = ['종합설계서', '항목별내역', '추가금케어'];
+    const prevStyle = root.getAttribute('style') ?? '';
+    root.setAttribute(
+      'style',
+      'position:fixed;left:-99999px;top:0;display:block;width:600px;background:#F9FAFB',
+    );
+    root.classList.add('force-borders');
     try {
-      for (const t of tabs) {
-        setActiveTab(t.id);
-        await new Promise((r) => window.setTimeout(r, 450)); // 탭 렌더 + 이미지 로드 대기
-        if (captureRef.current) {
-          shots.push({ canvas: await captureNode(captureRef.current), name: t.name });
-        }
-      }
-      if (mode === 'image') {
-        for (const s of shots) {
-          downloadCanvas(s.canvas, `버짓로드-${s.name}.png`);
-          await new Promise((r) => window.setTimeout(r, 300));
-        }
-      } else {
-        canvasesToPdf(
-          shots.map((s) => s.canvas),
-          '버짓로드-결혼예산.pdf',
-        );
+      await new Promise((r) => window.setTimeout(r, 350));
+      for (let i = 0; i < sections.length; i++) {
+        const canvas = await captureNode(sections[i]);
+        downloadCanvas(canvas, `버짓로드-${names[i]}.png`);
+        await new Promise((r) => window.setTimeout(r, 200));
       }
       showToast('저장됐어요');
     } catch {
       showToast('저장에 실패했어요');
     } finally {
-      setActiveTab(prevTab);
-      setCapturing(false);
+      root.setAttribute('style', prevStyle);
+      root.classList.remove('force-borders');
     }
   }
 
@@ -176,22 +164,16 @@ export function ResultView({ answers, onReset }: Props) {
 
       {/* Tab content */}
       <main className="mx-auto w-full max-w-[576px] flex-1 pb-[100px]">
-        <div ref={captureRef} className="bg-[#F9FAFB]">
-          {activeTab === 'comprehensive' && (
-            <TabComprehensive result={result} forExport={capturing} />
-          )}
-          {activeTab === 'itemized' && (
-            <TabItemized result={result} toggles={toggles} forceExpand={capturing} />
-          )}
-          {activeTab === 'care' && (
-            <TabCare
-              result={result}
-              toggles={toggles}
-              setToggle={setToggle}
-              setAllToggles={setAllToggles}
-            />
-          )}
-        </div>
+        {activeTab === 'comprehensive' && <TabComprehensive result={result} />}
+        {activeTab === 'itemized' && <TabItemized result={result} toggles={toggles} />}
+        {activeTab === 'care' && (
+          <TabCare
+            result={result}
+            toggles={toggles}
+            setToggle={setToggle}
+            setAllToggles={setAllToggles}
+          />
+        )}
       </main>
 
       {/* Floating reset button (임시, 디자인엔 없음 — 향후 메뉴로 이동) */}
