@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Frown, Annoyed, Meh, Smile, Laugh, type LucideIcon } from 'lucide-react';
 import { trackEvent } from '@/lib/gtag';
 
 type Rating = 1 | 2 | 3 | 4 | 5;
+
+// 세션당 1회만 — 탭 전환·새로고침에도 제출 상태 유지(리셋 방지)
+const FEEDBACK_DONE_KEY = 'budgetroad_feedback_done';
 
 const FACES: { rating: Rating; Icon: LucideIcon; label: string }[] = [
   { rating: 1, Icon: Frown, label: '아쉬워요' },
@@ -29,7 +32,34 @@ type Props = {
 export function FeedbackCard({ context = {} }: Props) {
   const [rating, setRating] = useState<Rating | null>(null);
   const [comment, setComment] = useState('');
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState<boolean>(() => {
+    // 결과 화면은 클라이언트에서만 렌더되므로 초기값에서 sessionStorage 조회 안전(SSR 가드)
+    if (typeof window === 'undefined') return false;
+    try {
+      return sessionStorage.getItem(FEEDBACK_DONE_KEY) === '1';
+    } catch {
+      return false;
+    }
+  });
+  const expandRef = useRef<HTMLDivElement>(null);
+
+  // 이모티콘 선택 시 펼쳐진 입력+보내기 버튼을 하단 고정 바 위로 자동 스크롤(손 스크롤 불필요)
+  useEffect(() => {
+    if (rating === null) return;
+    const id = window.requestAnimationFrame(() => {
+      expandRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    return () => window.cancelAnimationFrame(id);
+  }, [rating]);
+
+  function markDone() {
+    try {
+      sessionStorage.setItem(FEEDBACK_DONE_KEY, '1');
+    } catch {
+      /* ignore */
+    }
+    setSubmitted(true);
+  }
 
   function handleRating(r: Rating) {
     setRating(r);
@@ -45,11 +75,11 @@ export function FeedbackCard({ context = {} }: Props) {
         ...context,
       });
     }
-    setSubmitted(true);
+    markDone();
   }
 
   function handleSkip() {
-    setSubmitted(true);
+    markDone();
   }
 
   if (submitted) {
@@ -66,74 +96,78 @@ export function FeedbackCard({ context = {} }: Props) {
   }
 
   return (
-    <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
-      <h3 className="text-base font-bold text-[#171717]">
-        이 결과가 도움이 되셨나요?
-      </h3>
-      <p className="mt-1 text-xs text-[#525252]">
-        평가 한 줄이 다음 사용자에게 큰 도움이 됩니다.
-      </p>
-      <div className="mt-4 flex items-start justify-between gap-1">
-        {FACES.map(({ rating: r, Icon, label }) => {
-          const selected = rating === r;
-          return (
-            <button
-              key={r}
-              type="button"
-              onClick={() => handleRating(r)}
-              aria-label={label}
-              aria-pressed={selected}
-              className={`flex flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2 transition-all ${
-                selected ? 'bg-[rgba(170,199,225,0.3)]' : 'hover:bg-[#F9FAFB]'
-              }`}
-            >
-              <Icon
-                size={selected ? 30 : 26}
-                color={selected ? '#7499BA' : '#A1A1A1'}
-                strokeWidth={selected ? 2.2 : 1.8}
-              />
-              <span
-                className={`text-[10px] ${
-                  selected ? 'font-semibold text-[#7499BA]' : 'text-[#737373]'
+    <>
+      <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
+        <h3 className="text-base font-bold text-[#171717]">
+          이 결과가 도움이 되셨나요?
+        </h3>
+        <p className="mt-1 text-xs text-[#525252]">
+          평가 한 줄이 다음 사용자에게 큰 도움이 됩니다.
+        </p>
+        <div className="mt-4 flex items-start justify-between gap-1">
+          {FACES.map(({ rating: r, Icon, label }) => {
+            const selected = rating === r;
+            return (
+              <button
+                key={r}
+                type="button"
+                onClick={() => handleRating(r)}
+                aria-label={label}
+                aria-pressed={selected}
+                className={`flex flex-1 flex-col items-center gap-1 rounded-xl px-1 py-2 transition-all ${
+                  selected ? 'bg-[rgba(170,199,225,0.3)]' : 'hover:bg-[#F9FAFB]'
                 }`}
               >
-                {label}
-              </span>
-            </button>
-          );
-        })}
-      </div>
-      {rating !== null && (
-        <div className="mt-5 border-t border-[#F5F5F5] pt-4">
-          <p className="pb-2 text-sm font-semibold text-[#373737]">
-            {PROMPT_BY_RATING[rating]}
-          </p>
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            placeholder="자유롭게 적어주세요 (선택)"
-            rows={3}
-            maxLength={500}
-            className="w-full resize-none rounded-xl border border-[#E5E5E5] bg-white px-3 py-2 text-sm text-[#171717] placeholder:text-[#A1A1A1] focus:border-[#AAC7E1] focus:outline-none"
-          />
-          <div className="mt-3 flex items-center justify-end gap-2">
-            <button
-              type="button"
-              onClick={handleSkip}
-              className="px-3 py-2 text-xs font-medium text-[#737373]"
-            >
-              건너뛰기
-            </button>
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="rounded-full bg-[#7499BA] px-4 py-2 text-xs font-bold text-white"
-            >
-              보내기
-            </button>
-          </div>
+                <Icon
+                  size={selected ? 30 : 26}
+                  color={selected ? '#7499BA' : '#A1A1A1'}
+                  strokeWidth={selected ? 2.2 : 1.8}
+                />
+                <span
+                  className={`text-[10px] ${
+                    selected ? 'font-semibold text-[#7499BA]' : 'text-[#737373]'
+                  }`}
+                >
+                  {label}
+                </span>
+              </button>
+            );
+          })}
         </div>
-      )}
-    </section>
+        {rating !== null && (
+          <div ref={expandRef} className="mt-5 scroll-mt-24 border-t border-[#F5F5F5] pt-4">
+            <p className="pb-2 text-sm font-semibold text-[#373737]">
+              {PROMPT_BY_RATING[rating]}
+            </p>
+            <textarea
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              placeholder="자유롭게 적어주세요 (선택)"
+              rows={3}
+              maxLength={500}
+              className="w-full resize-none rounded-xl border border-[#E5E5E5] bg-white px-3 py-2 text-sm text-[#171717] placeholder:text-[#A1A1A1] focus:border-[#AAC7E1] focus:outline-none"
+            />
+            <div className="mt-3 flex items-center justify-end gap-2">
+              <button
+                type="button"
+                onClick={handleSkip}
+                className="px-3 py-2 text-xs font-medium text-[#737373]"
+              >
+                건너뛰기
+              </button>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="rounded-full bg-[#7499BA] px-4 py-2 text-xs font-bold text-white"
+              >
+                보내기
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+      {/* 펼친 입력을 화면 가운데로 끌어올릴 스크롤 여유 — 하단 고정 바에 가리지 않도록 */}
+      {rating !== null && <div aria-hidden className="h-40" />}
+    </>
   );
 }
