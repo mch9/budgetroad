@@ -147,6 +147,8 @@ function Hero() {
         <p className="mt-3 text-xs text-[#373737]/60 sm:text-sm">
           우리 커플 유형 · 예상 예산 · 항목별 배분 · 준비 순서
         </p>
+        {/* Mobile micro-trust (desktop shows it under the CTA instead) */}
+        <p className="mt-2 text-xs text-[#373737]/50 sm:hidden">가입 없이 · 약 3분</p>
 
         <div className="mt-9 flex flex-col items-center">
           <CtaLink />
