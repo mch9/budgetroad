@@ -82,13 +82,42 @@ export function ResultView({ answers, onReset }: Props) {
     }
   }
 
+  // 결과 카드 이미지 다운로드 — 서버 next/og 라우트(hex, oklch 안전)에서 생성
+  async function downloadImage() {
+    const cats = Object.entries(result.budget.categories)
+      .map(([c, a]) => `${c}:${a}`)
+      .join(',');
+    const params = new URLSearchParams({
+      persona: result.vars.persona,
+      total: String(result.budget.total),
+      cats,
+    });
+    try {
+      const res = await fetch(`/api/share-card?${params.toString()}`);
+      if (!res.ok) throw new Error('failed');
+      const blob = await res.blob();
+      const objUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objUrl;
+      a.download = '버짓로드-결혼예산.png';
+      a.click();
+      URL.revokeObjectURL(objUrl);
+    } catch {
+      showToast('이미지 저장에 실패했어요');
+    }
+  }
+
   function handleShareAction(action: string) {
     setShareOpen(false);
     if (action === 'link') {
       void shareLink();
       return;
     }
-    showToast('곧 만나요!'); // pdf · image · expert 후속 구현
+    if (action === 'image') {
+      void downloadImage();
+      return;
+    }
+    showToast('곧 만나요!'); // pdf · expert 후속 구현
   }
 
   return (
