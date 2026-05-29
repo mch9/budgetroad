@@ -9,6 +9,7 @@ import { Toast } from './ui/toast';
 import { TabComprehensive } from './tabs/tab-comprehensive';
 import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
+import { FileText, MessageCircle, Image as ImageIcon, Headset } from 'lucide-react';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -17,6 +18,13 @@ const TAB_LABELS: Record<TabId, string> = {
   itemized: '항목별 내역',
   care: '추가금 케어',
 };
+
+const SHARE_ACTIONS = [
+  { icon: FileText, label: 'PDF로 내려받기' },
+  { icon: MessageCircle, label: '카카오톡으로 공유하기' },
+  { icon: ImageIcon, label: '이미지로 내려받기' },
+  { icon: Headset, label: '전문가 상담 신청하기' },
+] as const;
 
 type Props = {
   answers: OnboardingAnswers;
@@ -115,25 +123,26 @@ export function ResultView({ answers, onReset }: Props) {
               결과를 어떻게 가져갈까요?
             </p>
             <p className="pb-6 text-sm text-[#737373]">
-              아래에서 원하는 방식을 골라주세요 (디자인 정돈은 C8에서)
+              아래에서 원하는 방식을 골라주세요
             </p>
-            <div className="flex flex-col gap-3">
-              {[
-                'PDF로 내려받기',
-                '카카오톡으로 공유하기',
-                '이미지로 내려받기',
-                '전문가 상담 신청하기',
-              ].map((act) => (
+            <div className="flex flex-col gap-2.5">
+              {SHARE_ACTIONS.map(({ icon: Icon, label }) => (
                 <button
-                  key={act}
+                  key={label}
                   type="button"
                   onClick={() => {
                     setShareOpen(false);
                     showToast('곧 만나요!');
                   }}
-                  className="flex items-center justify-between rounded-xl bg-[#F3F4F6] px-4 py-3 text-sm font-medium text-[#171717]"
+                  className="flex items-center gap-3 rounded-xl border border-[rgba(170,199,225,0.4)] bg-white px-4 py-3 text-left transition-colors hover:border-[#AAC7E1] hover:bg-[rgba(170,199,225,0.08)] active:scale-[0.99]"
                 >
-                  {act}
+                  <span
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+                    style={{ background: 'rgba(170,199,225,0.3)' }}
+                  >
+                    <Icon size={18} color="#7499BA" strokeWidth={2} aria-hidden />
+                  </span>
+                  <span className="text-sm font-semibold text-[#171717]">{label}</span>
                 </button>
               ))}
             </div>
