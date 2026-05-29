@@ -118,12 +118,15 @@ export function ResultView({ answers, onReset }: Props) {
     const sections = Array.from(root.children) as HTMLElement[];
     const names = ['종합설계서', '항목별내역', '추가금케어'];
     const prevStyle = root.getAttribute('style') ?? '';
+    // 폭 672 = 576 콘텐츠 + 좌우 48px 여백. 캡처 대상 .print-page가 이 폭을 채우고
+    // 안쪽 max-w-576이 중앙 정렬되어 #F9FAFB 여백이 생긴다.
     root.setAttribute(
       'style',
-      'position:fixed;left:-99999px;top:0;display:block;width:600px;background:#F9FAFB',
+      'position:fixed;left:-99999px;top:0;display:block;width:672px;background:#F9FAFB',
     );
     root.classList.add('force-borders');
     try {
+      if (document.fonts?.ready) await document.fonts.ready; // 폰트 로드 후 캡처
       await new Promise((r) => window.setTimeout(r, 350));
       for (let i = 0; i < sections.length; i++) {
         const canvas = await captureNode(sections[i]);
@@ -238,19 +241,27 @@ export function ResultView({ answers, onReset }: Props) {
       {mounted &&
         createPortal(
           <div id="print-root" className="hidden bg-white">
-            <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
-              <TabComprehensive result={result} forExport />
+            {/* 각 탭: 바깥 래퍼(캡처 대상, full-width) + 안쪽 576px 콘텐츠 중앙 정렬.
+                이미지 캡처 시 바깥 래퍼를 잡으면 좌우에 #F9FAFB 여백이 생긴다(화면·PDF처럼). */}
+            <div className="print-page" style={{ breakAfter: 'page' }}>
+              <div className="mx-auto max-w-[576px]">
+                <TabComprehensive result={result} forExport />
+              </div>
             </div>
-            <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
-              <TabItemized result={result} toggles={toggles} forceExpand />
+            <div className="print-page" style={{ breakAfter: 'page' }}>
+              <div className="mx-auto max-w-[576px]">
+                <TabItemized result={result} toggles={toggles} forceExpand />
+              </div>
             </div>
-            <div className="mx-auto max-w-[576px]">
-              <TabCare
-                result={result}
-                toggles={toggles}
-                setToggle={() => {}}
-                setAllToggles={() => {}}
-              />
+            <div className="print-page">
+              <div className="mx-auto max-w-[576px]">
+                <TabCare
+                  result={result}
+                  toggles={toggles}
+                  setToggle={() => {}}
+                  setAllToggles={() => {}}
+                />
+              </div>
             </div>
           </div>,
           document.body,
