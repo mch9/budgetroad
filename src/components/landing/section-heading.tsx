@@ -18,7 +18,9 @@ export function SectionHeading({
         {title}
       </h2>
       {desc && (
-        <p className="mx-auto mt-4 max-w-md text-sm text-[#373737]/65 sm:text-base">{desc}</p>
+        <p className="mx-auto mt-4 max-w-md text-sm text-[#373737]/65 sm:max-w-2xl sm:text-base">
+          {desc}
+        </p>
       )}
     </div>
   );
