@@ -20,6 +20,8 @@ import {
   type QuestionId,
   type StepMeta,
 } from '@/lib/onboarding-v6';
+import type { ToggleState } from '@/lib/budget-engine';
+import { decodeShare } from '@/lib/share-state';
 
 const STORAGE_KEY = 'budgetroad_onboarding_v6';
 const LEGACY_STORAGE_KEY = 'budgetroad_result';
@@ -36,12 +38,32 @@ export default function BudgetDraftPage() {
   const [answers, setAnswers] = useState<OnboardingAnswers>(EMPTY_ANSWERS);
   const [persona, setPersona] = useState<PersonaType | null>(null);
   const [axisScore, setAxisScore] = useState<AxisScore | null>(null);
+  const [sharedToggles, setSharedToggles] = useState<ToggleState | null>(null);
   const [enteredAt] = useState(() => Date.now());
   const firstInputAt = useRef<number | null>(null);
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
     trackEvent('budget_draft_entered');
+    // 공유 링크(?r=)로 진입 시: 답변+토글 복원 → 온보딩 건너뛰고 결과 화면 바로 표시
+    try {
+      const code = new URLSearchParams(window.location.search).get('r');
+      const shared = decodeShare(code);
+      if (shared) {
+        const score = scoreAxis(shared.answers);
+        setAnswers(shared.answers);
+        setSharedToggles(shared.toggles);
+        setAxisScore(score);
+        setPersona(classifyPersona(score));
+        setStep(TOTAL_STEPS + 1);
+        trackEvent('shared_result_viewed');
+        // URL에서 ?r= 제거 — 이후 상호작용/새로고침이 일반 흐름처럼 동작
+        window.history.replaceState({}, '', '/budget-draft');
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
     try {
       sessionStorage.removeItem(LEGACY_STORAGE_KEY);
       const saved = sessionStorage.getItem(STORAGE_KEY);
@@ -146,6 +168,7 @@ export default function BudgetDraftPage() {
     setAnswers(EMPTY_ANSWERS);
     setPersona(null);
     setAxisScore(null);
+    setSharedToggles(null);
     try {
       sessionStorage.removeItem(STORAGE_KEY);
     } catch {
@@ -189,7 +212,11 @@ export default function BudgetDraftPage() {
         )}
         {isLoading && <LoadingView onComplete={onLoadingComplete} />}
         {isResult && persona && axisScore && (
-          <ResultPageView answers={answers} onReset={reset} />
+          <ResultPageView
+            answers={answers}
+            onReset={reset}
+            initialToggles={sharedToggles ?? undefined}
+          />
         )}
       </main>
 

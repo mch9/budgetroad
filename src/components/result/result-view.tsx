@@ -12,6 +12,7 @@ import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
 import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
+import { encodeShare } from '@/lib/share-state';
 import { captureNode, downloadCanvas } from '@/lib/export-result';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
@@ -32,9 +33,10 @@ const SHARE_ACTIONS = [
 type Props = {
   answers: OnboardingAnswers;
   onReset: () => void;
+  initialToggles?: ToggleState; // 공유 링크로 들어왔을 때 공유자의 토글 상태 복원
 };
 
-export function ResultView({ answers, onReset }: Props) {
+export function ResultView({ answers, onReset, initialToggles }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('comprehensive');
   const [shareOpen, setShareOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
@@ -53,9 +55,11 @@ export function ResultView({ answers, onReset }: Props) {
     return () => mq.removeEventListener('change', update);
   }, []);
 
-  // 초기 진단으로 유형별 디폴트 토글 산출
+  // 초기 진단으로 유형별 디폴트 토글 산출 (공유 링크면 공유자 토글 우선)
   const initial = useMemo(() => diagnose(answers), [answers]);
-  const [toggles, setToggles] = useState<ToggleState>(initial.vars.toggleDefaults);
+  const [toggles, setToggles] = useState<ToggleState>(
+    initialToggles ?? initial.vars.toggleDefaults,
+  );
 
   // 토글 변경 시 재진단 (instant)
   const result = useMemo(() => diagnose(answers, toggles), [answers, toggles]);
@@ -79,7 +83,9 @@ export function ResultView({ answers, onReset }: Props) {
 
   // 링크 공유 — OS 공유 시트(navigator.share), 미지원 시 클립보드 복사
   async function shareLink() {
-    const siteUrl = `${window.location.origin}/`;
+    // 진입 화면이 아니라 '이 결과'로 바로 도달하는 링크 — 답변+토글을 URL에 인코딩
+    const code = encodeShare(answers, toggles);
+    const siteUrl = `${window.location.origin}/budget-draft?r=${code}`;
     const totalWon = result.budget.total * 10000;
     const payload = buildShareText({ totalWon, siteUrl });
     if (typeof navigator !== 'undefined' && navigator.share) {
