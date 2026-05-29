@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-26T05:01:24.233Z
+updated: 2026-05-28T08:53:22.174Z
 
 files:
   "src/app/layout.tsx":
@@ -26,10 +26,16 @@ files:
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 2026-04-21T01:48:16.425Z
-    change_count: 2
+    last_modified: 2026-05-27T02:30:42.766Z
+    change_count: 4
     purpose: "메인 페이지 컴포넌트 (/ 경로)"
     change_log:
+      - date: 2026-05-27T02:30:42.766Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T02:11:27.085Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-21T01:48:16.425Z
         action: edit
         source: "claude:mincheol.kim"
@@ -40,10 +46,13 @@ files:
     status: active
     source: "auto:shadcn"
     created: 
-    last_modified: 2026-04-24T05:30:30.536Z
-    change_count: 5
+    last_modified: 2026-05-27T18:25:00.465Z
+    change_count: 6
     purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
     change_log:
+      - date: 2026-05-27T18:25:00.465Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-24T05:30:30.536Z
         action: edit
         source: "claude:mincheol.kim"
@@ -315,10 +324,109 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-04-26T05:01:24.233Z
-    change_count: 100
+    last_modified: 2026-05-28T06:53:56.547Z
+    change_count: 133
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-05-28T06:53:56.547Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:53:51.493Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:53:40.076Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:38:29.152Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:38:17.243Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:38:09.765Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:39.590Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:34.081Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:31.568Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:29.259Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:30:00.987Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:29:49.474Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:29:29.731Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:28:24.971Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:28:21.694Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:26:01.165Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:56.485Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:40.654Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:34.640Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:31.136Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:25:25.447Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T16:26:41.904Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T16:26:36.997Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:43:40.766Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:41.273Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:29.357Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:24.110Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:18.385Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:11.728Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:06.688Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:41:00.688Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:32:15.116Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T02:36:35.419Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-26T05:01:24.233Z
         action: edit
         source: "claude:mincheol.kim"
@@ -783,3 +891,495 @@ files:
       - date: 2026-04-24T13:59:27.968Z
         action: write
         source: "claude:mincheol.kim"
+  "src/lib/onboarding-v6.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:55:10.911Z
+    change_count: 24
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:55:10.911Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:53:58.965Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:52:29.309Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:25:52.457Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:22:08.591Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:22:01.115Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:21:56.436Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T16:26:31.543Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:51.465Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:28.793Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:27.469Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:25.951Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:24.453Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:22.958Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:21.430Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:20.011Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:18.937Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:17.428Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:16.532Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:14.907Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:42:14.103Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:39:54.410Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:29:31.683Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:26:23.674Z
+        action: write
+        source: "claude:powel858"
+  "src/components/onboarding/progress-bar.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T01:25:21.386Z
+    change_count: 5
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T01:25:21.386Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T16:26:59.829Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T16:23:06.794Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:55:25.896Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:27:54.206Z
+        action: write
+        source: "claude:powel858"
+  "src/components/onboarding/question-card.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T06:38:02.162Z
+    change_count: 4
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T06:38:02.162Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:37:56.324Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:30:01.666Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:29:01.041Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/types.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:43:14.004Z
+    change_count: 7
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:43:14.004Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:43:08.993Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:43:00.284Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:42:57.683Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:53:04.275Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:53:00.575Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:12:01.878Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/data/toggles-meta.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:15:17.634Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:15:17.634Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/data/type-config.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T01:14:17.450Z
+    change_count: 4
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T01:14:17.450Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:13:35.445Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:18:18.150Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:15:39.416Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage3-variables.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:22:12.084Z
+    change_count: 3
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:22:12.084Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:18:34.546Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:15:54.820Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage4-venue.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:43:42.289Z
+    change_count: 4
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:43:42.289Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:43:36.884Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:18:36.411Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:16:19.697Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage5-budget.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:44:35.907Z
+    change_count: 5
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:44:35.907Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T18:53:22.221Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:53:20.245Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:53:11.803Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:16:36.323Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage6-consistency.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:45:25.307Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:45:25.307Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:16:46.656Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/stages/stage7-advice.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:45:53.409Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:45:53.409Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:17:12.487Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/index.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T04:44:44.479Z
+    change_count: 3
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:44:44.479Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:44:42.447Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:17:21.025Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/loading-view.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:24:47.780Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:24:47.780Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/ui/toast.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:33.496Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:33.496Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/footer.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:27:40.532Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:27:40.532Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/tabs/tab-comprehensive.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T07:40:58.999Z
+    change_count: 11
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T07:40:58.999Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:09.693Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:28:59.939Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:28:52.084Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:55:24.342Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:46:27.969Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:14:55.125Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:14:48.432Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:14:42.333Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:33:19.644Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T18:27:45.572Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/tabs/tab-itemized.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T08:39:35.844Z
+    change_count: 12
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T08:39:35.844Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T08:39:29.583Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:47.032Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:37.787Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:32.764Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:27.181Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:20.606Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T05:37:18.933Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:46:10.391Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:54:17.838Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:31:50.099Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T18:27:50.161Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/tabs/tab-care.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-28T08:53:22.174Z
+    change_count: 11
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T08:53:22.174Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T08:53:09.500Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T08:13:46.663Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:51:48.899Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T02:29:02.330Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:46:42.895Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:40:30.517Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T01:40:13.466Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:52:38.655Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:30:53.177Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T18:27:58.274Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/result-view.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:30:58.595Z
+    change_count: 3
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:30:58.595Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:30:56.175Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:28:20.023Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/charts/donut-chart.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:42:23.492Z
+    change_count: 3
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:42:23.492Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:42:20.472Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T18:31:23.284Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/budget-engine/data/venue-profiles.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T04:43:27.715Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T04:43:27.715Z
+        action: write
+        source: "claude:powel858"

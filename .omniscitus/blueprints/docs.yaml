@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-04-29T15:57:24.033Z
+updated: 2026-05-28T08:54:07.804Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -140,3 +140,187 @@ files:
       - date: 2026-04-29T15:57:24.033Z
         action: write
         source: "claude:mincheol.kim"
+  "docs/prd/budget-builder/onboarding-v6-step1-plan.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T15:55:32.836Z
+    change_count: 6
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T15:55:32.836Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:20:09.844Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:20:04.422Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-27T15:12:30.004Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T15:07:43.432Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-27T14:56:27.554Z
+        action: write
+        source: "claude:powel858"
+  "docs/prd/budget-builder/onboarding-v6-step2-plan.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-27
+    last_modified: 2026-05-27T18:03:52.549Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-27T18:03:52.549Z
+        action: write
+        source: "claude:powel858"
+  "docs/결과 로직 현황 (2026-05-28).md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T05:04:23.078Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T05:04:23.078Z
+        action: write
+        source: "claude:powel858"
+  "docs/텍스트 스타일 현황 (2026-05-28).md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T07:52:00.339Z
+    change_count: 12
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T07:52:00.339Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:41:06.719Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:30:23.460Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:30:09.455Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:29:56.855Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:54:08.347Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:16.174Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:14.250Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:12.217Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:09.115Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:01.094Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T05:18:01.810Z
+        action: write
+        source: "claude:powel858"
+  "docs/design-qa/01-simulation.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T06:54:14.205Z
+    change_count: 11
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T06:54:14.205Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:41:29.917Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:56.418Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:39:37.496Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:30:00.249Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:28:51.981Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:28:40.315Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:22:07.124Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:15:18.039Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:15:00.313Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T06:09:47.554Z
+        action: write
+        source: "claude:powel858"
+  "docs/design-qa/02-comprehensive.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T07:41:14.104Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T07:41:14.104Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:30:56.101Z
+        action: write
+        source: "claude:powel858"
+  "docs/design-qa/03-itemized.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T08:40:17.932Z
+    change_count: 3
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T08:40:17.932Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T08:39:52.070Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:31:09.326Z
+        action: write
+        source: "claude:powel858"
+  "docs/design-qa/04-care.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-28T08:54:07.804Z
+    change_count: 4
+    purpose: ""
+    change_log:
+      - date: 2026-05-28T08:54:07.804Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T08:53:46.933Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T08:13:56.032Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T07:52:27.539Z
+        action: write
+        source: "claude:powel858"
