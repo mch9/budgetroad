@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { diagnose } from '@/lib/budget-engine';
 import type { ToggleId, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
@@ -11,6 +11,7 @@ import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
 import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
+import { captureNode, downloadCanvas, canvasesToPdf } from '@/lib/export-result';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -36,6 +37,10 @@ export function ResultView({ answers, onReset }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('comprehensive');
   const [shareOpen, setShareOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
+  const [exportMode, setExportMode] = useState<null | 'pdf' | 'image'>(null);
+  const expCompRef = useRef<HTMLDivElement>(null);
+  const expItemRef = useRef<HTMLDivElement>(null);
+  const expCareRef = useRef<HTMLDivElement>(null);
 
   // 초기 진단으로 유형별 디폴트 토글 산출
   const initial = useMemo(() => diagnose(answers), [answers]);
@@ -82,43 +87,58 @@ export function ResultView({ answers, onReset }: Props) {
     }
   }
 
-  // 결과 카드 이미지 다운로드 — 서버 next/og 라우트(hex, oklch 안전)에서 생성
-  async function downloadImage() {
-    const cats = Object.entries(result.budget.categories)
-      .map(([c, a]) => `${c}:${a}`)
-      .join(',');
-    const params = new URLSearchParams({
-      persona: result.vars.persona,
-      total: String(result.budget.total),
-      cats,
-    });
-    try {
-      const res = await fetch(`/api/share-card?${params.toString()}`);
-      if (!res.ok) throw new Error('failed');
-      const blob = await res.blob();
-      const objUrl = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = objUrl;
-      a.download = '버짓로드-결혼예산.png';
-      a.click();
-      URL.revokeObjectURL(objUrl);
-    } catch {
-      showToast('이미지 저장에 실패했어요');
-    }
-  }
-
   function handleShareAction(action: string) {
     setShareOpen(false);
     if (action === 'link') {
       void shareLink();
       return;
     }
-    if (action === 'image') {
-      void downloadImage();
+    if (action === 'pdf' || action === 'image') {
+      showToast(action === 'pdf' ? 'PDF 저장 준비 중…' : '이미지 저장 준비 중…');
+      setExportMode(action);
       return;
     }
-    showToast('곧 만나요!'); // pdf · expert 후속 구현
+    showToast('곧 만나요!'); // expert 후속
   }
+
+  // exportMode가 켜지면 숨은 export 트리(3탭)를 캡처 → 이미지 3장 또는 PDF로 저장
+  useEffect(() => {
+    if (!exportMode) return;
+    let cancelled = false;
+    const run = async () => {
+      await new Promise((r) => window.setTimeout(r, 250)); // 렌더·이미지 로드 대기
+      if (cancelled) return;
+      const targets = [
+        { ref: expCompRef, name: '종합설계서' },
+        { ref: expItemRef, name: '항목별내역' },
+        { ref: expCareRef, name: '추가금케어' },
+      ];
+      try {
+        const shots: { canvas: HTMLCanvasElement; name: string }[] = [];
+        for (const t of targets) {
+          if (t.ref.current) shots.push({ canvas: await captureNode(t.ref.current), name: t.name });
+        }
+        if (exportMode === 'image') {
+          for (const s of shots) {
+            downloadCanvas(s.canvas, `버짓로드-${s.name}.png`);
+            await new Promise((r) => window.setTimeout(r, 300));
+          }
+        } else {
+          canvasesToPdf(shots.map((s) => s.canvas), '버짓로드-결혼예산.pdf');
+        }
+        if (!cancelled) showToast('저장됐어요');
+      } catch {
+        if (!cancelled) showToast('저장에 실패했어요');
+      } finally {
+        if (!cancelled) setExportMode(null);
+      }
+    };
+    void run();
+    return () => {
+      cancelled = true;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [exportMode]);
 
   return (
     <div className="flex w-full flex-1 flex-col">
@@ -210,6 +230,24 @@ export function ResultView({ answers, onReset }: Props) {
             >
               닫기
             </button>
+          </div>
+        </div>
+      )}
+
+      {/* 저장용 숨은 export 트리 — 화면 밖에서 3탭을 캡처(종합설계서는 만족도 조사 제외) */}
+      {exportMode && (
+        <div
+          aria-hidden
+          style={{ position: 'fixed', top: 0, left: -99999, width: 600, background: '#F9FAFB' }}
+        >
+          <div ref={expCompRef}>
+            <TabComprehensive result={result} forExport />
+          </div>
+          <div ref={expItemRef}>
+            <TabItemized result={result} toggles={toggles} />
+          </div>
+          <div ref={expCareRef}>
+            <TabCare result={result} toggles={toggles} setToggle={() => {}} setAllToggles={() => {}} />
           </div>
         </div>
       )}

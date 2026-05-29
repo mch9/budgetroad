@@ -4,9 +4,9 @@ import type { ResultPayload } from '@/lib/budget-engine';
 import { TYPE_CONFIGS } from '@/lib/budget-engine';
 import { FeedbackCard } from '../feedback-card';
 
-type Props = { result: ResultPayload };
+type Props = { result: ResultPayload; forExport?: boolean };
 
-export function TabComprehensive({ result }: Props) {
+export function TabComprehensive({ result, forExport }: Props) {
   const config = TYPE_CONFIGS[result.vars.persona];
 
   return (
@@ -141,15 +141,17 @@ export function TabComprehensive({ result }: Props) {
         </ol>
       </section>
 
-      {/* 7) 피드백 카드 — 결과 만족도 + 정성 의견 수집 */}
-      <FeedbackCard
-        context={{
-          persona: result.vars.persona,
-          region: result.vars.region,
-          season: result.vars.season,
-          total_budget: result.budget.total,
-        }}
-      />
+      {/* 7) 피드백 카드 — 결과 만족도 + 정성 의견 수집 (다운로드 시 제외) */}
+      {!forExport && (
+        <FeedbackCard
+          context={{
+            persona: result.vars.persona,
+            region: result.vars.region,
+            season: result.vars.season,
+            total_budget: result.budget.total,
+          }}
+        />
+      )}
     </div>
   );
 }
