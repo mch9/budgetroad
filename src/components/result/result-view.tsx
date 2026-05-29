@@ -10,8 +10,9 @@ import { Toast } from './ui/toast';
 import { TabComprehensive } from './tabs/tab-comprehensive';
 import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
-import { FileText, Share2, Headset } from 'lucide-react';
+import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
+import { captureNode, downloadCanvas } from '@/lib/export-result';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -23,6 +24,7 @@ const TAB_LABELS: Record<TabId, string> = {
 
 const SHARE_ACTIONS = [
   { icon: FileText, label: 'PDF로 내려받기', action: 'pdf' },
+  { icon: ImageIcon, label: '이미지로 저장하기', action: 'image' },
   { icon: Share2, label: '링크 공유하기', action: 'link' },
   { icon: Headset, label: '전문가 상담 신청하기', action: 'expert' },
 ] as const;
@@ -99,7 +101,45 @@ export function ResultView({ answers, onReset }: Props) {
       window.print();
       return;
     }
+    if (action === 'image') {
+      void runFullCapture();
+      return;
+    }
     showToast('곧 만나요!'); // expert 후속
+  }
+
+  // 전체 화면 저장 — 결과 3탭(#print-root: 펼침·만족도 제외)을 한 장의 긴 PNG로 캡처.
+  // 네이버 "전체화면 캡처"처럼 결과 전체를 이미지 한 장으로. scale은 모바일 canvas 한계
+  // (≈16.7M px²·16384px) 안에 들도록 높이 기준 동적 산정.
+  async function runFullCapture() {
+    const root = document.getElementById('print-root');
+    if (!root) {
+      showToast('저장에 실패했어요');
+      return;
+    }
+    showToast('이미지 저장 준비 중…');
+    const prevStyle = root.getAttribute('style') ?? '';
+    root.setAttribute(
+      'style',
+      'position:fixed;left:-99999px;top:0;display:block;width:576px;background:#F9FAFB',
+    );
+    try {
+      if (document.fonts?.ready) await document.fonts.ready;
+      await Promise.all(
+        (Array.from(root.querySelectorAll('img')) as HTMLImageElement[]).map((img) =>
+          img.decode().catch(() => {}),
+        ),
+      );
+      await new Promise((r) => window.setTimeout(r, 200));
+      const scale = Math.min(2, 14000 / Math.max(root.scrollHeight, 1));
+      const canvas = await captureNode(root, scale);
+      downloadCanvas(canvas, '버짓로드-결과.png');
+      showToast('저장됐어요');
+    } catch {
+      showToast('저장에 실패했어요');
+    } finally {
+      root.setAttribute('style', prevStyle);
+    }
   }
 
   return (
