@@ -3,12 +3,48 @@
 // Tailwind v4 토큰이 섞여도 깨지지 않음.
 import html2canvas from 'html2canvas-pro';
 
+// html2canvas는 flex/grid의 gap을 렌더하지 않아 간격이 0으로 붕괴된다(카드가 붙고
+// 정렬이 깨짐). 캡처 클론에서 gap을 등가 margin으로 변환해 화면과 동일한 간격을 재현.
+function gapToMargin(doc: Document) {
+  const win = doc.defaultView;
+  if (!win) return;
+  doc.querySelectorAll<HTMLElement>('*').forEach((el) => {
+    const cs = win.getComputedStyle(el);
+    const disp = cs.display;
+    const isFlex = disp === 'flex' || disp === 'inline-flex';
+    const isGrid = disp === 'grid' || disp === 'inline-grid';
+    if (!isFlex && !isGrid) return;
+    const rowGap = parseFloat(cs.rowGap) || 0;
+    const colGap = parseFloat(cs.columnGap) || 0;
+    if (!rowGap && !colGap) return;
+    const kids = Array.from(el.children).filter(
+      (n): n is HTMLElement => n instanceof HTMLElement,
+    );
+    if (isFlex) {
+      const col = cs.flexDirection.startsWith('column');
+      kids.forEach((k, i) => {
+        if (i === 0) return;
+        if (col) k.style.marginTop = `${rowGap}px`;
+        else k.style.marginLeft = `${colGap}px`;
+      });
+    } else {
+      const cols = cs.gridTemplateColumns.split(' ').filter(Boolean).length || 1;
+      kids.forEach((k, i) => {
+        if (i >= cols && rowGap) k.style.marginTop = `${rowGap}px`;
+        if (i % cols !== 0 && colGap) k.style.marginLeft = `${colGap}px`;
+      });
+    }
+    el.style.gap = '0px';
+  });
+}
+
 export async function captureNode(node: HTMLElement, scale = 2): Promise<HTMLCanvasElement> {
   return html2canvas(node, {
     backgroundColor: '#F9FAFB',
     scale,
     useCORS: true,
     logging: false,
+    onclone: (doc) => gapToMargin(doc),
   });
 }
 

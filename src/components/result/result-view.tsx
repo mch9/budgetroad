@@ -119,9 +119,11 @@ export function ResultView({ answers, onReset }: Props) {
     }
     showToast('이미지 저장 준비 중…');
     const prevStyle = root.getAttribute('style') ?? '';
+    // 폭 632 = 콘텐츠 576 + 좌우 28px 여백(안쪽 max-w-576이 mx-auto로 중앙 정렬).
+    const exportW = 632;
     root.setAttribute(
       'style',
-      'position:fixed;left:-99999px;top:0;display:block;width:576px;background:#F9FAFB',
+      `position:fixed;left:-99999px;top:0;display:block;width:${exportW}px;background:#F9FAFB`,
     );
     try {
       if (document.fonts?.ready) await document.fonts.ready;
@@ -131,7 +133,9 @@ export function ResultView({ answers, onReset }: Props) {
         ),
       );
       await new Promise((r) => window.setTimeout(r, 200));
-      const scale = Math.min(2, 14000 / Math.max(root.scrollHeight, 1));
+      // 모바일 canvas 한계(면적 ≈16.7M px²·치수 16384px) 안에 들도록 scale 동적 산정
+      const h = Math.max(root.scrollHeight, 1);
+      const scale = Math.min(2, Math.sqrt(16_000_000 / (exportW * h)), 16000 / h);
       const canvas = await captureNode(root, scale);
       downloadCanvas(canvas, '버짓로드-결과.png');
       showToast('저장됐어요');
