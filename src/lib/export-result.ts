@@ -38,12 +38,19 @@ function gapToMargin(doc: Document) {
   });
 }
 
-export async function captureNode(node: HTMLElement, scale = 2): Promise<HTMLCanvasElement> {
+export async function captureNode(
+  node: HTMLElement,
+  scale = 2,
+  viewportWidth?: number,
+): Promise<HTMLCanvasElement> {
   return html2canvas(node, {
     backgroundColor: '#F9FAFB',
     scale,
     useCORS: true,
     logging: false,
+    // 미디어쿼리(sm: 등)를 이 폭으로 평가 — 데스크톱 뷰포트에서도 모바일 레이아웃으로
+    // 캡처되게(요소 폭과 뷰포트 폭 불일치로 sm: 레이아웃이 구겨지는 문제 방지).
+    ...(viewportWidth ? { windowWidth: viewportWidth } : {}),
     onclone: (doc) => gapToMargin(doc),
   });
 }

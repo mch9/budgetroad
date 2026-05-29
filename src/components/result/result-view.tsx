@@ -136,7 +136,7 @@ export function ResultView({ answers, onReset }: Props) {
       // 모바일 canvas 한계(면적 ≈16.7M px²·치수 16384px) 안에 들도록 scale 동적 산정
       const h = Math.max(root.scrollHeight, 1);
       const scale = Math.min(2, Math.sqrt(16_000_000 / (exportW * h)), 16000 / h);
-      const canvas = await captureNode(root, scale);
+      const canvas = await captureNode(root, scale, exportW);
       downloadCanvas(canvas, '버짓로드-결과.png');
       showToast('저장됐어요');
     } catch {
