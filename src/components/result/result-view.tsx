@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { diagnose } from '@/lib/budget-engine';
 import type { ToggleId, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
@@ -39,6 +40,11 @@ export function ResultView({ answers, onReset }: Props) {
   const [toast, setToast] = useState<string | null>(null);
   const [capturing, setCapturing] = useState(false);
   const captureRef = useRef<HTMLDivElement>(null);
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setMounted(true);
+  }, []);
 
   // 초기 진단으로 유형별 디폴트 토글 산출
   const initial = useMemo(() => diagnose(answers), [answers]);
@@ -91,8 +97,13 @@ export function ResultView({ answers, onReset }: Props) {
       void shareLink();
       return;
     }
-    if (action === 'pdf' || action === 'image') {
-      void runExport(action);
+    if (action === 'pdf') {
+      // 브라우저 native 인쇄 → "PDF로 저장" (화면 그대로, gap·테두리·oklch 완벽)
+      window.print();
+      return;
+    }
+    if (action === 'image') {
+      void runExport('image');
       return;
     }
     showToast('곧 만나요!'); // expert 후속
@@ -239,6 +250,29 @@ export function ResultView({ answers, onReset }: Props) {
           </div>
         </div>
       )}
+
+      {/* PDF 인쇄용 — body에 포털로 붙고, @media print에서 이것만 노출. 화면엔 hidden.
+          탭 컴포넌트 그대로라 native 인쇄가 화면과 동일하게 렌더(gap·테두리·oklch 완벽). */}
+      {mounted &&
+        createPortal(
+          <div id="print-root" className="hidden bg-white">
+            <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
+              <TabComprehensive result={result} forExport />
+            </div>
+            <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
+              <TabItemized result={result} toggles={toggles} forceExpand />
+            </div>
+            <div className="mx-auto max-w-[576px]">
+              <TabCare
+                result={result}
+                toggles={toggles}
+                setToggle={() => {}}
+                setAllToggles={() => {}}
+              />
+            </div>
+          </div>,
+          document.body,
+        )}
 
       {toast && <Toast message={toast} />}
     </div>

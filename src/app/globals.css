@@ -124,3 +124,14 @@
 .wiggle-anim {
   animation: wiggle 2s ease-in-out infinite;
 }
+
+/* 결과 PDF 저장 — 브라우저 native 인쇄로 화면 그대로 렌더(gap·테두리·oklch 완벽).
+   인쇄 시 #print-root(3탭 stacked)만 보이고 나머지는 숨김. */
+@media print {
+  body > *:not(#print-root) {
+    display: none !important;
+  }
+  #print-root {
+    display: block !important;
+  }
+}
