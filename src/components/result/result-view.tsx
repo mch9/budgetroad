@@ -78,7 +78,7 @@ export function ResultView({ answers, onReset }: Props) {
       {/* Tab content */}
       <main className="mx-auto w-full max-w-[576px] flex-1 pb-[100px]">
         {activeTab === 'comprehensive' && <TabComprehensive result={result} />}
-        {activeTab === 'itemized' && <TabItemized result={result} />}
+        {activeTab === 'itemized' && <TabItemized result={result} toggles={toggles} />}
         {activeTab === 'care' && (
           <TabCare
             result={result}

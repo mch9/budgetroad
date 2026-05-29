@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import type { ResultPayload, ResultCategory } from '@/lib/budget-engine';
+import type { ResultPayload, ResultCategory, ToggleState, ToggleGroup } from '@/lib/budget-engine';
+import { TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
 import { DonutChart } from '../charts/donut-chart';
 
-type Props = { result: ResultPayload };
+type Props = { result: ResultPayload; toggles: ToggleState };
 
 // 디자인 시스템 액센트 톤
 const CATEGORY_COLORS: Record<ResultCategory, string> = {
@@ -24,7 +25,29 @@ const CATEGORY_ICONS: Record<ResultCategory, string> = {
   신혼여행: '/icons/category/honeymoon.svg',
 };
 
-export function TabItemized({ result }: Props) {
+type ToggleLine = { label: string; price: number };
+
+// 켜진 추가금 옵션을 그룹별로 추려 개별 항목으로 반환.
+// stage5-budget의 sumActiveToggles와 동일한 단가표(TOGGLE_PRICES[지역][시즌])를 사용하므로
+// 여기 개별 합 = 엔진의 그룹 합계와 정확히 일치한다.
+function enabledToggleLines(
+  result: ResultPayload,
+  toggles: ToggleState,
+  groups: ToggleGroup[],
+): ToggleLine[] {
+  const { region, season } = result.vars;
+  const lines: ToggleLine[] = [];
+  for (const meta of TOGGLES_META) {
+    if (!toggles[meta.id]) continue;
+    if (!groups.includes(meta.group)) continue;
+    const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    if (!price) continue;
+    lines.push({ label: meta.label, price });
+  }
+  return lines;
+}
+
+export function TabItemized({ result, toggles }: Props) {
   const [expanded, setExpanded] = useState<Set<ResultCategory>>(new Set());
 
   const categories = Object.keys(result.budget.categories) as ResultCategory[];
@@ -113,7 +136,7 @@ export function TabItemized({ result }: Props) {
               </button>
               {isOpen && (
                 <div className="border-t border-[#F5F5F5] bg-[#FAFAFA] px-4 py-3">
-                  <CategoryBreakdown category={cat} result={result} />
+                  <CategoryBreakdown category={cat} result={result} toggles={toggles} />
                 </div>
               )}
             </div>
@@ -141,9 +164,18 @@ function withJosa(word: string, subject: 'eun' | 'i' = 'eun'): string {
   return word + (jong === 0 ? '가' : '이');
 }
 
-function CategoryBreakdown({ category, result }: { category: ResultCategory; result: ResultPayload }) {
+function CategoryBreakdown({
+  category,
+  result,
+  toggles,
+}: {
+  category: ResultCategory;
+  result: ResultPayload;
+  toggles: ToggleState;
+}) {
   if (category === '예식장') {
     const v = result.budget.venueDetail;
+    const venueOptions = enabledToggleLines(result, toggles, ['예식장']);
     const mealSub = v.minGuaranteeApplied
       ? `최소 보증인원 ${v.minGuarantee}명으로 계산됨 (실 하객 ${v.guests}명 × ${v.perHead}만원)`
       : `${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`;
@@ -166,8 +198,8 @@ function CategoryBreakdown({ category, result }: { category: ResultCategory; res
           sub={result.vars.base.bonsik === 'pro' ? '외부 전문' : '예식장 연계'}
           v={`${v.bonsik.toLocaleString()}만원`}
         />
-        {v.toggleAddOns > 0 && (
-          <Row k="추가금 옵션 합" v={`+${v.toggleAddOns.toLocaleString()}만원`} accent />
+        {venueOptions.length > 0 && (
+          <ToggleLineGroup label="추가한 옵션" lines={venueOptions} />
         )}
         <TotalRow v={`${result.budget.categories.예식장.toLocaleString()}만원`} />
       </div>
@@ -176,31 +208,34 @@ function CategoryBreakdown({ category, result }: { category: ResultCategory; res
   if (category === '스드메') {
     const s = result.budget.sdmDetail;
     const base = result.vars.base;
+    const studioOptions = enabledToggleLines(result, toggles, ['스튜디오']);
+    const dressOptions = enabledToggleLines(result, toggles, ['드레스']);
+    const makeupOptions = enabledToggleLines(result, toggles, ['메이크업']);
     return (
       <div className="flex flex-col gap-1 text-sm text-[#525252]">
         <p className="pb-2 text-xs text-[#A1A1A1]">
           지역 {result.vars.region} · {result.vars.season === 'peak' ? '성수기' : '비성수기'} 평균 단가 기준
         </p>
         <Row k="스튜디오 베이스" sub="앨범 + 액자 기본" v={`${s.studioBase.toLocaleString()}만원`} />
-        {s.studioToggles > 0 && (
-          <Row k="스튜디오 추가금" v={`+${s.studioToggles.toLocaleString()}만원`} accent />
-        )}
+        {studioOptions.map((it) => (
+          <Row key={it.label} k={it.label} v={`+${it.price.toLocaleString()}만원`} accent indent />
+        ))}
         <Row
           k="드레스 베이스"
           sub={`${base.dress === '본식만' ? '본식만' : base.dress === '본식촬영' ? '본식+촬영' : '촬영만'}`}
           v={`${s.dressBase.toLocaleString()}만원`}
         />
-        {s.dressToggles > 0 && (
-          <Row k="드레스 추가금" v={`+${s.dressToggles.toLocaleString()}만원`} accent />
-        )}
+        {dressOptions.map((it) => (
+          <Row key={it.label} k={it.label} v={`+${it.price.toLocaleString()}만원`} accent indent />
+        ))}
         <Row
           k="메이크업 베이스"
           sub={`${base.makeup} 등급`}
           v={`${s.makeupBase.toLocaleString()}만원`}
         />
-        {s.makeupToggles > 0 && (
-          <Row k="메이크업 추가금" v={`+${s.makeupToggles.toLocaleString()}만원`} accent />
-        )}
+        {makeupOptions.map((it) => (
+          <Row key={it.label} k={it.label} v={`+${it.price.toLocaleString()}만원`} accent indent />
+        ))}
         <TotalRow v={`${result.budget.categories.스드메.toLocaleString()}만원`} />
       </div>
     );
@@ -212,21 +247,35 @@ function CategoryBreakdown({ category, result }: { category: ResultCategory; res
   );
 }
 
+// 켜진 추가 옵션 개별 목록 (라벨 + 가격). "추가금 옵션 합" 뭉뚱그림 대신 항목별 노출.
+function ToggleLineGroup({ label, lines }: { label: string; lines: ToggleLine[] }) {
+  return (
+    <>
+      <p className="pt-1 text-xs font-medium text-[#7499BA]">{label}</p>
+      {lines.map((it) => (
+        <Row key={it.label} k={it.label} v={`+${it.price.toLocaleString()}만원`} accent indent />
+      ))}
+    </>
+  );
+}
+
 function Row({
   k,
   sub,
   v,
   accent,
   muted,
+  indent,
 }: {
   k: string;
   sub?: string;
   v: string;
   accent?: boolean;
   muted?: boolean;
+  indent?: boolean;
 }) {
   return (
-    <div className="flex items-center justify-between gap-2 py-1">
+    <div className={`flex items-center justify-between gap-2 py-1 ${indent ? 'pl-3' : ''}`}>
       <div className="flex min-w-0 flex-col">
         <span className={muted ? 'text-[#A1A1A1]' : ''}>{k}</span>
         {sub && <span className="text-xs text-[#A1A1A1]">{sub}</span>}
