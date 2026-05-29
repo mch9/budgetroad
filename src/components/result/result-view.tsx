@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { diagnose } from '@/lib/budget-engine';
 import type { ToggleId, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
@@ -37,10 +37,8 @@ export function ResultView({ answers, onReset }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('comprehensive');
   const [shareOpen, setShareOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const [exportMode, setExportMode] = useState<null | 'pdf' | 'image'>(null);
-  const expCompRef = useRef<HTMLDivElement>(null);
-  const expItemRef = useRef<HTMLDivElement>(null);
-  const expCareRef = useRef<HTMLDivElement>(null);
+  const [capturing, setCapturing] = useState(false);
+  const captureRef = useRef<HTMLDivElement>(null);
 
   // 초기 진단으로 유형별 디폴트 토글 산출
   const initial = useMemo(() => diagnose(answers), [answers]);
@@ -94,51 +92,53 @@ export function ResultView({ answers, onReset }: Props) {
       return;
     }
     if (action === 'pdf' || action === 'image') {
-      showToast(action === 'pdf' ? 'PDF 저장 준비 중…' : '이미지 저장 준비 중…');
-      setExportMode(action);
+      void runExport(action);
       return;
     }
     showToast('곧 만나요!'); // expert 후속
   }
 
-  // exportMode가 켜지면 숨은 export 트리(3탭)를 캡처 → 이미지 3장 또는 PDF로 저장
-  useEffect(() => {
-    if (!exportMode) return;
-    let cancelled = false;
-    const run = async () => {
-      await new Promise((r) => window.setTimeout(r, 250)); // 렌더·이미지 로드 대기
-      if (cancelled) return;
-      const targets = [
-        { ref: expCompRef, name: '종합설계서' },
-        { ref: expItemRef, name: '항목별내역' },
-        { ref: expCareRef, name: '추가금케어' },
-      ];
-      try {
-        const shots: { canvas: HTMLCanvasElement; name: string }[] = [];
-        for (const t of targets) {
-          if (t.ref.current) shots.push({ canvas: await captureNode(t.ref.current), name: t.name });
+  // 실제 화면에 렌더된 탭 콘텐츠를 그대로 캡처. 탭을 전환하며 3탭을 차례로 캡처해
+  // 화면과 동일한 레이아웃·여백·카드를 보존한다. capturing=true 동안 종합설계서는
+  // 만족도 조사 제외, 항목별 내역은 전체 펼침.
+  async function runExport(mode: 'pdf' | 'image') {
+    if (capturing) return;
+    const prevTab = activeTab;
+    setCapturing(true);
+    showToast(mode === 'pdf' ? 'PDF 저장 준비 중…' : '이미지 저장 준비 중…');
+    const tabs: { id: TabId; name: string }[] = [
+      { id: 'comprehensive', name: '종합설계서' },
+      { id: 'itemized', name: '항목별내역' },
+      { id: 'care', name: '추가금케어' },
+    ];
+    const shots: { canvas: HTMLCanvasElement; name: string }[] = [];
+    try {
+      for (const t of tabs) {
+        setActiveTab(t.id);
+        await new Promise((r) => window.setTimeout(r, 450)); // 탭 렌더 + 이미지 로드 대기
+        if (captureRef.current) {
+          shots.push({ canvas: await captureNode(captureRef.current), name: t.name });
         }
-        if (exportMode === 'image') {
-          for (const s of shots) {
-            downloadCanvas(s.canvas, `버짓로드-${s.name}.png`);
-            await new Promise((r) => window.setTimeout(r, 300));
-          }
-        } else {
-          canvasesToPdf(shots.map((s) => s.canvas), '버짓로드-결혼예산.pdf');
-        }
-        if (!cancelled) showToast('저장됐어요');
-      } catch {
-        if (!cancelled) showToast('저장에 실패했어요');
-      } finally {
-        if (!cancelled) setExportMode(null);
       }
-    };
-    void run();
-    return () => {
-      cancelled = true;
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [exportMode]);
+      if (mode === 'image') {
+        for (const s of shots) {
+          downloadCanvas(s.canvas, `버짓로드-${s.name}.png`);
+          await new Promise((r) => window.setTimeout(r, 300));
+        }
+      } else {
+        canvasesToPdf(
+          shots.map((s) => s.canvas),
+          '버짓로드-결혼예산.pdf',
+        );
+      }
+      showToast('저장됐어요');
+    } catch {
+      showToast('저장에 실패했어요');
+    } finally {
+      setActiveTab(prevTab);
+      setCapturing(false);
+    }
+  }
 
   return (
     <div className="flex w-full flex-1 flex-col">
@@ -165,16 +165,22 @@ export function ResultView({ answers, onReset }: Props) {
 
       {/* Tab content */}
       <main className="mx-auto w-full max-w-[576px] flex-1 pb-[100px]">
-        {activeTab === 'comprehensive' && <TabComprehensive result={result} />}
-        {activeTab === 'itemized' && <TabItemized result={result} toggles={toggles} />}
-        {activeTab === 'care' && (
-          <TabCare
-            result={result}
-            toggles={toggles}
-            setToggle={setToggle}
-            setAllToggles={setAllToggles}
-          />
-        )}
+        <div ref={captureRef} className="bg-[#F9FAFB]">
+          {activeTab === 'comprehensive' && (
+            <TabComprehensive result={result} forExport={capturing} />
+          )}
+          {activeTab === 'itemized' && (
+            <TabItemized result={result} toggles={toggles} forceExpand={capturing} />
+          )}
+          {activeTab === 'care' && (
+            <TabCare
+              result={result}
+              toggles={toggles}
+              setToggle={setToggle}
+              setAllToggles={setAllToggles}
+            />
+          )}
+        </div>
       </main>
 
       {/* Floating reset button (임시, 디자인엔 없음 — 향후 메뉴로 이동) */}
@@ -230,24 +236,6 @@ export function ResultView({ answers, onReset }: Props) {
             >
               닫기
             </button>
-          </div>
-        </div>
-      )}
-
-      {/* 저장용 숨은 export 트리 — 화면 밖에서 3탭을 캡처(종합설계서는 만족도 조사 제외) */}
-      {exportMode && (
-        <div
-          aria-hidden
-          style={{ position: 'fixed', top: 0, left: -99999, width: 600, background: '#F9FAFB' }}
-        >
-          <div ref={expCompRef}>
-            <TabComprehensive result={result} forExport />
-          </div>
-          <div ref={expItemRef}>
-            <TabItemized result={result} toggles={toggles} />
-          </div>
-          <div ref={expCareRef}>
-            <TabCare result={result} toggles={toggles} setToggle={() => {}} setAllToggles={() => {}} />
           </div>
         </div>
       )}

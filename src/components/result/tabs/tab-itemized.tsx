@@ -5,7 +5,7 @@ import type { ResultPayload, ResultCategory, ToggleState, ToggleGroup } from '@/
 import { TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
 import { DonutChart } from '../charts/donut-chart';
 
-type Props = { result: ResultPayload; toggles: ToggleState };
+type Props = { result: ResultPayload; toggles: ToggleState; forceExpand?: boolean };
 
 // 디자인 시스템 액센트 톤
 const CATEGORY_COLORS: Record<ResultCategory, string> = {
@@ -47,7 +47,7 @@ function enabledToggleLines(
   return lines;
 }
 
-export function TabItemized({ result, toggles }: Props) {
+export function TabItemized({ result, toggles, forceExpand }: Props) {
   const [expanded, setExpanded] = useState<Set<ResultCategory>>(new Set());
 
   const categories = Object.keys(result.budget.categories) as ResultCategory[];
@@ -98,7 +98,7 @@ export function TabItemized({ result, toggles }: Props) {
         <h3 className="px-1 text-sm font-semibold text-[#373737]">지출 항목들</h3>
         {categories.map((cat) => {
           const amount = result.budget.categories[cat];
-          const isOpen = expanded.has(cat);
+          const isOpen = forceExpand || expanded.has(cat);
           return (
             <div
               key={cat}
