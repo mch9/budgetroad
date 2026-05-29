@@ -161,7 +161,7 @@ function Hero() {
 
 export default function Home() {
   return (
-    <div className="relative bg-[#F9FAFB]">
+    <div className="relative bg-[#F9FAFB] pb-28 sm:pb-0">
       <TrackPageEnter eventName="service_entered" />
 
       <Hero />
@@ -169,14 +169,6 @@ export default function Home() {
       <PersonaRow />
       <ItemGrid />
       <TrustStrip />
-
-      {/* Closing statement */}
-      <section className="px-6 pb-32 pt-20 text-center sm:pb-28 sm:pt-28">
-        <h2 className="text-2xl font-bold leading-snug text-[#373737] sm:text-3xl">
-          지금, 우리 결혼 예산
-          <br className="sm:hidden" /> 바로 확인해요
-        </h2>
-      </section>
     </div>
   );
 }
