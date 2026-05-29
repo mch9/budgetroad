@@ -4,17 +4,9 @@ import { useState } from 'react';
 import type { ResultPayload, ResultCategory, ToggleState, ToggleGroup } from '@/lib/budget-engine';
 import { TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
 import { DonutChart } from '../charts/donut-chart';
+import { CATEGORY_COLORS } from '../charts/category-colors';
 
 type Props = { result: ResultPayload; toggles: ToggleState; forceExpand?: boolean };
-
-// 디자인 시스템 액센트 톤
-const CATEGORY_COLORS: Record<ResultCategory, string> = {
-  예식장: '#AAC7E1',
-  스드메: '#7499BA',
-  '예물·예단': '#CEE7FE',
-  혼수: '#B8D4E8',
-  신혼여행: '#9BB8D4',
-};
 
 // 카테고리별 아이콘 (32×32 SVG with built-in accent bg). 도넛/legend 색상은 별도로 카테고리 식별.
 const CATEGORY_ICONS: Record<ResultCategory, string> = {

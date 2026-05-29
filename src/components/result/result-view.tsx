@@ -10,6 +10,7 @@ import { Toast } from './ui/toast';
 import { TabComprehensive } from './tabs/tab-comprehensive';
 import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
+import { ShareCard } from './share-card';
 import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
 import { captureNode, downloadCanvas } from '@/lib/export-result';
@@ -106,33 +107,30 @@ export function ResultView({ answers, onReset }: Props) {
     showToast('곧 만나요!'); // expert 후속
   }
 
-  // 이미지 저장 — PDF와 동일한 #print-root(펼침·만족도 제외·정상 레이아웃)를 화면 밖에서
-  // 잠깐 보이게 한 뒤 3탭 섹션을 각각 PNG로 캡처. force-borders로 캡처 시 카드 테두리 보정.
+  // 이미지 저장 — 결과 3탭 핵심을 재가공한 ShareCard(1장, 540×675→@2x 1080×1350)를
+  // 화면 밖에서 캡처. 화면 그대로 복사가 아니라 인사이트 인포그래픽.
   async function runExport() {
-    const root = document.getElementById('print-root');
+    const root = document.getElementById('share-card-root');
     if (!root) {
       showToast('저장에 실패했어요');
       return;
     }
     showToast('이미지 저장 준비 중…');
-    const sections = Array.from(root.children) as HTMLElement[];
-    const names = ['종합설계서', '항목별내역', '추가금케어'];
     const prevStyle = root.getAttribute('style') ?? '';
-    // 폭 672 = 576 콘텐츠 + 좌우 48px 여백. 캡처 대상 .print-page가 이 폭을 채우고
-    // 안쪽 max-w-576이 중앙 정렬되어 #F9FAFB 여백이 생긴다.
-    root.setAttribute(
-      'style',
-      'position:fixed;left:-99999px;top:0;display:block;width:672px;background:#F9FAFB',
-    );
+    root.setAttribute('style', 'position:fixed;left:-99999px;top:0;display:block;background:#F9FAFB');
     root.classList.add('force-borders');
     try {
       if (document.fonts?.ready) await document.fonts.ready; // 폰트 로드 후 캡처
-      await new Promise((r) => window.setTimeout(r, 350));
-      for (let i = 0; i < sections.length; i++) {
-        const canvas = await captureNode(sections[i]);
-        downloadCanvas(canvas, `버짓로드-${names[i]}.png`);
-        await new Promise((r) => window.setTimeout(r, 200));
-      }
+      // 일러스트 SVG 디코드 완료까지 대기 — 안 하면 빈칸으로 캡처됨
+      await Promise.all(
+        (Array.from(root.querySelectorAll('img')) as HTMLImageElement[]).map((img) =>
+          img.decode().catch(() => {}),
+        ),
+      );
+      await new Promise((r) => window.setTimeout(r, 150));
+      const card = root.firstElementChild as HTMLElement;
+      const canvas = await captureNode(card);
+      downloadCanvas(canvas, '버짓로드-예산카드.png');
       showToast('저장됐어요');
     } catch {
       showToast('저장에 실패했어요');
@@ -263,6 +261,15 @@ export function ResultView({ answers, onReset }: Props) {
                 />
               </div>
             </div>
+          </div>,
+          document.body,
+        )}
+
+      {/* 이미지 저장용 ShareCard — 화면엔 hidden, 캡처 시에만 화면 밖에서 잠깐 노출 */}
+      {mounted &&
+        createPortal(
+          <div id="share-card-root" className="hidden">
+            <ShareCard result={result} toggles={toggles} />
           </div>,
           document.body,
         )}
