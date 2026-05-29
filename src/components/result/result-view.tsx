@@ -9,7 +9,8 @@ import { Toast } from './ui/toast';
 import { TabComprehensive } from './tabs/tab-comprehensive';
 import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
-import { FileText, MessageCircle, Image as ImageIcon, Headset } from 'lucide-react';
+import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
+import { buildShareText, buildShareClipboard } from '@/lib/share';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -20,10 +21,10 @@ const TAB_LABELS: Record<TabId, string> = {
 };
 
 const SHARE_ACTIONS = [
-  { icon: FileText, label: 'PDF로 내려받기' },
-  { icon: MessageCircle, label: '카카오톡으로 공유하기' },
-  { icon: ImageIcon, label: '이미지로 내려받기' },
-  { icon: Headset, label: '전문가 상담 신청하기' },
+  { icon: FileText, label: 'PDF로 내려받기', action: 'pdf' },
+  { icon: Share2, label: '링크 공유하기', action: 'link' },
+  { icon: ImageIcon, label: '이미지로 내려받기', action: 'image' },
+  { icon: Headset, label: '전문가 상담 신청하기', action: 'expert' },
 ] as const;
 
 type Props = {
@@ -58,6 +59,36 @@ export function ResultView({ answers, onReset }: Props) {
   function showToast(msg: string) {
     setToast(msg);
     window.setTimeout(() => setToast(null), 2000);
+  }
+
+  // 링크 공유 — OS 공유 시트(navigator.share), 미지원 시 클립보드 복사
+  async function shareLink() {
+    const siteUrl = `${window.location.origin}/`;
+    const totalWon = result.budget.total * 10000;
+    const payload = buildShareText({ totalWon, siteUrl });
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share(payload);
+      } catch {
+        /* 사용자 취소 등 무시 */
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(buildShareClipboard({ totalWon, siteUrl }));
+      showToast('링크를 복사했어요');
+    } catch {
+      showToast('공유를 지원하지 않는 환경이에요');
+    }
+  }
+
+  function handleShareAction(action: string) {
+    setShareOpen(false);
+    if (action === 'link') {
+      void shareLink();
+      return;
+    }
+    showToast('곧 만나요!'); // pdf · image · expert 후속 구현
   }
 
   return (
@@ -126,14 +157,11 @@ export function ResultView({ answers, onReset }: Props) {
               아래에서 원하는 방식을 골라주세요
             </p>
             <div className="flex flex-col gap-2.5">
-              {SHARE_ACTIONS.map(({ icon: Icon, label }) => (
+              {SHARE_ACTIONS.map(({ icon: Icon, label, action }) => (
                 <button
                   key={label}
                   type="button"
-                  onClick={() => {
-                    setShareOpen(false);
-                    showToast('곧 만나요!');
-                  }}
+                  onClick={() => handleShareAction(action)}
                   className="flex items-center gap-3 rounded-xl border border-[rgba(170,199,225,0.4)] bg-white px-4 py-3 text-left transition-colors hover:border-[#AAC7E1] hover:bg-[rgba(170,199,225,0.08)] active:scale-[0.99]"
                 >
                   <span
