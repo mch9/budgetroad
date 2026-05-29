@@ -41,6 +41,9 @@ export default function BudgetDraftPage() {
   const [sharedToggles, setSharedToggles] = useState<ToggleState | null>(null);
   const [enteredAt] = useState(() => Date.now());
   const firstInputAt = useRef<number | null>(null);
+  // 공유 링크(?r=)로 본 결과인지 — 이 경우 sessionStorage에 저장하지 않아
+  // 로고/CTA로 재진입 시 공유 결과가 아니라 '내 온보딩'이 시작되게 한다.
+  const fromSharedRef = useRef(false);
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
@@ -51,14 +54,14 @@ export default function BudgetDraftPage() {
       const shared = decodeShare(code);
       if (shared) {
         const score = scoreAxis(shared.answers);
+        fromSharedRef.current = true; // 세션 저장 스킵 → 로고/CTA로 자기 것 시작 가능
         setAnswers(shared.answers);
         setSharedToggles(shared.toggles);
         setAxisScore(score);
         setPersona(classifyPersona(score));
         setStep(TOTAL_STEPS + 1);
         trackEvent('shared_result_viewed');
-        // URL에서 ?r= 제거 — 이후 상호작용/새로고침이 일반 흐름처럼 동작
-        window.history.replaceState({}, '', '/budget-draft');
+        // ?r=는 URL에 유지 — 새로고침해도 같은 결과가 다시 뜨도록(링크 reload-stable)
         return;
       }
     } catch {
@@ -92,6 +95,7 @@ export default function BudgetDraftPage() {
   /* eslint-enable react-hooks/set-state-in-effect */
 
   useEffect(() => {
+    if (fromSharedRef.current) return; // 공유 링크로 본 결과는 내 세션에 저장하지 않음
     if (step === 0 && answers.Q1 === null) return;
     try {
       const data: SavedState = { step, answers, persona, axisScore };
@@ -164,6 +168,11 @@ export default function BudgetDraftPage() {
 
   function reset() {
     trackEvent('result_reset_clicked');
+    fromSharedRef.current = false; // 이제부터는 내 세션 — 저장 재개
+    // 공유 링크로 들어왔던 경우 ?r= 제거(남아있으면 새로고침 시 공유 결과로 되돌아감)
+    if (typeof window !== 'undefined' && window.location.search) {
+      window.history.replaceState({}, '', '/budget-draft');
+    }
     setStep(0);
     setAnswers(EMPTY_ANSWERS);
     setPersona(null);

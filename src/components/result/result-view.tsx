@@ -26,7 +26,7 @@ const TAB_LABELS: Record<TabId, string> = {
 const SHARE_ACTIONS = [
   { icon: FileText, label: 'PDF로 내려받기', action: 'pdf' },
   { icon: ImageIcon, label: '이미지로 저장하기', action: 'image' },
-  { icon: Share2, label: '링크 공유하기', action: 'link' },
+  { icon: Share2, label: '결과 공유하기', action: 'link' },
   { icon: Headset, label: '전문가 상담 신청하기', action: 'expert' },
 ] as const;
 
