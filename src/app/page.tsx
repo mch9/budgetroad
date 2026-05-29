@@ -1,8 +1,6 @@
 import Image from 'next/image';
 import TrackPageEnter from '@/components/common/TrackPageEnter';
 import { ItemGrid } from '@/components/landing/item-grid';
-import { InlineCta } from '@/components/landing/inline-cta';
-import { MethodBand } from '@/components/landing/method-band';
 import { PersonaRow } from '@/components/landing/persona-row';
 import { ResultPreview } from '@/components/landing/result-preview';
 import { TrustStrip } from '@/components/landing/trust-strip';
@@ -144,7 +142,7 @@ function Hero() {
         </h1>
 
         <p className="mt-6 text-sm text-[#373737] sm:text-xl">
-          몇 가지 선택만으로 내 결혼 예산을 1분 만에 확인하세요
+          몇 가지 선택만으로 내 결혼 예산을 바로 확인하세요
         </p>
         <p className="mt-3 text-xs text-[#373737]/60 sm:text-sm">
           우리 커플 유형 · 예상 예산 · 항목별 배분 · 준비 순서
@@ -152,7 +150,7 @@ function Hero() {
 
         <div className="mt-9 flex flex-col items-center">
           <CtaLink />
-          <p className="mt-3 hidden text-xs text-[#373737]/50 sm:block">가입 없이 · 약 1분</p>
+          <p className="mt-3 hidden text-xs text-[#373737]/50 sm:block">가입 없이 · 약 3분</p>
         </div>
       </main>
 
@@ -167,22 +165,17 @@ export default function Home() {
       <TrackPageEnter eventName="service_entered" />
 
       <Hero />
-      <MethodBand />
       <ResultPreview />
       <PersonaRow />
       <ItemGrid />
       <TrustStrip />
 
-      {/* Closing CTA */}
+      {/* Closing statement */}
       <section className="px-6 pb-32 pt-20 text-center sm:pb-28 sm:pt-28">
         <h2 className="text-2xl font-bold leading-snug text-[#373737] sm:text-3xl">
           지금, 우리 결혼 예산
-          <br className="sm:hidden" /> 1분 만에 확인해요
+          <br className="sm:hidden" /> 바로 확인해요
         </h2>
-        <p className="mt-3 text-sm text-[#373737]/60">가입 없이 · 약 1분</p>
-        <div className="mt-8 hidden justify-center sm:flex">
-          <InlineCta />
-        </div>
       </section>
     </div>
   );

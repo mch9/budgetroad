@@ -1,11 +1,13 @@
 import { Reveal } from './reveal';
 import { SectionHeading } from './section-heading';
 
-// 금액은 최신 가격 DB + budget-engine 기준 (스드메·예식장 추가금 = TOGGLE_PRICES 범위,
-// 예물/신혼여행/혼수 = type-config 유형별 추정). 옛 budget-data 값과 혼동 금지.
+// 금액은 최신 가격 DB + budget-engine 기준. 옛 budget-data 값과 혼동 금지.
+// · 예식장 = region-profiles 대관+식대 (지역별), 스드메 = category-base 평균
+// · 예물/신혼여행/혼수 = type-config 유형별 추정
+// · 추가금(선택 옵션) = TOGGLE_PRICES 범위 — 스드메·예식장에만 존재
 const ITEMS = [
-  { icon: 'venue', name: '예식장', sub: '웨딩홀 · 호텔 · 야외', tag: '추가금', cost: '10~521만원' },
-  { icon: 'sdm', name: '스드메', sub: '스튜디오 · 드레스 · 메이크업', tag: '추가금', cost: '3~222만원' },
+  { icon: 'venue', name: '예식장', sub: '웨딩홀 · 호텔 · 야외', tag: '지역별', cost: '1,200~2,500만원', add: '10~521만원' },
+  { icon: 'sdm', name: '스드메', sub: '스튜디오 · 드레스 · 메이크업', tag: '평균', cost: '약 350만원', add: '3~222만원' },
   { icon: 'yedan', name: '예물 · 예단', sub: '반지 · 예단 구성', tag: '유형별', cost: '150~500만원' },
   { icon: 'honeymoon', name: '신혼여행', sub: '국내 · 해외', tag: '유형별', cost: '300~450만원' },
   { icon: 'furniture', name: '혼수', sub: '가구 · 가전', tag: '평균', cost: '약 600만원' },
@@ -27,10 +29,18 @@ export function ItemGrid() {
               <img src={`/landing/icons/${it.icon}.svg`} alt="" aria-hidden className="h-8 w-8" loading="lazy" />
               <h3 className="mt-4 text-sm font-bold text-[#373737]">{it.name}</h3>
               <p className="mt-1 text-xs leading-relaxed text-[#373737]/55">{it.sub}</p>
+
               <div className="mt-3">
                 <span className="block text-[10px] text-[#373737]/45">{it.tag}</span>
                 <span className="text-sm font-semibold tabular-nums text-[#373737]">{it.cost}</span>
               </div>
+
+              {it.add && (
+                <div className="mt-2 border-t border-[#373737]/[0.08] pt-2">
+                  <span className="block text-[10px] text-[#373737]/45">추가금</span>
+                  <span className="text-xs font-semibold tabular-nums text-[#373737]/80">{it.add}</span>
+                </div>
+              )}
             </div>
           </Reveal>
         ))}
