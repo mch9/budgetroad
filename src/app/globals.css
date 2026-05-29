@@ -151,9 +151,3 @@
     break-inside: avoid;
   }
 }
-
-/* 이미지 캡처(html2canvas) 시에만: 연한 rgba 카드 테두리를 진한 단색으로 — 캡처에서 카드가
-   배경에 묻혀 납작해 보이는 문제 보정. 전체 테두리(border) 요소만, 구분선(border-t)은 제외. */
-.force-borders [class~='border'] {
-  border-color: #b8cce0 !important;
-}

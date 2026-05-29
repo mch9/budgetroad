@@ -10,10 +10,8 @@ import { Toast } from './ui/toast';
 import { TabComprehensive } from './tabs/tab-comprehensive';
 import { TabItemized } from './tabs/tab-itemized';
 import { TabCare } from './tabs/tab-care';
-import { ShareCard } from './share-card';
-import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
+import { FileText, Share2, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
-import { captureNode, downloadCanvas } from '@/lib/export-result';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -26,7 +24,6 @@ const TAB_LABELS: Record<TabId, string> = {
 const SHARE_ACTIONS = [
   { icon: FileText, label: 'PDF로 내려받기', action: 'pdf' },
   { icon: Share2, label: '링크 공유하기', action: 'link' },
-  { icon: ImageIcon, label: '이미지로 내려받기', action: 'image' },
   { icon: Headset, label: '전문가 상담 신청하기', action: 'expert' },
 ] as const;
 
@@ -41,6 +38,8 @@ export function ResultView({ answers, onReset }: Props) {
   const [toast, setToast] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   useEffect(() => {
+    // createPortal(document.body)은 클라이언트에서만 — 마운트 후 렌더 가드
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
   }, []);
 
@@ -100,44 +99,7 @@ export function ResultView({ answers, onReset }: Props) {
       window.print();
       return;
     }
-    if (action === 'image') {
-      void runExport();
-      return;
-    }
     showToast('곧 만나요!'); // expert 후속
-  }
-
-  // 이미지 저장 — 결과 3탭 핵심을 재가공한 ShareCard(1장, 540×675→@2x 1080×1350)를
-  // 화면 밖에서 캡처. 화면 그대로 복사가 아니라 인사이트 인포그래픽.
-  async function runExport() {
-    const root = document.getElementById('share-card-root');
-    if (!root) {
-      showToast('저장에 실패했어요');
-      return;
-    }
-    showToast('이미지 저장 준비 중…');
-    const prevStyle = root.getAttribute('style') ?? '';
-    root.setAttribute('style', 'position:fixed;left:-99999px;top:0;display:block;background:#F9FAFB');
-    root.classList.add('force-borders');
-    try {
-      if (document.fonts?.ready) await document.fonts.ready; // 폰트 로드 후 캡처
-      // 일러스트 SVG 디코드 완료까지 대기 — 안 하면 빈칸으로 캡처됨
-      await Promise.all(
-        (Array.from(root.querySelectorAll('img')) as HTMLImageElement[]).map((img) =>
-          img.decode().catch(() => {}),
-        ),
-      );
-      await new Promise((r) => window.setTimeout(r, 150));
-      const card = root.firstElementChild as HTMLElement;
-      const canvas = await captureNode(card);
-      downloadCanvas(canvas, '버짓로드-예산카드.png');
-      showToast('저장됐어요');
-    } catch {
-      showToast('저장에 실패했어요');
-    } finally {
-      root.setAttribute('style', prevStyle);
-      root.classList.remove('force-borders');
-    }
   }
 
   return (
@@ -239,37 +201,20 @@ export function ResultView({ answers, onReset }: Props) {
       {mounted &&
         createPortal(
           <div id="print-root" className="hidden bg-white">
-            {/* 각 탭: 바깥 래퍼(캡처 대상, full-width) + 안쪽 576px 콘텐츠 중앙 정렬.
-                이미지 캡처 시 바깥 래퍼를 잡으면 좌우에 #F9FAFB 여백이 생긴다(화면·PDF처럼). */}
-            <div className="print-page" style={{ breakAfter: 'page' }}>
-              <div className="mx-auto max-w-[576px]">
-                <TabComprehensive result={result} forExport />
-              </div>
+            <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
+              <TabComprehensive result={result} forExport />
             </div>
-            <div className="print-page" style={{ breakAfter: 'page' }}>
-              <div className="mx-auto max-w-[576px]">
-                <TabItemized result={result} toggles={toggles} forceExpand />
-              </div>
+            <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
+              <TabItemized result={result} toggles={toggles} forceExpand />
             </div>
-            <div className="print-page">
-              <div className="mx-auto max-w-[576px]">
-                <TabCare
-                  result={result}
-                  toggles={toggles}
-                  setToggle={() => {}}
-                  setAllToggles={() => {}}
-                />
-              </div>
+            <div className="mx-auto max-w-[576px]">
+              <TabCare
+                result={result}
+                toggles={toggles}
+                setToggle={() => {}}
+                setAllToggles={() => {}}
+              />
             </div>
-          </div>,
-          document.body,
-        )}
-
-      {/* 이미지 저장용 ShareCard — 화면엔 hidden, 캡처 시에만 화면 밖에서 잠깐 노출 */}
-      {mounted &&
-        createPortal(
-          <div id="share-card-root" className="hidden">
-            <ShareCard result={result} toggles={toggles} />
           </div>,
           document.body,
         )}
