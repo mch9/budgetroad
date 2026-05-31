@@ -32,6 +32,14 @@ export const VENUE_PROFILES: Record<VenueType, VenueProfile> = {
   },
 };
 
+// 베뉴 타입 → 사용자 표시용 한글 라벨
+export const VENUE_LABEL: Record<VenueType, string> = {
+  hotel: '호텔',
+  hall: '일반 웨딩홀',
+  house: '하우스 웨딩',
+  small: '스몰 베뉴',
+};
+
 // 추천 식장 form 문자열 → VenueType 매핑
 // STAGE 4 recommendVenue 결과를 받아 자동 분류 (사용자 추가 질문 없음)
 export function mapRecommendationToVenueType(recommendedForm: string): VenueType {

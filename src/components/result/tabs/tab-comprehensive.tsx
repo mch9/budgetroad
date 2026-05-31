@@ -1,7 +1,7 @@
 'use client';
 
 import type { ResultPayload } from '@/lib/budget-engine';
-import { TYPE_CONFIGS } from '@/lib/budget-engine';
+import { TYPE_CONFIGS, VENUE_LABEL } from '@/lib/budget-engine';
 import { FeedbackCard } from '../feedback-card';
 
 type Props = { result: ResultPayload; forExport?: boolean };
@@ -157,11 +157,18 @@ export function TabComprehensive({ result, forExport }: Props) {
 }
 
 function ReasonList({ result }: { result: ResultPayload }) {
+  const v = result.budget.venueDetail;
+  const guestReason = v.minGuaranteeApplied
+    ? {
+        title: '최소 보증인원이 식대 기준이에요',
+        desc: `예상 하객은 ${v.guests}명이지만, 추천 식장(${VENUE_LABEL[v.venueType]})은 최소 보증인원이 ${v.minGuarantee}명이라 ${v.minGuarantee}명 기준으로 식대·대관이 계산됐어요.`,
+      }
+    : {
+        title: '하객 수가 예산의 가장 큰 기준',
+        desc: `예상 ${v.guests}명 기준으로 식대·대관이 계산됐어요.`,
+      };
   const items: Array<{ title: string; desc: string }> = [
-    {
-      title: '하객 수가 예산의 가장 큰 기준',
-      desc: `예상 ${result.vars.guests}명 기준으로 식대·대관이 계산됐어요.`,
-    },
+    guestReason,
     {
       title: `${result.vars.region} ${result.vars.season === 'peak' ? '성수기' : '비성수기'} 시세 반영`,
       desc: '지역·시즌별 평균 단가를 그대로 적용했어요.',

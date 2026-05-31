@@ -38,4 +38,4 @@ export { TOGGLES_META, TOGGLES_BY_ID } from './data/toggles-meta';
 export { REGION_PROFILES } from './data/region-profiles';
 export { CATEGORY_BASE } from './data/category-base';
 export { TOGGLE_PRICES } from './data/toggle-prices';
-export { VENUE_PROFILES, mapRecommendationToVenueType } from './data/venue-profiles';
+export { VENUE_PROFILES, VENUE_LABEL, mapRecommendationToVenueType } from './data/venue-profiles';

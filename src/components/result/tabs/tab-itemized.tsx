@@ -169,7 +169,7 @@ function CategoryBreakdown({
     const v = result.budget.venueDetail;
     const venueOptions = enabledToggleLines(result, toggles, ['예식장']);
     const mealSub = v.minGuaranteeApplied
-      ? `최소 보증인원 ${v.minGuarantee}명으로 계산됨 (실 하객 ${v.guests}명 × ${v.perHead}만원)`
+      ? `최소 보증인원 ${v.minGuarantee}명 × ${v.perHead}만원 (실제 하객 ${v.guests}명)`
       : `${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`;
     return (
       <div className="flex flex-col gap-1 text-sm text-[#525252]">
