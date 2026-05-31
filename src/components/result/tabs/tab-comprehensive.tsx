@@ -161,7 +161,7 @@ function ReasonList({ result }: { result: ResultPayload }) {
   const guestReason = v.minGuaranteeApplied
     ? {
         title: '최소 보증인원이 식대 기준이에요',
-        desc: `예상 하객은 ${v.guests}명이지만, 추천 식장(${VENUE_LABEL[v.venueType]})은 최소 보증인원이 ${v.minGuarantee}명이라 ${v.minGuarantee}명 기준으로 식대·대관이 계산됐어요.`,
+        desc: `예상 하객은 ${v.guests}명이지만, 추천 식장(${VENUE_LABEL[v.venueType]})의 최소 보증인원 ${v.minGuarantee}명을 기준으로 식대·대관이 계산됐어요.`,
       }
     : {
         title: '하객 수가 예산의 가장 큰 기준',
