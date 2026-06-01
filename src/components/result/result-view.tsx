@@ -98,6 +98,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
 
   useEffect(() => {
     const now = Date.now();
+    exitFired.current = false; // StrictMode 재마운트·재진입에도 실제 이탈이 잡히도록 리셋
     enteredAt.current = now;
     tabStartRef.current = now;
     viewedTabs.current.add('comprehensive');
