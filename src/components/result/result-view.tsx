@@ -14,6 +14,8 @@ import { FileText, Share2, Image as ImageIcon, Headset } from 'lucide-react';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
 import { encodeShare } from '@/lib/share-state';
 import { captureNode, downloadCanvas } from '@/lib/export-result';
+import { trackEvent } from '@/lib/gtag';
+import { SatisfactionModal } from './satisfaction-modal';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -39,6 +41,7 @@ type Props = {
 export function ResultView({ answers, onReset, initialToggles }: Props) {
   const [activeTab, setActiveTab] = useState<TabId>('comprehensive');
   const [shareOpen, setShareOpen] = useState(false);
+  const [surveyOpen, setSurveyOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
   const [mounted, setMounted] = useState(false);
   // 이미지 저장은 모바일 레이아웃(<640px, sm: 미적용)에서만 깔끔하게 캡처됨.
@@ -104,8 +107,34 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     }
   }
 
+  // 저장&공유 클릭 → (세션 첫 진입이면) 만족도 팝업, 아니면 바로 저장 모달
+  function handleShareClick() {
+    trackEvent('share_panel_opened', { persona: result.vars.persona });
+    try {
+      if (sessionStorage.getItem('budgetroad_satisfaction_done') === '1') {
+        setShareOpen(true);
+        return;
+      }
+    } catch {
+      /* ignore */
+    }
+    setSurveyOpen(true);
+  }
+
+  // 답/닫기 공통 → 세션 1회 마킹 후 저장 모달로 진행 (설문 비강제)
+  function finishSurvey() {
+    try {
+      sessionStorage.setItem('budgetroad_satisfaction_done', '1');
+    } catch {
+      /* ignore */
+    }
+    setSurveyOpen(false);
+    setShareOpen(true);
+  }
+
   function handleShareAction(action: string) {
     setShareOpen(false);
+    trackEvent('share_action_clicked', { method: action, persona: result.vars.persona });
     if (action === 'link') {
       void shareLink();
       return;
@@ -207,7 +236,14 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
       </button>
 
       {/* Footer */}
-      <ResultFooter result={result} onShareClick={() => setShareOpen(true)} />
+      <ResultFooter result={result} onShareClick={handleShareClick} />
+      {surveyOpen && (
+        <SatisfactionModal
+          persona={result.vars.persona}
+          totalBudget={result.budget.total}
+          onDone={finishSurvey}
+        />
+      )}
 
       {/* Share modal placeholder (C8) — 클릭 시 토스트만 */}
       {shareOpen && (
