@@ -25,7 +25,7 @@ export function SatisfactionModal({ persona, totalBudget, onDone }: Props) {
       onClick={onDone}
     >
       <div
-        className="w-full max-w-[340px] rounded-3xl bg-white p-6"
+        className="w-full max-w-sm rounded-3xl bg-white p-6"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-end">
@@ -38,9 +38,10 @@ export function SatisfactionModal({ persona, totalBudget, onDone }: Props) {
             ✕
           </button>
         </div>
-        {/* 강제 줄바꿈(br) 없이 카드 폭에 맞춰 자연 줄바꿈 */}
+        {/* 의도적 줄바꿈 — 핵심 질문구 "잘 맞는다고 느끼셨나요?"를 한 줄로 유지(가독성) */}
         <p className="px-1 pb-6 pt-1 text-center text-lg font-bold leading-snug text-[#171717]">
-          이 결과가 내가 원하는 결혼 스타일과 잘 맞는다고 느끼셨나요?
+          이 결과가 내가 원하는 결혼 스타일과
+          <br />잘 맞는다고 느끼셨나요?
         </p>
         {/* 버튼 순서: 아니요(부정)=왼쪽 · 예(긍정)=오른쪽 — iOS HIG·Material 컨벤션(affirmative=오른쪽) */}
         <div className="flex gap-3">
