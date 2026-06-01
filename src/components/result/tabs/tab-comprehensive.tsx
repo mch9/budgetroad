@@ -2,11 +2,37 @@
 
 import type { ResultPayload } from '@/lib/budget-engine';
 import { TYPE_CONFIGS, VENUE_LABEL } from '@/lib/budget-engine';
+import { useEffect, useRef } from 'react';
+import { trackEvent } from '@/lib/gtag';
 
 type Props = { result: ResultPayload; forExport?: boolean };
 
 export function TabComprehensive({ result }: Props) {
   const config = TYPE_CONFIGS[result.vars.persona];
+
+  // 투자/세이브 포인트 영역 노출 추적 (R2-a) — 화면에 한 번 들어오면 발화
+  const investSaveRef = useRef<HTMLElement>(null);
+  const sectionFired = useRef(false);
+  useEffect(() => {
+    const el = investSaveRef.current;
+    if (!el) return;
+    const ob = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting) && !sectionFired.current) {
+          sectionFired.current = true;
+          trackEvent('result_section_viewed', {
+            section: 'invest_save',
+            persona: result.vars.persona,
+          });
+          ob.disconnect();
+        }
+      },
+      { threshold: 0.3 },
+    );
+    ob.observe(el);
+    return () => ob.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col gap-5 px-5 pb-6 pt-6">
@@ -72,7 +98,7 @@ export function TabComprehensive({ result }: Props) {
       <DiagnosisCard result={result} />
 
       {/* 4) 여기에 더 투자 */}
-      <section className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
+      <section ref={investSaveRef} className="rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white p-5">
         <h3 className="pb-3 text-base font-bold text-[#171717]">여기에 더 투자하는 게 좋아요</h3>
         <ul className="flex flex-col gap-3">
           {result.advice.invest.map((item, i) => (

@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { diagnose } from '@/lib/budget-engine';
+import { diagnose, TOGGLES_META } from '@/lib/budget-engine';
 import type { ToggleId, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 import { ResultFooter } from './footer';
@@ -67,8 +67,101 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
   // 토글 변경 시 재진단 (instant)
   const result = useMemo(() => diagnose(answers, toggles), [answers, toggles]);
 
+  // ── 결과 페이지 계측 (탭 조회·스크롤·탭별 체류·이탈) — persona=result.vars.persona ──
+  const enteredAt = useRef(0);
+  const tabStartRef = useRef(0);
+  const dwellRef = useRef<Record<TabId, number>>({ comprehensive: 0, itemized: 0, care: 0 });
+  const activeTabRef = useRef<TabId>('comprehensive');
+  const viewedTabs = useRef<Set<TabId>>(new Set<TabId>());
+  const scrollFired = useRef<Record<TabId, Set<number>>>({
+    comprehensive: new Set(),
+    itemized: new Set(),
+    care: new Set(),
+  });
+  const exitFired = useRef(false);
+
+  function selectTab(tab: TabId) {
+    if (tab === activeTabRef.current) return;
+    const now = Date.now();
+    dwellRef.current[activeTabRef.current] += now - tabStartRef.current; // 떠나는 탭 체류 누적
+    tabStartRef.current = now;
+    activeTabRef.current = tab;
+    const isFirst = !viewedTabs.current.has(tab);
+    viewedTabs.current.add(tab);
+    setActiveTab(tab);
+    trackEvent('result_tab_viewed', {
+      tab,
+      is_first_view: isFirst ? 1 : 0,
+      persona: result.vars.persona,
+    });
+  }
+
+  useEffect(() => {
+    const now = Date.now();
+    enteredAt.current = now;
+    tabStartRef.current = now;
+    viewedTabs.current.add('comprehensive');
+    trackEvent('result_tab_viewed', {
+      tab: 'comprehensive',
+      is_first_view: 1,
+      persona: result.vars.persona,
+    });
+
+    const MILESTONES = [25, 50, 80, 100];
+    function onScroll() {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = scrollable <= 0 ? 100 : Math.round((window.scrollY / scrollable) * 100);
+      const fired = scrollFired.current[activeTabRef.current];
+      for (const m of MILESTONES) {
+        if (pct >= m && !fired.has(m)) {
+          fired.add(m);
+          trackEvent('result_scroll_depth', {
+            tab: activeTabRef.current,
+            depth_pct: m,
+            persona: result.vars.persona,
+          });
+        }
+      }
+    }
+    function fireExit() {
+      if (exitFired.current) return;
+      exitFired.current = true;
+      const t = Date.now();
+      dwellRef.current[activeTabRef.current] += t - tabStartRef.current;
+      trackEvent('result_exited', {
+        time_on_result_sec: Math.round((t - enteredAt.current) / 1000),
+        last_tab: activeTabRef.current,
+        dwell_comprehensive_sec: Math.round(dwellRef.current.comprehensive / 1000),
+        dwell_itemized_sec: Math.round(dwellRef.current.itemized / 1000),
+        dwell_care_sec: Math.round(dwellRef.current.care / 1000),
+        persona: result.vars.persona,
+      });
+    }
+    function onVis() {
+      if (document.visibilityState === 'hidden') fireExit();
+    }
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    document.addEventListener('visibilitychange', onVis);
+    window.addEventListener('pagehide', fireExit);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      document.removeEventListener('visibilitychange', onVis);
+      window.removeEventListener('pagehide', fireExit);
+      fireExit(); // 인앱 언마운트(다시하기 등)도 이탈로 기록
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function setToggle(id: ToggleId, on: boolean) {
     setToggles((prev) => ({ ...prev, [id]: on }));
+    const meta = TOGGLES_META.find((t) => t.id === id);
+    trackEvent('care_option_toggled', {
+      option_id: id,
+      category: meta?.group ?? '',
+      on: on ? 1 : 0,
+      persona: result.vars.persona,
+    });
   }
 
   function setAllToggles(on: boolean) {
@@ -76,6 +169,10 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
       const next = { ...prev };
       for (const key of Object.keys(next) as ToggleId[]) next[key] = on;
       return next;
+    });
+    trackEvent('care_bulk_toggled', {
+      action: on ? 'all_on' : 'all_off',
+      persona: result.vars.persona,
     });
   }
 
@@ -199,7 +296,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
             <button
               key={tab}
               type="button"
-              onClick={() => setActiveTab(tab)}
+              onClick={() => selectTab(tab)}
               className={`flex-1 text-sm transition-colors ${
                 active
                   ? 'bg-[#373737] font-bold text-white'

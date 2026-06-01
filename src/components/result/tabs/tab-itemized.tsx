@@ -5,6 +5,7 @@ import type { ResultPayload, ResultCategory, ToggleState, ToggleGroup } from '@/
 import { TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
 import { DonutChart } from '../charts/donut-chart';
 import { CATEGORY_COLORS } from '../charts/category-colors';
+import { trackEvent } from '@/lib/gtag';
 
 type Props = { result: ResultPayload; toggles: ToggleState; forceExpand?: boolean };
 
@@ -50,11 +51,17 @@ export function TabItemized({ result, toggles, forceExpand }: Props) {
   }));
 
   function toggleExpanded(cat: ResultCategory) {
+    const willExpand = !expanded.has(cat);
     setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(cat)) next.delete(cat);
       else next.add(cat);
       return next;
+    });
+    trackEvent('itemized_category_expanded', {
+      category: cat,
+      expanded: willExpand ? 1 : 0,
+      persona: result.vars.persona,
     });
   }
 

@@ -21,6 +21,7 @@ import {
   type StepMeta,
 } from '@/lib/onboarding-v6';
 import type { ToggleState } from '@/lib/budget-engine';
+import { diagnose } from '@/lib/budget-engine';
 import { decodeShare } from '@/lib/share-state';
 
 const STORAGE_KEY = 'budgetroad_onboarding_v6';
@@ -105,6 +106,17 @@ export default function BudgetDraftPage() {
     }
   }, [step, answers, persona, axisScore]);
 
+  // 온보딩 질문 노출 추적 (14문항 이탈 퍼널). 공유 링크 진입은 제외.
+  useEffect(() => {
+    if (fromSharedRef.current) return;
+    if (step < TOTAL_STEPS) {
+      trackEvent('onboarding_step_viewed', {
+        step: step + 1,
+        question_id: STEPS[step].id,
+      });
+    }
+  }, [step]);
+
   function trackFirstInput() {
     if (firstInputAt.current !== null) return;
     firstInputAt.current = Date.now();
@@ -130,6 +142,7 @@ export default function BudgetDraftPage() {
       axis_a: score.a,
       axis_b: score.b,
       time_in_steps_sec: timeInSteps,
+      total_budget: diagnose(answers).budget.total,
     };
     for (const k of Object.keys(answers) as (keyof OnboardingAnswers)[]) {
       const v = answers[k];
@@ -167,7 +180,7 @@ export default function BudgetDraftPage() {
   }
 
   function reset() {
-    trackEvent('result_reset_clicked');
+    trackEvent('result_reset_clicked', persona ? { persona } : undefined);
     fromSharedRef.current = false; // 이제부터는 내 세션 — 저장 재개
     // 공유 링크로 들어왔던 경우 ?r= 제거(남아있으면 새로고침 시 공유 결과로 되돌아감)
     if (typeof window !== 'undefined' && window.location.search) {
