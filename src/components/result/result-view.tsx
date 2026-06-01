@@ -111,7 +111,8 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     const MILESTONES = [25, 50, 80, 100];
     function onScroll() {
       const scrollable = document.documentElement.scrollHeight - window.innerHeight;
-      const pct = scrollable <= 0 ? 100 : Math.round((window.scrollY / scrollable) * 100);
+      if (scrollable <= 0) return; // 스크롤할 콘텐츠 없으면(항목별처럼 한 화면) 미발화 — 노이즈 제거
+      const pct = Math.round((window.scrollY / scrollable) * 100);
       const fired = scrollFired.current[activeTabRef.current];
       for (const m of MILESTONES) {
         if (pct >= m && !fired.has(m)) {
