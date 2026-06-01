@@ -1,4 +1,5 @@
 import { getVisitorId } from './visitor';
+import { nextSessionContext } from './session';
 
 export function trackEvent(
   eventName: string,
@@ -7,11 +8,14 @@ export function trackEvent(
   if (typeof window === 'undefined') return;
 
   const visitorId = getVisitorId();
+  const { session_id, event_seq } = nextSessionContext();
 
   if (window.gtag) {
     window.gtag('event', eventName, {
       ...params,
       visitor_id: visitorId,
+      session_id,
+      event_seq,
     });
   }
 
@@ -20,8 +24,9 @@ export function trackEvent(
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       visitor_id: visitorId,
+      session_id,
       event_name: eventName,
-      properties: params,
+      properties: { ...params, event_seq },
     }),
     keepalive: true,
   }).catch(() => {});

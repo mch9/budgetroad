@@ -3,7 +3,7 @@ import { prisma } from '@/lib/db';
 
 export async function POST(req: NextRequest) {
   try {
-    const { visitor_id, event_name, properties } = await req.json();
+    const { visitor_id, session_id, event_name, properties } = await req.json();
 
     if (!visitor_id || !event_name) {
       return NextResponse.json(
@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
     await prisma.event.create({
       data: {
         visitorId: visitor_id,
+        sessionId: session_id ?? null,
         eventName: event_name,
         properties: properties ?? null,
         isDev: process.env.NODE_ENV !== 'production',
