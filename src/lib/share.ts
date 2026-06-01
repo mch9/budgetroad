@@ -4,13 +4,13 @@ export type ShareInput = {
 };
 
 export function buildShareText({ totalWon, siteUrl }: ShareInput) {
-  const title = '버짓로드 — 내 결혼 예산 초안';
+  const title = '버짓로드 — 우리 결혼 예산 결과';
   const text = [
-    '💍 우리 결혼식, 미리 그려봤어요',
+    '💍 우리 결혼 예산 초안이 나왔어요',
     '',
     `예상 총 비용 ${totalWon.toLocaleString()}원`,
     '',
-    '나도 내 예산 그려보기 👉',
+    '결과 보러 가기 👉',
   ].join('\n');
   return { title, text, url: siteUrl };
 }
