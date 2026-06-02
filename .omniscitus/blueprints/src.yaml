@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-28T08:53:22.174Z
+updated: 2026-06-01T14:44:39.905Z
 
 files:
   "src/app/layout.tsx":
@@ -26,10 +26,13 @@ files:
     status: active
     source: "auto:create-next-app"
     created: 
-    last_modified: 2026-05-27T02:30:42.766Z
-    change_count: 4
+    last_modified: 2026-05-31T18:14:16.476Z
+    change_count: 5
     purpose: "메인 페이지 컴포넌트 (/ 경로)"
     change_log:
+      - date: 2026-05-31T18:14:16.476Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T02:30:42.766Z
         action: edit
         source: "claude:powel858"
@@ -46,10 +49,28 @@ files:
     status: active
     source: "auto:shadcn"
     created: 
-    last_modified: 2026-05-27T18:25:00.465Z
-    change_count: 6
+    last_modified: 2026-05-29T11:41:23.256Z
+    change_count: 12
     purpose: "글로벌 CSS — Tailwind 지시문 및 shadcn/ui 테마 변수"
     change_log:
+      - date: 2026-05-29T11:41:23.256Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T10:48:22.152Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:42:44.350Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:37:15.383Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:38:31.917Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:30:33.085Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T18:25:00.465Z
         action: edit
         source: "claude:powel858"
@@ -142,10 +163,16 @@ files:
     status: active
     source: "claude"
     created: 2026-04-13
-    last_modified: 2026-04-24T13:59:29.963Z
-    change_count: 3
+    last_modified: 2026-06-01T06:43:46.954Z
+    change_count: 5
     purpose: "trackEvent 이중 트랙 헬퍼 — GA4 `gtag('event', ...)` + Supabase `fetch('/api/events', { keepalive: true })` 병렬 호출. 실패는 `.catch(() => {})`로 swallow (GA4가 중복 수집 중이라 단일 실패 허용). 모든 이벤트에 visitor_id 자동 포함."
     change_log:
+      - date: 2026-06-01T06:43:46.954Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T06:43:42.647Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-24T13:59:29.963Z
         action: write
         source: "claude:mincheol.kim"
@@ -324,10 +351,49 @@ files:
     status: active
     source: "claude"
     created: 2026-04-11
-    last_modified: 2026-05-28T06:53:56.547Z
-    change_count: 133
+    last_modified: 2026-06-01T08:35:51.638Z
+    change_count: 146
     purpose: "예산 생성 페이지 — Figma 기반 10-step 플로우(지역/예식/시기/스튜디오/드레스/메헤/하객·식비/예물/신혼여행) + 결과 페이지(선택 조건 카드 + 항목별 아코디언). sticky 하단 네비, 모든 카드 min-h-[94px] 통일"
     change_log:
+      - date: 2026-06-01T08:35:51.638Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:35:48.942Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:35:47.594Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:35:45.223Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T15:37:00.296Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T15:36:50.930Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T15:36:41.897Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T15:36:31.625Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:12:49.845Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:12:42.978Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:12:33.766Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:12:23.239Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:12:16.926Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T06:53:56.547Z
         action: edit
         source: "claude:powel858"
@@ -811,10 +877,13 @@ files:
     status: active
     source: "claude"
     created: 2026-04-17
-    last_modified: 2026-04-24T05:51:09.337Z
-    change_count: 2
+    last_modified: 2026-05-29T15:37:50.177Z
+    change_count: 3
     purpose: "결과 공유 유틸 — buildShareText(B안 포맷) + shareResult(navigator.share → clipboard fallback, method 반환)"
     change_log:
+      - date: 2026-05-29T15:37:50.177Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-24T05:51:09.337Z
         action: write
         source: "claude:mincheol.kim"
@@ -881,10 +950,16 @@ files:
     status: active
     source: "claude:mincheol.kim"
     created: 2026-04-24
-    last_modified: 2026-04-24T17:36:23.399Z
-    change_count: 2
+    last_modified: 2026-06-01T06:43:50.371Z
+    change_count: 4
     purpose: "POST 이벤트 수집 엔드포인트 — gtag.ts의 trackEvent가 GA4와 병렬 호출 → Prisma로 Supabase events 테이블 insert. isDev는 NODE_ENV 기반 자동 분기. 에러 시 err.meta + dbHost 확장 로깅 후 500 반환 (클라이언트는 .catch로 swallow하므로 운영엔 영향 없음)."
     change_log:
+      - date: 2026-06-01T06:43:50.371Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T06:43:48.304Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-24T17:36:23.399Z
         action: edit
         source: "claude:mincheol.kim"
@@ -1166,10 +1241,13 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-28T04:44:44.479Z
-    change_count: 3
+    last_modified: 2026-05-31T23:15:10.707Z
+    change_count: 4
     purpose: ""
     change_log:
+      - date: 2026-05-31T23:15:10.707Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T04:44:44.479Z
         action: edit
         source: "claude:powel858"
@@ -1216,10 +1294,55 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-28T07:40:58.999Z
-    change_count: 11
+    last_modified: 2026-06-01T08:37:24.744Z
+    change_count: 26
     purpose: ""
     change_log:
+      - date: 2026-06-01T08:37:24.744Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:37:21.823Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:37:17.608Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:45:58.868Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:39:20.691Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:39:09.595Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-31T23:19:01.499Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-31T23:15:17.882Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-31T23:15:12.634Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:48:17.242Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:48:06.414Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T10:31:56.274Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T10:31:49.952Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T09:23:39.969Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T09:18:08.569Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T07:40:58.999Z
         action: edit
         source: "claude:powel858"
@@ -1257,10 +1380,37 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-28T08:39:35.844Z
-    change_count: 12
+    last_modified: 2026-06-01T08:35:43.323Z
+    change_count: 21
     purpose: ""
     change_log:
+      - date: 2026-06-01T08:35:43.323Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:35:40.505Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-31T23:15:20.835Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T10:58:57.209Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:09:39.102Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:09:30.349Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:09:22.158Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T05:53:07.937Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-28T09:30:53.372Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T08:39:35.844Z
         action: edit
         source: "claude:powel858"
@@ -1301,10 +1451,16 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-28T08:53:22.174Z
-    change_count: 11
+    last_modified: 2026-05-28T09:04:30.210Z
+    change_count: 13
     purpose: ""
     change_log:
+      - date: 2026-05-28T09:04:30.210Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T09:04:25.507Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T08:53:22.174Z
         action: edit
         source: "claude:powel858"
@@ -1342,10 +1498,268 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-27
-    last_modified: 2026-05-27T18:30:58.595Z
-    change_count: 3
+    last_modified: 2026-06-01T14:44:39.905Z
+    change_count: 89
     purpose: ""
     change_log:
+      - date: 2026-06-01T14:44:39.905Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:56:00.742Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:34:00.961Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:33:59.624Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:33:57.273Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:33:54.444Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:33:42.204Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:33:40.787Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:41:10.110Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:41:08.433Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:41:03.670Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:41:01.706Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T15:37:11.521Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:12:07.059Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:11:59.568Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:11:52.452Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:11:45.171Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T13:02:53.453Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T13:02:44.616Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:30:01.789Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:28:57.097Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:28:37.165Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:14:44.749Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:12:50.473Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:12:42.039Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:59:15.766Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:58:08.876Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:57:57.156Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:57:43.824Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:57:36.747Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:42:43.775Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:41:06.829Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:40:53.284Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:40:39.368Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:40:30.769Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:03:16.808Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:01:02.359Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:00:27.654Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:00:15.471Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T11:00:09.102Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:44:01.561Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:37:58.836Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:37:41.326Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:37:29.347Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:03:29.493Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:02:58.937Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:01:33.499Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:01:23.729Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:01:19.263Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:01:13.695Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:57:48.360Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:57:40.169Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:57:35.337Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:57:29.097Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:54:57.311Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:52:03.702Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:51:41.180Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:39:41.224Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:39:37.785Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:39:28.947Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:39:16.475Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:39:07.035Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:39:05.789Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:32:01.781Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:31:50.447Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:31:42.490Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:31:40.268Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:10:33.948Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:10:23.865Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:10:11.883Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:09:50.318Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:09:48.227Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:50:27.394Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:50:14.187Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:49:53.104Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:49:44.579Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:49:43.946Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:38:32.249Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:33:33.440Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:33:24.803Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:33:13.674Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:33:03.553Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:06:51.297Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:06:39.759Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:06:31.212Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T05:53:17.381Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-27T18:30:58.595Z
         action: edit
         source: "claude:powel858"
@@ -1376,10 +1790,155 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T04:43:27.715Z
+    last_modified: 2026-05-31T23:15:06.319Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-31T23:15:06.319Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T04:43:27.715Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/feedback-card.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-28
+    last_modified: 2026-05-29T15:07:42.817Z
+    change_count: 6
+    purpose: ""
+    change_log:
+      - date: 2026-05-29T15:07:42.817Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-29T14:33:02.725Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:33:01.325Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T14:32:57.677Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T11:49:55.024Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T10:31:45.019Z
+        action: write
+        source: "claude:powel858"
+  "src/app/api/share-card/route.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-29
+    last_modified: 2026-05-29T06:38:16.661Z
     change_count: 1
     purpose: ""
     change_log:
-      - date: 2026-05-28T04:43:27.715Z
+      - date: 2026-05-29T06:38:16.661Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/export-result.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-29
+    last_modified: 2026-05-29T12:28:28.854Z
+    change_count: 10
+    purpose: ""
+    change_log:
+      - date: 2026-05-29T12:28:28.854Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T12:12:27.639Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-29T11:57:29.286Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-05-29T08:05:17.941Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:05:11.370Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T08:01:06.649Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:54:43.995Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:49:26.397Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T07:42:11.986Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-29T06:48:29.927Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/charts/category-colors.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-29
+    last_modified: 2026-05-29T10:58:43.296Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-29T10:58:43.296Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/share-card.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-29
+    last_modified: 2026-05-29T10:59:38.225Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-29T10:59:38.225Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/share-state.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-29
+    last_modified: 2026-05-29T14:11:32.937Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-29T14:11:32.937Z
+        action: write
+        source: "claude:powel858"
+  "src/lib/session.ts":
+    status: active
+    source: "claude:powel858"
+    created: 2026-06-01
+    last_modified: 2026-06-01T06:41:09.348Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-06-01T06:41:09.348Z
+        action: write
+        source: "claude:powel858"
+  "src/components/result/satisfaction-modal.tsx":
+    status: active
+    source: "claude:powel858"
+    created: 2026-06-01
+    last_modified: 2026-06-01T08:28:35.616Z
+    change_count: 5
+    purpose: ""
+    change_log:
+      - date: 2026-06-01T08:28:35.616Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:28:32.343Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T08:20:07.287Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-06-01T08:06:05.809Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-06-01T07:39:07.524Z
         action: write
         source: "claude:powel858"

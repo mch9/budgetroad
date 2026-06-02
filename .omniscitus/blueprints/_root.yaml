@@ -1,15 +1,33 @@
 version: 1
-updated: 2026-05-27T18:19:01.348Z
+updated: 2026-05-28T20:19:58.699Z
 
 files:
   "CLAUDE.md":
     status: active
     source: "user:mincheol.kim"
     created: 
-    last_modified: 2026-04-28T16:24:12.794Z
-    change_count: 10
+    last_modified: 2026-05-28T20:19:58.699Z
+    change_count: 16
     purpose: "프로젝트 설계도 — Claude가 참조하는 프로젝트 개요, 기술 스택, 구조, 작업 원칙 정의"
     change_log:
+      - date: 2026-05-28T20:19:58.699Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T20:19:53.240Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T20:19:44.806Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T20:19:36.610Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T20:19:30.860Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T20:13:23.827Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-04-28T16:24:12.794Z
         action: edit
         source: "claude:mincheol.kim"
