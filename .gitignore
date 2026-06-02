@@ -48,3 +48,4 @@ next-env.d.ts
 # agent tool artifacts (Claude Code skills install)
 .agents/
 skills-lock.json
+.gstack/

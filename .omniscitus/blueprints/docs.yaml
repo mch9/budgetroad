@@ -1,5 +1,5 @@
 version: 1
-updated: 2026-05-28T08:54:07.804Z
+updated: 2026-06-01T09:01:27.249Z
 
 files:
   "docs/prd/ROADMAP.md":
@@ -192,10 +192,16 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T07:52:00.339Z
-    change_count: 12
+    last_modified: 2026-05-28T09:23:53.197Z
+    change_count: 14
     purpose: ""
     change_log:
+      - date: 2026-05-28T09:23:53.197Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T09:18:18.142Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T07:52:00.339Z
         action: edit
         source: "claude:powel858"
@@ -277,10 +283,19 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T07:41:14.104Z
-    change_count: 2
+    last_modified: 2026-05-28T10:32:10.424Z
+    change_count: 5
     purpose: ""
     change_log:
+      - date: 2026-05-28T10:32:10.424Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T09:23:53.272Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-28T09:18:28.628Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T07:41:14.104Z
         action: edit
         source: "claude:powel858"
@@ -291,10 +306,13 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T08:40:17.932Z
-    change_count: 3
+    last_modified: 2026-05-28T09:31:07.570Z
+    change_count: 4
     purpose: ""
     change_log:
+      - date: 2026-05-28T09:31:07.570Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T08:40:17.932Z
         action: edit
         source: "claude:powel858"
@@ -308,10 +326,13 @@ files:
     status: active
     source: "claude:powel858"
     created: 2026-05-28
-    last_modified: 2026-05-28T08:54:07.804Z
-    change_count: 4
+    last_modified: 2026-05-28T09:04:44.905Z
+    change_count: 5
     purpose: ""
     change_log:
+      - date: 2026-05-28T09:04:44.905Z
+        action: edit
+        source: "claude:powel858"
       - date: 2026-05-28T08:54:07.804Z
         action: edit
         source: "claude:powel858"
@@ -322,5 +343,210 @@ files:
         action: edit
         source: "claude:powel858"
       - date: 2026-05-28T07:52:27.539Z
+        action: write
+        source: "claude:powel858"
+  "docs/budget-calc-team-guide.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-31
+    last_modified: 2026-05-31T22:45:40.871Z
+    change_count: 2
+    purpose: ""
+    change_log:
+      - date: 2026-05-31T22:45:40.871Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-05-31T18:27:08.109Z
+        action: write
+        source: "claude:powel858"
+  "docs/prd/analytics/event-taxonomy-implemented.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-05-31
+    last_modified: 2026-05-31T18:37:47.116Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-05-31T18:37:47.116Z
+        action: write
+        source: "claude:powel858"
+  "docs/prd/analytics/event-taxonomy-v2.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-06-01
+    last_modified: 2026-06-01T07:32:10.500Z
+    change_count: 45
+    purpose: ""
+    change_log:
+      - date: 2026-06-01T07:32:10.500Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:27:20.769Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:27:18.117Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:27:15.323Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:21:00.281Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:13:37.935Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:13:35.051Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:13:32.702Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:06:59.662Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:06:50.555Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T07:06:48.188Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T06:38:37.287Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T06:38:35.725Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T06:38:28.788Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:49:57.147Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:49:13.293Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:49:11.105Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:48:59.984Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:48:58.264Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:48:56.149Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:48:53.777Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:05:08.136Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:01:04.210Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:00:59.691Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T04:57:07.628Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T04:57:01.136Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T04:56:56.660Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T04:48:25.455Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T04:29:20.323Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:53:57.019Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:53:44.951Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:52:45.816Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:52:40.662Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:52:26.948Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:48:21.541Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:48:08.074Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:41:19.105Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:41:13.519Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:41:09.139Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:30:07.198Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:30:03.105Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:29:56.451Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:28:10.661Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:27:53.332Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T02:15:41.540Z
+        action: write
+        source: "claude:powel858"
+  "docs/prd/analytics/event-taxonomy-v2-impl-plan.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-06-01
+    last_modified: 2026-06-01T07:39:01.339Z
+    change_count: 6
+    purpose: ""
+    change_log:
+      - date: 2026-06-01T07:39:01.339Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T06:39:51.229Z
+        action: write
+        source: "claude:powel858"
+      - date: 2026-06-01T05:49:45.295Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:49:41.608Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:49:37.767Z
+        action: edit
+        source: "claude:powel858"
+      - date: 2026-06-01T05:22:43.405Z
+        action: write
+        source: "claude:powel858"
+  "docs/prd/analytics/event-expansion-analysis.md":
+    status: active
+    source: "claude:powel858"
+    created: 2026-06-01
+    last_modified: 2026-06-01T09:01:27.249Z
+    change_count: 1
+    purpose: ""
+    change_log:
+      - date: 2026-06-01T09:01:27.249Z
         action: write
         source: "claude:powel858"

@@ -1,8 +1,8 @@
 # 버짓로드 (budgetroad)
 
 ## 프로젝트 개요
-결혼 준비 중인 사용자가 결혼 유형과 조건을 선택하면, 통계 기반 평균값으로 예산 초안을 자동 생성해주는 웹앱.
-사용자는 결혼 유형과 예산을 상호 전환하지 못하는 문제를 해결하여, "구상 상태"에서 "초안 작성 시작 상태"로의 전이를 돕는다.
+결혼 준비 중인 사용자가 온보딩 질문(가치관 + 예산·하객수·지역 등 실측 입력)에 답하면, 페르소나 분류와 통계 기반 값으로 예산 초안을 자동 생성해주는 웹앱.
+사용자가 결혼 유형과 예산을 상호 전환하지 못하는 문제를 해결하여, "구상 상태"에서 "초안 작성 시작 상태"로의 전이를 돕는다.
 
 ## 대상 사용자
 - 결혼을 준비하는 예비 부부
@@ -10,9 +10,9 @@
 - 예산을 직접 정리하려다 중단하거나 외부 템플릿에 의존하는 사람
 
 ## 핵심 기능
-1. **결혼 유형 선택**: 기본 항목(식장, 스드메, 혼수, 예물 등) 제공 + 사용자 직접 정의 가능
-2. **예산 초안 자동 생성**: 선택한 유형에 맞는 통계 기반 평균값으로 항목별 예산 자동 구성
-3. **결과 시각화**: 항목별 금액 테이블 + 비율 차트로 결과 확인
+1. **온보딩 질문**: 가치관 질문(선택지별 2축 점수)과 실측 입력(예산·하객수·지역 등)을 단계별로 수집 — `src/lib/onboarding-v6.ts`
+2. **페르소나 분류 + 예산 초안 자동 생성**: 답변 2축 점수로 페르소나를 분류하고, 실측 입력 + 통계 기반 값으로 항목별 예산 초안 구성 — `src/lib/budget-engine/`
+3. **결과 시각화**: 항목별 금액 테이블 + 비율 차트로 결과 확인 — `src/components/result/`
 4. **링크 공유**: 로그인 없이 고유 URL로 결과 공유
 5. **계정 저장**: 로그인 후 마이페이지에서 저장 목록 관리
 
@@ -112,12 +112,14 @@ budgetroad/
 
 ## 화면 및 URL 구조
 - `/` — 랜딩 페이지 (서비스 소개 + CTA)
-- `/budget-draft` — 예산 생성 페이지 (입력 → 결과, 한 페이지 상태 전환)
+- `/budget-draft` — 온보딩 → 결과 (한 페이지 상태 전환): 온보딩 질문(`src/components/onboarding/`) → 로딩 → 결과(`src/components/result/`)
+- `/design-system` — 디자인 시스템 프리뷰 (개발용)
 
 ## 데이터 구조 (통계 기반)
-- 지역: 서울 / 경기 / 지방
+- 온보딩 입력 매핑/페르소나 분류 로직: `src/lib/onboarding-v6.ts` (예산·하객수·지역 매핑, 2축 점수 → 페르소나)
+- 예산 산출 엔진·통계 데이터: `src/lib/budget-engine/` (`data/`, `stages/`)
+- 지역: 서울 / 수도권 / 광역시 / 지방
 - 항목: 식장, 스드메, 혼수, 예물, 예단, 신혼여행, 한복, 폐백음식, 청첩장, 답례품
-- 세부 조건: 식장(호텔/웨딩홀/스몰웨딩/야외), 신혼여행(국내/동남아/유럽/기타)
 - 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
 
 ## 데이터 수집
@@ -125,7 +127,7 @@ budgetroad/
 - 스키마 결정 근거: `docs/prd/analytics/event-schema-options.md` (옵션 A — 플랫 JSON 단일 테이블)
 
 ## 디자인 시스템
-- 컬러: Primary Accent `#AAC7E1` (선택 상태), Action `#373737` (CTA·헤드라인), Background `#F9FAFB` — 상세는 `src/app/globals.css`
+- 컬러(브랜드): Primary Accent `#AAC7E1` (선택 상태), Action `#373737` (CTA·헤드라인), Background `#F9FAFB`. ⚠️ 이 브랜드 컬러들은 토큰이 아니라 컴포넌트에 Tailwind arbitrary value(`bg-[#373737]` 등)로 직접 지정돼 있음. `globals.css`의 `--primary`(#FF8400 등)는 base-nova 기본 토큰으로 브랜드 컬러와 무관.
 - 폰트: Pretendard Variable (본문·금액 공통, `src/app/fonts/PretendardVariable.woff2`). 금액은 `tabular-nums`로 자릿수 정렬.
 - 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
 - **기반**: shadcn `base-nova` (Claude Design). 토큰 = `src/app/globals.css`, 컴포넌트 = `src/components/ui/`
@@ -138,5 +140,7 @@ budgetroad/
 - 실시간 시세 연동
 - 업체 추천/연결
 
-## 다음 단계
-- `/6-prototype` 으로 프로토타입을 만드세요
+## 현재 진행 상황
+- 온보딩 v6 (페르소나 분류 기반) 흐름 구현·다듬는 단계
+- 작업 맥락·의사결정 이력: `.omniscitus/history/`
+- 상세 PRD: `docs/prd/budget-builder/budget-draft-v0.md`
