@@ -104,6 +104,7 @@ export function useBudgetTrackingState() {
           custom: true,
         }));
 
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems([...presetItems, ...customItems]);
         setSession(parsed);
       }
