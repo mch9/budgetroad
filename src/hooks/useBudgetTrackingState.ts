@@ -7,6 +7,7 @@ import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 
 const SESSION_KEY = 'budgetroad_manage_session';
 const ACTUAL_KEY = 'budgetroad_budget_actual';
+const CUSTOM_KEY = 'budgetroad_custom_items';
 
 export type BudgetItem = {
   id: string;
@@ -14,6 +15,14 @@ export type BudgetItem = {
   category: string;
   filterCategory: 'venue' | 'studio' | 'other';
   estimatedAmount: number; // 만원
+  custom?: boolean; // 직접 추가한 항목 (예상 금액 없음)
+};
+
+type StoredCustomItem = {
+  id: string;
+  name: string;
+  filterCategory: 'venue' | 'studio' | 'other';
+  amount: number; // 만원
 };
 
 export type ActualAmounts = Record<string, number | undefined>;
@@ -82,7 +91,20 @@ export function useBudgetTrackingState() {
       if (sessionRaw) {
         const parsed = JSON.parse(sessionRaw) as SessionData;
         const result = diagnose(parsed.answers, parsed.toggles);
-        setItems(buildItems(result, parsed.toggles));
+        const presetItems = buildItems(result, parsed.toggles);
+
+        const customRaw = localStorage.getItem(CUSTOM_KEY);
+        const customs: StoredCustomItem[] = customRaw ? (JSON.parse(customRaw) as StoredCustomItem[]) : [];
+        const customItems: BudgetItem[] = customs.map((c) => ({
+          id: c.id,
+          name: c.name,
+          category: c.filterCategory === 'venue' ? '예식장' : c.filterCategory === 'studio' ? '스드메' : '기타',
+          filterCategory: c.filterCategory,
+          estimatedAmount: 0,
+          custom: true,
+        }));
+
+        setItems([...presetItems, ...customItems]);
         setSession(parsed);
       }
       const actualRaw = localStorage.getItem(ACTUAL_KEY);
@@ -104,7 +126,30 @@ export function useBudgetTrackingState() {
     });
   }
 
-  const totalEstimated = items.reduce((s, i) => s + i.estimatedAmount, 0);
+  function addCustomItem(name: string, filterCategory: 'venue' | 'studio' | 'other', amount: number) {
+    const id = `custom-${Date.now()}`;
+    const newItem: BudgetItem = {
+      id, name,
+      category: filterCategory === 'venue' ? '예식장' : filterCategory === 'studio' ? '스드메' : '기타',
+      filterCategory,
+      estimatedAmount: 0,
+      custom: true,
+    };
+    setItems((prev) => [...prev, newItem]);
+    setActual((prev) => {
+      const next = { ...prev, [id]: amount };
+      try { localStorage.setItem(ACTUAL_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+    try {
+      const customRaw = localStorage.getItem(CUSTOM_KEY);
+      const customs: StoredCustomItem[] = customRaw ? (JSON.parse(customRaw) as StoredCustomItem[]) : [];
+      customs.push({ id, name, filterCategory, amount });
+      localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs));
+    } catch { /* ignore */ }
+  }
+
+  const totalEstimated = items.filter((i) => !i.custom).reduce((s, i) => s + i.estimatedAmount, 0);
   const totalActual = items.reduce((s, i) => s + (actual[i.id] ?? 0), 0);
 
   return {
@@ -116,6 +161,7 @@ export function useBudgetTrackingState() {
     answers: session?.answers ?? null,
     toggles: session?.toggles ?? null,
     hasSession: session !== null,
+    addCustomItem,
   };
 }
 

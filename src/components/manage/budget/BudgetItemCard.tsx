@@ -52,34 +52,38 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
 
       {/* 금액 내역 — 전체 만원 단위로 통일 */}
       <div className="mt-4 rounded-xl bg-[rgba(217,217,217,0.3)] p-3">
-        <div className="flex items-center justify-between text-sm">
-          <span className="text-[#45474C]">예상 금액</span>
-          <span className="tabular-nums text-[#1E293B]">
-            {item.estimatedAmount.toLocaleString()}만원
-          </span>
-        </div>
-        <div className="mt-2 flex items-center justify-between text-sm">
-          <span className="text-[#45474C]">차이 금액</span>
-          <span
-            className={`tabular-nums ${
-              diff === undefined
-                ? 'text-[#1E293B]'
-                : diff > 0
-                  ? 'text-red-500'
-                  : diff < 0
-                    ? 'text-emerald-600'
-                    : 'text-[#1E293B]'
-            }`}
-          >
-            {diff === undefined
-              ? '-'
-              : diff === 0
-                ? '±0'
-                : `${diff > 0 ? '+' : '-'}${Math.abs(diff).toLocaleString()}만원`}
-          </span>
-        </div>
+        {!item.custom && (
+          <>
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-[#45474C]">예상 금액</span>
+              <span className="tabular-nums text-[#1E293B]">
+                {item.estimatedAmount.toLocaleString()}만원
+              </span>
+            </div>
+            <div className="mt-2 flex items-center justify-between text-sm">
+              <span className="text-[#45474C]">차이 금액</span>
+              <span
+                className={`tabular-nums ${
+                  diff === undefined
+                    ? 'text-[#1E293B]'
+                    : diff > 0
+                      ? 'text-red-500'
+                      : diff < 0
+                        ? 'text-emerald-600'
+                        : 'text-[#1E293B]'
+                }`}
+              >
+                {diff === undefined
+                  ? '-'
+                  : diff === 0
+                    ? '±0'
+                    : `${diff > 0 ? '+' : '-'}${Math.abs(diff).toLocaleString()}만원`}
+              </span>
+            </div>
+          </>
+        )}
 
-        <div className="mt-2 border-t border-[#DBDBDB] pt-2">
+        <div className={`${!item.custom ? 'mt-2 border-t border-[#DBDBDB] pt-2' : ''}`}>
           <div className="flex items-center justify-between text-sm">
             <span className="font-semibold text-[#1E293B]">실제 금액</span>
             {editing ? (
