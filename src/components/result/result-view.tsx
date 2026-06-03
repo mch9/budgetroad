@@ -15,6 +15,7 @@ import { buildShareText, buildShareClipboard } from '@/lib/share';
 import { encodeShare } from '@/lib/share-state';
 import { captureNode, downloadCanvas } from '@/lib/export-result';
 import { trackEvent } from '@/lib/gtag';
+import { saveSession } from '@/hooks/useBudgetTrackingState';
 import { SatisfactionModal } from './satisfaction-modal';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
@@ -231,6 +232,12 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     setShareOpen(true);
   }
 
+  function handleManageClick() {
+    saveSession(answers, toggles);
+    trackEvent('manage_cta_clicked', { persona: result.vars.persona });
+    window.location.href = '/manage';
+  }
+
   function handleShareAction(action: string) {
     setShareOpen(false);
     trackEvent('share_action_clicked', { method: action, persona: result.vars.persona });
@@ -335,7 +342,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
       </button>
 
       {/* Footer */}
-      <ResultFooter result={result} onShareClick={handleShareClick} />
+      <ResultFooter result={result} onShareClick={handleShareClick} onManageClick={handleManageClick} />
       {surveyOpen && (
         <SatisfactionModal
           persona={result.vars.persona}
