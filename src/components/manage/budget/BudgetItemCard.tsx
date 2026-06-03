@@ -24,7 +24,7 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
   function commitEdit() {
     const parsed = parseInt(inputValue.replace(/,/g, ''), 10);
     if (!isNaN(parsed) && parsed >= 0) {
-      onSetActual(item.id, Math.round(parsed / 10000));
+      onSetActual(item.id, parsed); // 만원 단위 그대로 저장
     } else if (inputValue.trim() === '') {
       onSetActual(item.id, undefined);
     }
@@ -36,7 +36,11 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
       {/* 헤더: 상태 배지 + 카테고리 + 항목명 */}
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
-          <span className="rounded-[4px] bg-[#DCE9FF] px-2 py-px text-[11px] text-[#1E293B]">
+          <span
+            className={`rounded-[4px] px-2 py-px text-[11px] ${
+              isDone ? 'bg-[#D1FAE5] text-[#065F46]' : 'bg-[#DCE9FF] text-[#1E293B]'
+            }`}
+          >
             {isDone ? '완료' : '준비'}
           </span>
           <span className="text-xs font-light text-[#1E293B]">{item.category}</span>
@@ -46,12 +50,12 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
 
       <div className="mt-4 h-px bg-[#F4F4F4]" />
 
-      {/* 금액 내역 */}
+      {/* 금액 내역 — 전체 만원 단위로 통일 */}
       <div className="mt-4 rounded-xl bg-[rgba(217,217,217,0.3)] p-3">
         <div className="flex items-center justify-between text-sm">
           <span className="text-[#45474C]">예상 금액</span>
           <span className="tabular-nums text-[#1E293B]">
-            ₩{(item.estimatedAmount * 10000).toLocaleString()}
+            {item.estimatedAmount.toLocaleString()}만원
           </span>
         </div>
         <div className="mt-2 flex items-center justify-between text-sm">
@@ -71,7 +75,7 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
               ? '-'
               : diff === 0
                 ? '±0'
-                : `${diff > 0 ? '+' : ''}₩${(diff * 10000).toLocaleString()}`}
+                : `${diff > 0 ? '+' : '-'}${Math.abs(diff).toLocaleString()}만원`}
           </span>
         </div>
 
@@ -86,8 +90,8 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
                   onChange={(e) => setInputValue(e.target.value)}
                   onBlur={commitEdit}
                   onKeyDown={(e) => e.key === 'Enter' && commitEdit()}
-                  className="w-32 rounded border border-[#AAC7E1] px-2 py-0.5 text-right text-sm tabular-nums outline-none focus:border-[#7499BA]"
-                  placeholder="원 단위로 입력"
+                  className="w-28 rounded border border-[#AAC7E1] px-2 py-0.5 text-right text-sm tabular-nums outline-none focus:border-[#7499BA]"
+                  placeholder="0"
                   autoFocus
                 />
                 <span className="text-xs text-[#6A7282]">만원</span>
@@ -96,9 +100,11 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
               <button
                 type="button"
                 onClick={startEdit}
-                className="tabular-nums text-[#1E293B] underline-offset-2 hover:underline"
+                className={`tabular-nums underline-offset-2 hover:underline ${
+                  isDone ? 'font-semibold text-[#1E293B]' : 'text-[#99A1AF]'
+                }`}
               >
-                {actualAmount !== undefined ? `₩${(actualAmount * 10000).toLocaleString()}` : '-'}
+                {actualAmount !== undefined ? `${actualAmount.toLocaleString()}만원` : '탭해서 입력'}
               </button>
             )}
           </div>

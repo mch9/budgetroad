@@ -74,14 +74,16 @@ function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
 export function useBudgetTrackingState() {
   const [items, setItems] = useState<BudgetItem[]>([]);
   const [actual, setActual] = useState<ActualAmounts>({});
+  const [session, setSession] = useState<SessionData | null>(null);
 
   useEffect(() => {
     try {
       const sessionRaw = localStorage.getItem(SESSION_KEY);
       if (sessionRaw) {
-        const { answers, toggles } = JSON.parse(sessionRaw) as SessionData;
-        const result = diagnose(answers, toggles);
-        setItems(buildItems(result, toggles));
+        const parsed = JSON.parse(sessionRaw) as SessionData;
+        const result = diagnose(parsed.answers, parsed.toggles);
+        setItems(buildItems(result, parsed.toggles));
+        setSession(parsed);
       }
       const actualRaw = localStorage.getItem(ACTUAL_KEY);
       if (actualRaw) setActual(JSON.parse(actualRaw) as ActualAmounts);
@@ -105,7 +107,16 @@ export function useBudgetTrackingState() {
   const totalEstimated = items.reduce((s, i) => s + i.estimatedAmount, 0);
   const totalActual = items.reduce((s, i) => s + (actual[i.id] ?? 0), 0);
 
-  return { items, actual, setActualAmount, totalEstimated, totalActual };
+  return {
+    items,
+    actual,
+    setActualAmount,
+    totalEstimated,
+    totalActual,
+    answers: session?.answers ?? null,
+    toggles: session?.toggles ?? null,
+    hasSession: session !== null,
+  };
 }
 
 /** 결과 페이지에서 /manage로 이동 전 세션 저장 */

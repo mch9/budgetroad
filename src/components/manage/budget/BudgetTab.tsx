@@ -20,9 +20,17 @@ export function BudgetTab({ items, actual, setActualAmount, totalEstimated, tota
   const filtered =
     filter === 'all' ? items : items.filter((item) => item.filterCategory === filter);
 
+  const unrecordedEstimated = items
+    .filter((item) => actual[item.id] === undefined)
+    .reduce((s, item) => s + item.estimatedAmount, 0);
+
   return (
     <div className="pb-4">
-      <BudgetSummary totalEstimated={totalEstimated} totalActual={totalActual} />
+      <BudgetSummary
+        totalEstimated={totalEstimated}
+        totalActual={totalActual}
+        unrecordedEstimated={unrecordedEstimated}
+      />
 
       {/* 지출 추가 버튼 */}
       <div className="px-5 py-3">

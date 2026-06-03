@@ -61,9 +61,27 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
 
   // 초기 진단으로 유형별 디폴트 토글 산출 (공유 링크면 공유자 토글 우선)
   const initial = useMemo(() => diagnose(answers), [answers]);
-  const [toggles, setToggles] = useState<ToggleState>(
-    initialToggles ?? initial.vars.toggleDefaults,
-  );
+  const [toggles, setToggles] = useState<ToggleState>(() => {
+    if (initialToggles) return initialToggles;
+    // manage 페이지에서 뒤로왔을 때 직전 토글 복원 (Bug 2)
+    try {
+      const raw = typeof window !== 'undefined' && localStorage.getItem('budgetroad_manage_session');
+      if (raw) {
+        const { toggles: saved } = JSON.parse(raw) as { toggles: ToggleState };
+        if (saved) return saved;
+      }
+    } catch { /* ignore */ }
+    return initial.vars.toggleDefaults;
+  });
+
+  // 토글 변경 시 세션 자동 저장 (Bug 1: 체크리스트가 항상 최신 토글 반영)
+  // 공유 링크 결과는 저장 안 함 — 남의 토글이 내 세션을 덮지 않도록
+  const autoSaveRef = useRef(false);
+  useEffect(() => {
+    if (!autoSaveRef.current) { autoSaveRef.current = true; return; }
+    if (initialToggles) return;
+    saveSession(answers, toggles);
+  }, [toggles, answers, initialToggles]);
 
   // 토글 변경 시 재진단 (instant)
   const result = useMemo(() => diagnose(answers, toggles), [answers, toggles]);
