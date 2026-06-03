@@ -24,6 +24,7 @@ export function useChecklistState() {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setChecked(JSON.parse(raw) as CheckedState);
     } catch { /* ignore */ }
 
