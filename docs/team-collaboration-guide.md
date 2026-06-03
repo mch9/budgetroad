@@ -12,7 +12,7 @@
 | | 담당 | 작업 브랜치 | ✅ 내 방 (여기만 작업) | 🚫 만지면 안 되는 곳 |
 |---|---|---|---|---|
 | **A** | 랜딩 페이지 | `feature/landing-page` | `src/app/page.tsx`<br>`src/components/landing/`<br>`public/landing/` | `src/components/result/`<br>`src/components/manage/`<br>`src/lib/budget-engine/` |
-| **B** | 결과 이후 체크리스트·예산 관리 | `feature/manage` | `src/components/manage/` (새로 만듦)<br>`src/app/manage/` (새로 만듦) | `src/app/page.tsx`<br>`src/components/landing/` |
+| **B** | 결과 이후 체크리스트·예산 관리 | `feature/manage` | `src/components/manage/`·`src/app/manage/` (새로)<br>**`src/components/result/`·`budget-draft/page.tsx`** (결과 연동 — 자유 수정) | `src/app/page.tsx`<br>`src/components/landing/` |
 
 - **공통 출발선 = `main`** — 항상 여기서 새로 시작하고, 여기로 합칩니다.
 - 위 브랜치·폴더 이름은 예시예요. 바꾸고 싶으면 둘이 합의해서 바꿔도 됩니다 (단, 정했으면 끝까지 유지).
@@ -63,13 +63,14 @@ AI에게 이렇게 시키세요:
 
 **B님 (체크리스트·예산 관리) 용:**
 ```
-너는 '결과 이후 체크리스트·예산 관리' 담당이야. 아래 폴더 안에서만 작업해:
-- src/components/manage/ (새로 만들어도 됨)
-- src/app/manage/ (새로 만들어도 됨)
-다음은 절대 수정하지 마: src/app/page.tsx, src/components/landing/
-기존 결과 페이지(src/components/result/)나 예산 엔진(src/lib/budget-engine/)을
-참고는 하되 수정은 하지 말고, 바꿔야 하면 먼저 나에게 물어봐.
-공용 파일(package.json, prisma/schema.prisma 등)도 바꾸기 전에 물어봐.
+너는 '결과 이후 체크리스트·예산 관리' 담당이야. 아래가 네 작업 영역이야:
+- src/components/manage/ , src/app/manage/ (새로 만들기)
+- src/components/result/ , src/app/budget-draft/page.tsx
+  (결과 이후 관리는 결과 화면과 연동되니 자유롭게 수정 OK)
+다음은 절대 수정하지 마: src/app/page.tsx, src/components/landing/ (랜딩 담당 영역)
+계산 로직(src/lib/budget-engine/)은 시뮬레이션 숫자라 신중히 — 가급적 참고만,
+꼭 고쳐야 하면 단톡에 한 줄 남기고 진행해.
+공용 파일(package.json, prisma/schema.prisma 등)은 바꾸기 전 단톡에 한마디.
 ```
 
 ---
@@ -92,8 +93,8 @@ AI에게 이렇게 시키세요:
 
 | 신호 | 상황 (쉬운 말) | 대응 |
 |---|---|---|
-| 🟢 | 내 폴더 안에서 새로 만들기 / 새 기능에 필요한 부품 설치(`package.json`) | **"응, 해"** (부품은 "왜 필요한지 한 줄"만) |
-| 🟡 | 데이터 저장 설계(`prisma`) · 결과화면(`result/`) · 계산로직(`budget-engine/`) 고치기 | **해도 되지만 단톡에 "나 이거 건드림" 공유** |
+| 🟢 | 내 영역에서 작업(B: `manage/`·`result/`·`budget-draft`, A: `landing/`) / 부품 설치(`package.json`) | **"응, 해"** (부품은 "왜 필요한지 한 줄"만) |
+| 🟡 | 계산로직(`budget-engine/`) · 데이터 저장 설계(`prisma`) 고치기 | **신중히, 단톡에 "나 이거 건드림" 공유** |
 | 🛑 | 전체 색·폰트(`globals.css`) · 모든 화면 공통 틀(`layout.tsx`) · 남의 화면 폴더 | **멈추고 상대에게 먼저** (둘 다 영향) |
 | ❓ | 헷갈림 | **무조건 상대에게 톡** — 그게 제일 안전, 바보 같은 질문 없음 |
 
