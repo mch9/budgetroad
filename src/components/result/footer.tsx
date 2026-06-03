@@ -5,9 +5,10 @@ import type { ResultPayload } from '@/lib/budget-engine';
 type Props = {
   result: ResultPayload;
   onShareClick: () => void;
+  onManageClick?: () => void;
 };
 
-export function ResultFooter({ result, onShareClick }: Props) {
+export function ResultFooter({ result, onShareClick, onManageClick }: Props) {
   const total = result.budget.total;
   const delta = result.budget.toggleDelta;
 
@@ -27,13 +28,24 @@ export function ResultFooter({ result, onShareClick }: Props) {
             <span className="ml-1 text-sm font-normal text-white/80">만원</span>
           </span>
         </div>
-        <button
-          type="button"
-          onClick={onShareClick}
-          className="shrink-0 rounded-2xl bg-[#AAC7E1] px-5 py-[10px] text-sm font-semibold text-[#171717] transition-opacity active:opacity-80"
-        >
-          저장 & 공유
-        </button>
+        <div className="flex shrink-0 gap-2">
+          {onManageClick && (
+            <button
+              type="button"
+              onClick={onManageClick}
+              className="rounded-2xl border border-[#AAC7E1] px-4 py-[10px] text-sm font-semibold text-[#AAC7E1] transition-opacity active:opacity-80"
+            >
+              준비 시작
+            </button>
+          )}
+          <button
+            type="button"
+            onClick={onShareClick}
+            className="rounded-2xl bg-[#AAC7E1] px-5 py-[10px] text-sm font-semibold text-[#171717] transition-opacity active:opacity-80"
+          >
+            저장 & 공유
+          </button>
+        </div>
       </div>
     </nav>
   );

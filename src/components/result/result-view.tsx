@@ -15,6 +15,7 @@ import { buildShareText, buildShareClipboard } from '@/lib/share';
 import { encodeShare } from '@/lib/share-state';
 import { captureNode, downloadCanvas } from '@/lib/export-result';
 import { trackEvent } from '@/lib/gtag';
+import { saveSession } from '@/hooks/useBudgetTrackingState';
 import { SatisfactionModal } from './satisfaction-modal';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
@@ -60,9 +61,27 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
 
   // 초기 진단으로 유형별 디폴트 토글 산출 (공유 링크면 공유자 토글 우선)
   const initial = useMemo(() => diagnose(answers), [answers]);
-  const [toggles, setToggles] = useState<ToggleState>(
-    initialToggles ?? initial.vars.toggleDefaults,
-  );
+  const [toggles, setToggles] = useState<ToggleState>(() => {
+    if (initialToggles) return initialToggles;
+    // manage 페이지에서 뒤로왔을 때 직전 토글 복원 (Bug 2)
+    try {
+      const raw = typeof window !== 'undefined' && localStorage.getItem('budgetroad_manage_session');
+      if (raw) {
+        const { toggles: saved } = JSON.parse(raw) as { toggles: ToggleState };
+        if (saved) return saved;
+      }
+    } catch { /* ignore */ }
+    return initial.vars.toggleDefaults;
+  });
+
+  // 토글 변경 시 세션 자동 저장 (Bug 1: 체크리스트가 항상 최신 토글 반영)
+  // 공유 링크 결과는 저장 안 함 — 남의 토글이 내 세션을 덮지 않도록
+  const autoSaveRef = useRef(false);
+  useEffect(() => {
+    if (!autoSaveRef.current) { autoSaveRef.current = true; return; }
+    if (initialToggles) return;
+    saveSession(answers, toggles);
+  }, [toggles, answers, initialToggles]);
 
   // 토글 변경 시 재진단 (instant)
   const result = useMemo(() => diagnose(answers, toggles), [answers, toggles]);
@@ -231,6 +250,12 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     setShareOpen(true);
   }
 
+  function handleManageClick() {
+    saveSession(answers, toggles);
+    trackEvent('manage_cta_clicked', { persona: result.vars.persona });
+    window.location.href = '/manage';
+  }
+
   function handleShareAction(action: string) {
     setShareOpen(false);
     trackEvent('share_action_clicked', { method: action, persona: result.vars.persona });
@@ -335,7 +360,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
       </button>
 
       {/* Footer */}
-      <ResultFooter result={result} onShareClick={handleShareClick} />
+      <ResultFooter result={result} onShareClick={handleShareClick} onManageClick={handleManageClick} />
       {surveyOpen && (
         <SatisfactionModal
           persona={result.vars.persona}
