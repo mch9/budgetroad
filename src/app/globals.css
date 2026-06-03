@@ -102,6 +102,23 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.7 0.16 60);
+
+  /* analytics dashboard tokens (브랜드 정합 다색 차트 팔레트 — --primary/--chart-1~5와 무관) */
+  --dash-bg: #f9fafb;
+  --dash-ink: #111827;
+  --dash-text: #373737;
+  --dash-muted: #6b7280;
+  --dash-faint: #9ca3af;
+  --dash-line: rgba(0, 0, 0, 0.06);
+  --dash-accent: #aac7e1;
+  --c-1: #7aa5cb;
+  --c-2: #5b8db8;
+  --c-3: #9db4c0;
+  --c-4: #c4a77d;
+  --c-5: #a8a29e;
+  --c-6: #84b6a3;
+  --pos: #059669;
+  --neg: #e11d48;
 }
 
 @layer base {

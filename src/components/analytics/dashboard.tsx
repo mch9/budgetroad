@@ -1,317 +1,486 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { AnalyticsData } from '@/lib/analytics/queries';
+import { useCallback, useEffect, useState } from 'react';
 import {
-  Card,
-  CompareBars,
-  DataTable,
-  FunnelBar,
-  KpiCard,
-  LineChart,
-  RateText,
-  RatioBars,
-  ScoreCard,
-  SectionTitle,
-  StatCard,
-  pct,
+  ArrowDownRight,
+  ArrowUpRight,
+  Eye,
+  MousePointerClick,
+  Repeat,
+  RefreshCw,
+  Inbox,
+  Target,
+  Timer,
+  TrendingDown,
+  type LucideIcon,
+} from 'lucide-react';
+import type {
+  AnalyticsData,
+  DurationKpi,
+  RateKpi,
+} from '@/lib/analytics/queries';
+import { cn } from '@/lib/utils';
+import { Card } from '@/components/ui/card';
+import {
+  BudgetDistributionChart,
+  DailyTrendChart,
+  DailyTrendLegend,
+  FunnelChart,
+  PersonaDistribution,
 } from './charts';
 
 const PRESETS = [
-  { k: 'today', label: '오늘' },
-  { k: 'yesterday', label: '어제' },
-  { k: '7d', label: '최근 7일' },
-  { k: '30d', label: '최근 30일' },
-  { k: 'all', label: '전체' },
+  { k: '7d', label: '7일' },
+  { k: '30d', label: '30일' },
+  { k: '90d', label: '90일' },
 ];
 
-const DARK = '#373737';
-const SECONDARY = '#7499BA';
-const ACCENT = '#AAC7E1';
-
-function rateStr(num: number, denom: number): string {
-  const p = pct(num, denom);
-  return p === null ? '—' : `${p.toFixed(0)}%`;
+// ── 포맷 헬퍼 ──
+function fmtPct(p: number | null): string {
+  return p === null ? '—' : `${p.toFixed(1)}%`;
+}
+function fmtSec(s: number): string {
+  return s % 1 === 0 ? `${s}초` : `${s.toFixed(1)}초`;
+}
+function fmtBudgetLabel(lower: number, upper: number | null): string {
+  // upper는 마지막 버킷에서 와이어상 null (서버 Infinity 직렬화) → "lower+ 이상"
+  if (upper === null || !Number.isFinite(upper)) {
+    return `${lower.toLocaleString()}+`;
+  }
+  return `${lower.toLocaleString()}–${upper.toLocaleString()}`;
 }
 
+// ── 델타 pill ──
+function DeltaPill({
+  value,
+  unit,
+  improveDown = false,
+}: {
+  value: number | null;
+  unit: string;
+  improveDown?: boolean; // true면 음수가 개선(시간 단축)
+}) {
+  if (value === null) {
+    return (
+      <span className="inline-flex items-center rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[11px] font-medium text-[#9CA3AF]">
+        —
+      </span>
+    );
+  }
+  if (value === 0) {
+    return (
+      <span className="inline-flex items-center rounded-full bg-black/[0.04] px-1.5 py-0.5 text-[11px] font-semibold tabular-nums text-[#6B7280]">
+        0{unit}
+      </span>
+    );
+  }
+  const improving = improveDown ? value < 0 : value > 0;
+  const sign = value > 0 ? '+' : '';
+  const Icon = value > 0 ? ArrowUpRight : ArrowDownRight;
+  return (
+    <span
+      className={cn(
+        'inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[11px] font-semibold tabular-nums',
+        improving
+          ? 'bg-emerald-50 text-emerald-600'
+          : 'bg-rose-50 text-rose-600',
+      )}
+    >
+      <Icon className="size-3" />
+      {sign}
+      {Math.abs(value).toFixed(1)}
+      {unit}
+    </span>
+  );
+}
+
+const KPI_META: Record<string, { icon: LucideIcon; hint: string }> = {
+  inputRate: { icon: MousePointerClick, hint: 'P(입력 | 진입)' },
+  resultRate: { icon: Eye, hint: 'P(결과 | 입력)' },
+  intentRate: { icon: Target, hint: 'P(의도 | 결과)' },
+  overallIntentRate: { icon: TrendingDown, hint: 'P(의도 | 진입)' },
+  revisitRate: { icon: Repeat, hint: '재방문 진입 visitor 비율' },
+};
+
+// ── 비율 KPI 카드 ──
+function RateCard({ kpi }: { kpi: RateKpi }) {
+  const meta = KPI_META[kpi.key];
+  const Icon = meta?.icon ?? Eye;
+  const lowSample = kpi.denom < 10;
+  return (
+    <Card
+      className={cn(
+        'gap-0 rounded-xl border-0 py-0 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_1px_3px_rgba(16,24,40,0.06)] ring-1 ring-black/[0.06] transition-shadow hover:shadow-[0_4px_12px_rgba(16,24,40,0.08)]',
+      )}
+    >
+      <div className="flex flex-col gap-3 p-5">
+        <div className="flex items-center justify-between">
+          <span className="text-[13px] font-medium text-[#6B7280]">
+            {kpi.label}
+          </span>
+          <Icon className="size-4 text-[#9CA3AF]" />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span
+            className={cn(
+              'text-[28px] font-semibold leading-none tracking-tight tabular-nums text-[#111827]',
+              lowSample && 'opacity-50',
+            )}
+          >
+            {fmtPct(kpi.pct)}
+          </span>
+          <DeltaPill value={kpi.deltaPct} unit="%p" />
+        </div>
+        <p className="text-[12px] tabular-nums text-[#9CA3AF]">
+          {kpi.num.toLocaleString()} / {kpi.denom.toLocaleString()}
+          {lowSample && (
+            <span className="ml-1 text-[#9CA3AF]">· 표본 작음</span>
+          )}
+        </p>
+      </div>
+    </Card>
+  );
+}
+
+// ── 시간 KPI 카드 ──
+function DurationCard({ kpi }: { kpi: DurationKpi }) {
+  const lowSample = kpi.n < 10;
+  return (
+    <Card
+      className={cn(
+        'gap-0 rounded-xl border-0 py-0 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_1px_3px_rgba(16,24,40,0.06)] ring-1 ring-black/[0.06] transition-shadow hover:shadow-[0_4px_12px_rgba(16,24,40,0.08)]',
+      )}
+    >
+      <div className="flex flex-col gap-3 p-5">
+        <div className="flex items-center justify-between">
+          <span className="text-[13px] font-medium text-[#6B7280]">
+            {kpi.label}
+          </span>
+          <Timer className="size-4 text-[#9CA3AF]" />
+        </div>
+        <div className="flex items-baseline gap-2">
+          <span
+            className={cn(
+              'text-[28px] font-semibold leading-none tracking-tight tabular-nums text-[#111827]',
+              lowSample && 'opacity-50',
+            )}
+          >
+            {kpi.n > 0 ? fmtSec(kpi.p50Sec) : '—'}
+          </span>
+          <DeltaPill value={kpi.deltaP50Sec} unit="초" improveDown />
+        </div>
+        <p className="text-[12px] tabular-nums text-[#9CA3AF]">
+          p90 {fmtSec(kpi.p90Sec)} · n={kpi.n.toLocaleString()}
+          {lowSample && <span className="ml-1">· 표본 작음</span>}
+        </p>
+      </div>
+    </Card>
+  );
+}
+
+// ── 차트 카드 셸 ──
+function ChartCard({
+  title,
+  subtitle,
+  action,
+  children,
+  className,
+}: {
+  title: string;
+  subtitle?: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <Card
+      className={cn(
+        'gap-0 rounded-xl border-0 py-0 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_1px_3px_rgba(16,24,40,0.06)] ring-1 ring-black/[0.06]',
+        className,
+      )}
+    >
+      <div className="flex items-start justify-between p-5 pb-3">
+        <div className="space-y-0.5">
+          <h3 className="text-[15px] font-semibold tracking-tight text-[#373737]">
+            {title}
+          </h3>
+          {subtitle && (
+            <p className="text-[12px] text-[#9CA3AF]">{subtitle}</p>
+          )}
+        </div>
+        {action}
+      </div>
+      <div className="px-3 pb-4 pt-1">{children}</div>
+    </Card>
+  );
+}
+
+// ── 스켈레톤 ──
+function CardSkeleton({ tall = false }: { tall?: boolean }) {
+  return (
+    <div className="rounded-xl bg-white p-5 ring-1 ring-black/[0.06]">
+      <div className="h-3 w-24 animate-pulse rounded bg-black/[0.06]" />
+      <div
+        className={cn(
+          'mt-4 animate-pulse rounded bg-black/[0.06]',
+          tall ? 'h-48 w-full' : 'h-8 w-20',
+        )}
+      />
+      {!tall && (
+        <div className="mt-4 h-3 w-16 animate-pulse rounded bg-black/[0.04]" />
+      )}
+    </div>
+  );
+}
+
+function LoadingState() {
+  return (
+    <div className="space-y-6">
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <CardSkeleton key={i} />
+        ))}
+      </section>
+      <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+        <div className="lg:col-span-2">
+          <CardSkeleton tall />
+        </div>
+        <div className="lg:col-span-1">
+          <CardSkeleton tall />
+        </div>
+      </section>
+      <CardSkeleton tall />
+    </div>
+  );
+}
+
+// ── 빈/에러 상태 ──
+function StateMessage({
+  icon: Icon,
+  title,
+  description,
+  onRetry,
+}: {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  onRetry?: () => void;
+}) {
+  return (
+    <Card className="gap-0 rounded-xl border-0 py-0 shadow-[0_1px_2px_rgba(16,24,40,0.04),0_1px_3px_rgba(16,24,40,0.06)] ring-1 ring-black/[0.06]">
+      <div className="flex flex-col items-center justify-center gap-3 px-6 py-16 text-center">
+        <div className="flex size-11 items-center justify-center rounded-full bg-black/[0.04]">
+          <Icon className="size-5 text-[#9CA3AF]" />
+        </div>
+        <div className="space-y-1">
+          <p className="text-[15px] font-semibold text-[#373737]">{title}</p>
+          <p className="text-[13px] text-[#9CA3AF]">{description}</p>
+        </div>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="mt-1 inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-[13px] font-medium text-[#373737] ring-1 ring-black/[0.08] transition hover:ring-black/[0.16]"
+          >
+            <RefreshCw className="size-3.5 text-[#9CA3AF]" />
+            다시 시도
+          </button>
+        )}
+      </div>
+    </Card>
+  );
+}
+
+// ── 메인 ──
 export function AnalyticsDashboard() {
-  const [preset, setPreset] = useState('7d');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [preset, setPreset] = useState('30d');
   const [data, setData] = useState<AnalyticsData | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
+  const [reloadKey, setReloadKey] = useState(0);
+  const retry = useCallback(() => setReloadKey((k) => k + 1), []);
+
   useEffect(() => {
-    let url = '/api/internal/analytics';
-    if (preset === 'custom') {
-      if (!from || !to) return;
-      url += `?preset=custom&from=${from}&to=${to}`;
-    } else {
-      url += `?preset=${preset}`;
-    }
     let alive = true;
-    async function load() {
-      setLoading(true);
+    setLoading(true);
+    setError('');
+    (async () => {
       try {
-        const r = await fetch(url);
-        if (!r.ok) throw new Error(`HTTP ${r.status}`);
-        const d = await r.json();
-        if (alive) {
-          setData(d);
-          setError('');
+        const r = await fetch(`/api/internal/analytics?preset=${preset}`);
+        if (!r.ok) {
+          const body = await r.json().catch(() => null);
+          throw new Error(body?.detail || body?.error || `HTTP ${r.status}`);
         }
+        const d = (await r.json()) as AnalyticsData;
+        if (alive) setData(d);
       } catch (e) {
-        if (alive) setError(String(e));
+        if (alive) setError(e instanceof Error ? e.message : String(e));
       } finally {
         if (alive) setLoading(false);
       }
-    }
-    load();
+    })();
     return () => {
       alive = false;
     };
-  }, [preset, from, to]);
+  }, [preset, reloadKey]);
 
   const w = data?.window;
-  const inputFrom = preset === 'custom' ? from : (w?.from ?? '');
-  const inputTo = preset === 'custom' ? to : (w?.to ?? '');
-
-  function editFrom(value: string) {
-    setPreset('custom');
-    setFrom(value);
-    if (!to) setTo(w?.to ?? value);
-  }
-  function editTo(value: string) {
-    setPreset('custom');
-    setTo(value);
-    if (!from) setFrom(w?.from ?? value);
-  }
+  const kpis = data?.kpis;
+  const charts = data?.charts;
+  const hasData =
+    !!charts &&
+    (charts.funnel.some((s) => s.visitors > 0) ||
+      charts.daily.length > 0 ||
+      (w?.totalVisitors ?? 0) > 0);
 
   return (
-    <div className="mx-auto max-w-3xl pb-16">
-      <div className="flex items-baseline justify-between">
-        <h1 className="text-lg font-bold text-[#373737]">버짓로드 분석</h1>
-        {w && (
-          <span className="text-xs text-[#737373]">
-            세션 {w.sessions} · 방문자 {w.visitors}
-          </span>
-        )}
-      </div>
-
-      {/* 기간 컨트롤 */}
-      <div className="sticky top-0 z-10 mt-3 rounded-lg border border-[#E5E7EB] bg-white/95 p-3 backdrop-blur">
-        <div className="flex flex-wrap gap-1.5">
-          {PRESETS.map((p) => (
-            <button
-              key={p.k}
-              onClick={() => setPreset(p.k)}
-              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                preset === p.k
-                  ? 'bg-[#373737] text-white'
-                  : 'bg-[#F3F4F6] text-[#737373]'
-              }`}
-            >
-              {p.label}
-            </button>
-          ))}
-        </div>
-        <div className="mt-2 flex items-center gap-2 text-xs text-[#737373]">
-          <input
-            type="date"
-            value={inputFrom}
-            max={inputTo || undefined}
-            onChange={(e) => editFrom(e.target.value)}
-            className="rounded border border-[#E5E7EB] px-2 py-1 tabular-nums"
-          />
-          <span>~</span>
-          <input
-            type="date"
-            value={inputTo}
-            min={inputFrom || undefined}
-            onChange={(e) => editTo(e.target.value)}
-            className="rounded border border-[#E5E7EB] px-2 py-1 tabular-nums"
-          />
-          {loading && <span className="ml-1 text-[#AAC7E1]">불러오는 중…</span>}
-        </div>
-        <p className="mt-1.5 text-[10px] text-[#9CA3AF]">
-          모든 수치는 선택한 기간({inputFrom || '…'} ~ {inputTo || '…'})만 집계합니다.
-          누적 아님. 세션 추적 시작 2026-06-01.
-        </p>
-      </div>
-
-      {error && (
-        <div className="mt-3 rounded-lg border border-[#F0C0C0] bg-[#FFF5F5] p-3 text-xs text-[#9B2C2C]">
-          불러오기 실패: {error}
-        </div>
-      )}
-
-      {data && (
-        <>
-          {/* ── 개요 ── */}
-          <SectionTitle>개요</SectionTitle>
-          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
-            {data.overview.scorecards.map((c) => (
-              <ScoreCard key={c.label} label={c.label} value={c.value} />
-            ))}
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <Card title="핵심 퍼널">
-              <FunnelBar steps={data.overview.funnel} />
-            </Card>
-            <Card title="일자별 추이">
-              <LineChart
-                rows={data.overview.daily}
-                series={[
-                  { key: 'sessions', label: '세션', color: DARK },
-                  { key: 'entered', label: '랜딩진입', color: SECONDARY },
-                  { key: 'result_viewed', label: '결과확인', color: ACCENT },
-                ]}
-              />
-            </Card>
-          </div>
-          <div className="mt-3">
-            <Card title="온보딩 질문별 답변 도달">
-              <DataTable
-                columns={[
-                  { key: 'question_id', label: '질문' },
-                  { key: 'sessions', label: '세션', align: 'right' },
-                  { key: 'answers', label: '답변 수', align: 'right' },
-                ]}
-                rows={data.overview.onboarding}
-              />
-            </Card>
-          </div>
-
-          {/* ── 결정로그 ── */}
-          <SectionTitle>결정로그 (KPI + 관찰지표)</SectionTitle>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {data.decisionLog.kpis.map((k) => (
-              <KpiCard key={k.name} {...k} />
-            ))}
-          </div>
-          <div className="mt-3 grid gap-3 sm:grid-cols-2">
-            <Card title="추가비용 케어 탭 조회율 (Leading)">
-              <div className="text-lg">
-                <RateText {...data.decisionLog.careTabRate} />
-              </div>
-              <p className="mt-1 text-xs text-[#737373]">케어 탭 클릭 / 랜딩 진입</p>
-            </Card>
-            <StatCard
-              label="결과 페이지 체류시간"
-              value={`${data.decisionLog.dwell.avg}초`}
-              sub={`중앙값 ${data.decisionLog.dwell.median}초 · n=${data.decisionLog.dwell.n}`}
-            />
-            <Card title="결과 탐색 도달률 (결과확인 대비)">
-              <RatioBars items={data.decisionLog.explore} />
-            </Card>
-            <Card title="저장/공유 전환율 세부 (결과확인 대비)">
-              <RatioBars items={data.decisionLog.saveShare} />
-            </Card>
-          </div>
-          <div className="mt-3">
-            <Card title="종합설계서 스크롤 깊이 분포">
-              <DataTable
-                columns={[
-                  { key: 'depth_pct', label: '깊이(%)' },
-                  { key: 'sessions', label: '세션', align: 'right' },
-                  { key: 'events', label: '이벤트', align: 'right' },
-                ]}
-                rows={data.decisionLog.scrollDepth}
-              />
-            </Card>
-          </div>
-
-          {/* ── 전략 OKR ── */}
-          <SectionTitle>전략 OKR (R1~R4)</SectionTitle>
-          <div className="grid gap-2 sm:grid-cols-2">
-            {data.strategyOkr.map((k) => (
-              <KpiCard key={k.name} {...k} />
-            ))}
-          </div>
-
-          {/* ── 실행 OKR ── */}
-          <SectionTitle>실행 OKR</SectionTitle>
-          <div className="grid gap-3 sm:grid-cols-2">
-            <Card title="케어 탭 진입자 중 옵션 조정 발생률">
-              <div className="text-lg">
-                <RateText {...data.executionOkr.careAdjust} />
-              </div>
-              <p className="mt-1 text-xs text-[#737373]">조정·일괄토글 / 케어 탭 진입</p>
-            </Card>
-            <Card title="공유 링크 통한 진입 (바이럴)">
-              <div className="text-2xl font-bold tabular-nums text-[#171717]">
-                {data.executionOkr.viaShareLink}
-              </div>
-              <p className="mt-1 text-xs text-[#737373]">shared_result_viewed 세션</p>
-            </Card>
-            <Card title="조정 vs 미조정 — 예산 재확인율">
-              <CompareBars
-                groups={data.executionOkr.adjustComparison.map((g) => ({
-                  label: g.group,
-                  num: g.budget_recheck,
-                  denom: g.n,
-                }))}
-              />
-              <p className="mt-2 text-[10px] text-[#9CA3AF]">
-                예산 재확인 = 항목별 내역 탭 재방문(proxy)
-              </p>
-            </Card>
-            <Card title="조정 vs 미조정 — 저장/공유율">
-              <CompareBars
-                groups={data.executionOkr.adjustComparison.map((g) => ({
-                  label: g.group,
-                  num: g.saved_shared,
-                  denom: g.n,
-                }))}
-              />
-            </Card>
-            <Card title="재진입률 — 저장/공유 vs 미저장">
-              <CompareBars
-                groups={data.executionOkr.revisit.map((g) => ({
-                  label: g.group,
-                  num: g.revisited,
-                  denom: g.visitors,
-                }))}
-              />
-              <p className="mt-2 text-[10px] text-[#9CA3AF]">
-                재진입 = 기간 내 동일 방문자 세션 2개 이상
-              </p>
-            </Card>
-            <Card title="유형 매칭 만족도">
-              <div className="text-lg">
-                <RateText
-                  num={data.executionOkr.satisfaction.matched_yes}
-                  denom={data.executionOkr.satisfaction.total}
-                />
-              </div>
-              <p className="mt-1 text-xs text-[#737373]">matched=yes 응답 비율</p>
-            </Card>
-          </div>
-          <div className="mt-3">
-            <Card title="조정 깊이(0/1/2+)별 저장/공유 · 이탈">
-              <DataTable
-                columns={[
-                  { key: 'depth', label: '조정 깊이' },
-                  { key: 'n', label: 'n', align: 'right' },
-                  { key: 'save', label: '저장/공유', align: 'right' },
-                  { key: 'exit', label: '이탈', align: 'right' },
-                ]}
-                rows={data.executionOkr.depthComparison.map((d) => ({
-                  depth: d.depth,
-                  n: d.n,
-                  save: `${d.saved_shared} (${rateStr(d.saved_shared, d.n)})`,
-                  exit: `${d.exited} (${rateStr(d.exited, d.n)})`,
-                }))}
-              />
-            </Card>
-          </div>
-
-          <p className="mt-8 text-center text-[10px] text-[#9CA3AF]">
-            n&lt;10 지표는 흐리게 표시됨 — 표본이 작아 변동성이 큼. 추세 판단용.
+    <>
+      {/* 헤더 + 기간 세그먼트 컨트롤 */}
+      <header className="mb-6 flex flex-col gap-4 border-b border-black/[0.06] pb-6 md:flex-row md:items-end md:justify-between">
+        <div className="space-y-1">
+          <h1 className="text-xl font-semibold tracking-tight text-[#373737]">
+            분석
+          </h1>
+          <p className="text-sm text-[#6B7280]">
+            결혼 준비 예산 초안 퍼널 지표 · visitor 기준
+            {w && (
+              <span className="ml-1 tabular-nums text-[#9CA3AF]">
+                ({w.from} ~ {w.to})
+              </span>
+            )}
           </p>
-        </>
+        </div>
+
+        <div className="inline-flex w-fit rounded-lg bg-black/[0.04] p-0.5">
+          {PRESETS.map((p) => {
+            const active = preset === p.k;
+            return (
+              <button
+                key={p.k}
+                onClick={() => setPreset(p.k)}
+                className={cn(
+                  'rounded-md px-3 py-1.5 text-[13px] font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#AAC7E1]',
+                  active
+                    ? 'bg-white text-[#373737] shadow-[0_1px_2px_rgba(0,0,0,0.06)]'
+                    : 'text-[#6B7280] hover:text-[#373737]',
+                )}
+              >
+                {p.label}
+              </button>
+            );
+          })}
+        </div>
+      </header>
+
+      {loading && <LoadingState />}
+
+      {!loading && error && (
+        <StateMessage
+          icon={Inbox}
+          title="데이터를 불러오지 못했습니다"
+          description={error}
+          onRetry={retry}
+        />
       )}
+
+      {!loading && !error && !hasData && (
+        <StateMessage
+          icon={Inbox}
+          title="이 기간엔 데이터가 없습니다"
+          description="다른 기간을 선택해 보세요."
+        />
+      )}
+
+      {!loading && !error && hasData && kpis && charts && (
+        <div className="space-y-6">
+          {/* KPI 그리드 — 비율 4 + 재방문/시간 2 */}
+          <section className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <RateCard kpi={kpis.inputRate} />
+            <RateCard kpi={kpis.resultRate} />
+            <RateCard kpi={kpis.intentRate} />
+            <RateCard kpi={kpis.overallIntentRate} />
+            <RateCard kpi={kpis.revisitRate} />
+            <DurationCard kpi={kpis.timeToStart} />
+          </section>
+
+          {/* 상단: 추이(2/3) + 분포(1/3) */}
+          <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <ChartCard
+              title="진입 → 결과 추이"
+              subtitle="일별 distinct visitor"
+              action={<DailyTrendLegend />}
+              className="lg:col-span-2"
+            >
+              {charts.daily.length > 0 ? (
+                <DailyTrendChart data={charts.daily} />
+              ) : (
+                <EmptyChart label="추이 데이터 없음" />
+              )}
+            </ChartCard>
+
+            <ChartCard
+              title="예산 총액 분포"
+              subtitle="result_viewed · 만원 단위"
+              className="lg:col-span-1"
+            >
+              {charts.budgetDistribution.length > 0 ? (
+                <BudgetDistributionChart
+                  data={charts.budgetDistribution.map((b) => ({
+                    label: fmtBudgetLabel(b.lower, b.upper as number | null),
+                    n: b.n,
+                  }))}
+                />
+              ) : (
+                <EmptyChart label="예산 데이터 없음" />
+              )}
+            </ChartCard>
+          </section>
+
+          {/* 하단: 퍼널 풀폭 + 페르소나 분포 */}
+          <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            <ChartCard
+              title="핵심 퍼널"
+              subtitle="진입 → 입력 → 결과 → 의도 (visitor)"
+              className="lg:col-span-2"
+            >
+              <FunnelChart
+                data={charts.funnel.map((s) => ({
+                  label: s.label,
+                  visitors: s.visitors,
+                }))}
+              />
+            </ChartCard>
+
+            <ChartCard
+              title="페르소나 분포"
+              subtitle="distinct visitor"
+              className="lg:col-span-1"
+            >
+              {charts.personaDistribution.length > 0 ? (
+                <div className="px-2">
+                  <PersonaDistribution data={charts.personaDistribution} />
+                </div>
+              ) : (
+                <EmptyChart label="페르소나 데이터 없음" />
+              )}
+            </ChartCard>
+          </section>
+
+          <p className="pt-2 text-center text-[12px] text-[#9CA3AF]">
+            모든 수치는 visitor_id 기준 · 델타는 직전 동일 길이 기간(
+            {w?.prevFrom} ~ {w?.prevTo}) 대비 · 분모 10 미만 KPI는 흐리게 표시.
+          </p>
+        </div>
+      )}
+    </>
+  );
+}
+
+function EmptyChart({ label }: { label: string }) {
+  return (
+    <div className="flex h-[200px] flex-col items-center justify-center gap-2 text-[#9CA3AF]">
+      <Eye className="size-5" />
+      <span className="text-[12px]">{label}</span>
     </div>
   );
 }

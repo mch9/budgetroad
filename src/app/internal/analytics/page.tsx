@@ -10,8 +10,10 @@ export const metadata = {
 
 export default function AnalyticsPage() {
   return (
-    <main className="min-h-screen bg-[#F9FAFB] px-4 py-6 sm:px-6">
-      <AnalyticsDashboard />
-    </main>
+    <div className="min-h-screen bg-[#F9FAFB] text-[#373737]">
+      <div className="mx-auto w-full max-w-[1200px] px-6 py-8 md:px-8">
+        <AnalyticsDashboard />
+      </div>
+    </div>
   );
 }

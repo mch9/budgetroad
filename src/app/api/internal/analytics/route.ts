@@ -15,10 +15,14 @@ export async function GET(req: NextRequest) {
     const data = await runAnalytics(range);
     return NextResponse.json(data);
   } catch (e) {
-    console.error(
-      '[api/internal/analytics] query failed',
-      e instanceof Error ? e.message : String(e),
+    const message = e instanceof Error ? e.message : String(e);
+    console.error('[api/internal/analytics] query failed', message);
+    return NextResponse.json(
+      {
+        error: 'query failed',
+        detail: process.env.NODE_ENV !== 'production' ? message : undefined,
+      },
+      { status: 500 },
     );
-    return NextResponse.json({ error: 'query failed' }, { status: 500 });
   }
 }

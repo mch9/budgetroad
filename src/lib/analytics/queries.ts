@@ -1,10 +1,12 @@
 import { prisma } from '@/lib/db';
 
-// 모든 지표는 [from, to] (KST date) 윈도우로만 집계된다. 누적(전기간) 집계 없음.
-// v_session_metrics 뷰(세션 1행, is_dev=false 사전필터)를 우선 사용하고,
-// 뷰에 없는 항목만 events 테이블을 직접 쿼리한다.
+// 데이터 레이어 (visitor_id 기준).
+// session_id는 운영 데이터의 85%가 NULL이라 세션 단위 집계는 폐기했다.
+// 모든 퍼널 지표는 visitor_id로 묶고, 재방문은 service_entered의 is_returning 프로퍼티로 판별한다.
+// 의도(Intent) = share_result ∪ share_action_clicked ∪ feedback_submitted.
+// 모든 수치는 ::int / ::float 로 캐스팅한다 (BigInt 직렬화 금지).
 
-export const ANALYTICS_EPOCH = '2026-06-01'; // 세션 추적 시작일
+export const ANALYTICS_EPOCH = '2026-04-25'; // 운영 이벤트 수집 시작일
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 
 export type Range = { from: string; to: string; today: string; preset: string };
@@ -20,6 +22,12 @@ function addDays(date: string, n: number): string {
   return d.toISOString().slice(0, 10);
 }
 
+function daysBetween(from: string, to: string): number {
+  const a = Date.parse(from + 'T00:00:00Z');
+  const b = Date.parse(to + 'T00:00:00Z');
+  return Math.round((b - a) / 86400000) + 1; // inclusive
+}
+
 function valid(d: string | null): d is string {
   return !!d && DATE_RE.test(d) && !Number.isNaN(Date.parse(d + 'T00:00:00Z'));
 }
@@ -30,7 +38,7 @@ export function resolveRange(
   to: string | null,
 ): Range | null {
   const today = todayKst();
-  const p = preset ?? (valid(from) && valid(to) ? 'custom' : '7d');
+  const p = preset ?? (valid(from) && valid(to) ? 'custom' : '30d');
   switch (p) {
     case 'today':
       return { from: today, to: today, today, preset: p };
@@ -42,6 +50,8 @@ export function resolveRange(
       return { from: addDays(today, -6), to: today, today, preset: p };
     case '30d':
       return { from: addDays(today, -29), to: today, today, preset: p };
+    case '90d':
+      return { from: addDays(today, -89), to: today, today, preset: p };
     case 'all':
       return { from: ANALYTICS_EPOCH, to: today, today, preset: p };
     case 'custom':
@@ -49,213 +59,156 @@ export function resolveRange(
         return { from, to, today, preset: p };
       return null;
     default:
-      return { from: addDays(today, -6), to: today, today, preset: '7d' };
+      return { from: addDays(today, -29), to: today, today, preset: '30d' };
   }
 }
 
-// 목표치 (스펙 기준, %)
-export const TARGETS = {
-  kpi1_result: 60,
-  kpi2_save: 30,
-  kpi3_reedit: 30,
-  kpi4_reset: 30,
-  r1a_mapping: 80,
-  r1b_comprehensive: 80,
-  r2a_open: 50,
-  r2b_dwell15: 40,
-  r3_explore: 30,
-  r4_save: 60,
-} as const;
+// 직전 동일 길이 기간 (델타 비교용)
+function previousRange(from: string, to: string): { from: string; to: string } {
+  const len = daysBetween(from, to);
+  const prevTo = addDays(from, -1);
+  const prevFrom = addDays(prevTo, -(len - 1));
+  return { from: prevFrom, to: prevTo };
+}
 
-// ---- 쿼리 정의 (전부 $1=from, $2=to) ----
+// ---- SQL ($1=from, $2=to) ----
 
-const SQL_SCALARS = `
-SELECT
-  count(*)::int AS sessions,
-  count(DISTINCT visitor_id)::int AS visitors,
-  count(*) FILTER (WHERE svc_entered=1)::int AS svc_entered,
-  count(*) FILTER (WHERE entered_any=1)::int AS entered_any,
-  count(*) FILTER (WHERE draft_entered=1)::int AS draft_entered,
-  count(*) FILTER (WHERE input_started=1)::int AS input_started,
-  count(*) FILTER (WHERE result_viewed=1)::int AS result_viewed,
-  count(*) FILTER (WHERE saved_shared=1)::int AS saved_shared,
-  count(*) FILTER (WHERE toggled=1)::int AS toggled,
-  count(*) FILTER (WHERE reset_clicked=1)::int AS reset_clicked,
-  count(*) FILTER (WHERE via_share_link=1)::int AS via_share_link,
-  count(*) FILTER (WHERE svc_entered=1 AND result_viewed=1)::int AS svc_result,
-  count(*) FILTER (WHERE svc_entered=1 AND saved_shared=1)::int AS svc_saved,
-  count(*) FILTER (WHERE svc_entered=1 AND toggled=1)::int AS svc_toggled,
-  count(*) FILTER (WHERE svc_entered=1 AND reset_clicked=1)::int AS svc_reset,
-  count(*) FILTER (WHERE svc_entered=1 AND tab_care=1)::int AS svc_tab_care,
-  count(*) FILTER (WHERE input_started=1 AND result_viewed=1)::int AS is_result,
-  count(*) FILTER (WHERE result_viewed=1 AND tab_itemized=1)::int AS rv_tab_itemized,
-  count(*) FILTER (WHERE result_viewed=1 AND tab_care=1)::int AS rv_tab_care,
-  count(*) FILTER (WHERE result_viewed=1 AND tab_comprehensive=1)::int AS rv_tab_comprehensive,
-  count(*) FILTER (WHERE result_viewed=1 AND scroll_comprehensive=1)::int AS rv_scroll_comprehensive,
-  count(*) FILTER (WHERE result_viewed=1 AND scroll_itemized=1)::int AS rv_scroll_itemized,
-  count(*) FILTER (WHERE result_viewed=1 AND scroll_care=1)::int AS rv_scroll_care,
-  count(*) FILTER (WHERE result_viewed=1 AND saved_shared=1)::int AS rv_saved,
-  count(*) FILTER (WHERE result_viewed=1 AND share_pdf=1)::int AS rv_pdf,
-  count(*) FILTER (WHERE result_viewed=1 AND share_link=1)::int AS rv_link,
-  count(*) FILTER (WHERE result_viewed=1 AND share_image=1)::int AS rv_image,
-  count(*) FILTER (WHERE result_viewed=1 AND share_expert=1)::int AS rv_expert,
-  count(*) FILTER (WHERE result_viewed=1 AND (toggled=1 OR reset_clicked=1))::int AS rv_reedit,
-  count(*) FILTER (WHERE dwell_sec IS NOT NULL)::int AS n_dwell,
-  coalesce(round(avg(dwell_sec) FILTER (WHERE dwell_sec IS NOT NULL), 1), 0)::float AS avg_dwell,
-  coalesce(round((percentile_cont(0.5) WITHIN GROUP (ORDER BY dwell_sec) FILTER (WHERE dwell_sec IS NOT NULL))::numeric, 1), 0)::float AS median_dwell
-FROM v_session_metrics
-WHERE day BETWEEN $1 AND $2
-`;
-
-const SQL_DAILY = `
-SELECT
-  to_char(day, 'YYYY-MM-DD') AS day,
-  count(*)::int AS sessions,
-  count(*) FILTER (WHERE svc_entered=1)::int AS entered,
-  count(*) FILTER (WHERE input_started=1)::int AS input_started,
-  count(*) FILTER (WHERE result_viewed=1)::int AS result_viewed,
-  count(*) FILTER (WHERE saved_shared=1)::int AS saved_shared
-FROM v_session_metrics
-WHERE day BETWEEN $1 AND $2
-GROUP BY day
-ORDER BY day
-`;
-
-const SQL_ONBOARDING = `
-SELECT
-  properties->>'question_id' AS question_id,
-  count(DISTINCT session_id)::int AS sessions,
-  count(*)::int AS answers
-FROM events
-WHERE is_dev=false AND event_name='onboarding_question_answered'
-  AND properties ? 'question_id'
-  AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
-GROUP BY properties->>'question_id'
-ORDER BY question_id
-`;
-
-const SQL_SCROLL_DEPTH = `
-SELECT
-  (properties->>'depth_pct')::int AS depth_pct,
-  count(*)::int AS events,
-  count(DISTINCT session_id)::int AS sessions
-FROM events
-WHERE is_dev=false AND event_name='result_scroll_depth'
-  AND properties->>'tab'='comprehensive'
-  AND properties ? 'depth_pct'
-  AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
-GROUP BY (properties->>'depth_pct')::int
-ORDER BY depth_pct
-`;
-
-const SQL_DWELL15 = `
-WITH ex AS (
-  SELECT session_id, max((properties->>'dwell_comprehensive_sec')::numeric) AS dwell_comp
-  FROM events
-  WHERE is_dev=false AND event_name='result_exited'
-    AND properties ? 'dwell_comprehensive_sec'
-    AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
-  GROUP BY session_id
-)
-SELECT
-  count(*) FILTER (WHERE dwell_comp > 0)::int AS denom,
-  count(*) FILTER (WHERE dwell_comp >= 15)::int AS num
-FROM ex
-`;
-
-const SQL_ADJUST_COMPARE = `
-SELECT
-  (toggled=1) AS adjusted,
-  count(*)::int AS n,
-  count(*) FILTER (WHERE tab_itemized=1)::int AS budget_recheck,
-  count(*) FILTER (WHERE saved_shared=1)::int AS saved_shared
-FROM v_session_metrics
-WHERE day BETWEEN $1 AND $2 AND result_viewed=1
-GROUP BY (toggled=1)
-`;
-
-const SQL_DEPTH_COMPARE = `
-SELECT
-  (CASE WHEN toggle_count=0 THEN '0' WHEN toggle_count=1 THEN '1' ELSE '2+' END) AS depth,
-  count(*)::int AS n,
-  count(*) FILTER (WHERE saved_shared=1)::int AS saved_shared,
-  count(*) FILTER (WHERE dwell_sec IS NOT NULL)::int AS exited
-FROM v_session_metrics
-WHERE day BETWEEN $1 AND $2 AND result_viewed=1
-GROUP BY (CASE WHEN toggle_count=0 THEN '0' WHEN toggle_count=1 THEN '1' ELSE '2+' END)
-ORDER BY depth
-`;
-
-const SQL_CARE_ADJUST = `
-WITH bulk AS (
-  SELECT DISTINCT session_id
-  FROM events
-  WHERE is_dev=false AND event_name='care_bulk_toggled'
-    AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
-)
-SELECT
-  count(*) FILTER (WHERE v.tab_care=1)::int AS denom,
-  count(*) FILTER (WHERE v.tab_care=1 AND (v.toggled=1 OR v.session_id IN (SELECT session_id FROM bulk)))::int AS num
-FROM v_session_metrics v
-WHERE v.day BETWEEN $1 AND $2
-`;
-
-const SQL_REVISIT = `
-WITH per_visitor AS (
+// visitor 단위 퍼널 플래그 (모든 KPI/퍼널 차트의 단일 베이스)
+const SQL_VISITOR_FUNNEL = `
+WITH v AS (
   SELECT visitor_id,
-    count(DISTINCT session_id) AS sess_cnt,
-    max(saved_shared) AS ever_saved,
-    max(result_viewed) AS ever_result
-  FROM v_session_metrics
-  WHERE day BETWEEN $1 AND $2
+    bool_or(event_name = 'service_entered') AS entered,
+    bool_or(event_name = 'input_started')   AS started,
+    bool_or(event_name = 'result_viewed')   AS resulted,
+    bool_or(event_name IN ('share_result','share_action_clicked','feedback_submitted')) AS intent,
+    bool_or(event_name = 'service_entered' AND properties->>'is_returning' = 'yes') AS is_returning
+  FROM events
+  WHERE is_dev = false
+    AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
   GROUP BY visitor_id
 )
 SELECT
-  (ever_saved=1) AS saved,
-  count(*)::int AS visitors,
-  count(*) FILTER (WHERE sess_cnt >= 2)::int AS revisited
-FROM per_visitor
-WHERE ever_result=1
-GROUP BY (ever_saved=1)
+  count(*) FILTER (WHERE entered)::int      AS entered,
+  count(*) FILTER (WHERE started)::int      AS started,
+  count(*) FILTER (WHERE resulted)::int     AS resulted,
+  count(*) FILTER (WHERE intent)::int       AS intent,
+  count(*) FILTER (WHERE is_returning)::int AS returning_visitors,
+  count(*)::int                             AS total_visitors
+FROM v
 `;
 
-const SQL_SATISFACTION = `
+// 입력 시작 소요시간 (진입 마찰) p50/p90, 초
+const SQL_TIME_TO_START = `
 SELECT
-  count(*)::int AS total,
-  count(*) FILTER (WHERE properties->>'matched'='yes')::int AS matched_yes
+  coalesce(round((percentile_cont(0.5) WITHIN GROUP (
+    ORDER BY (properties->>'time_to_start_sec')::numeric))::numeric, 1), 0)::float AS p50_sec,
+  coalesce(round((percentile_cont(0.9) WITHIN GROUP (
+    ORDER BY (properties->>'time_to_start_sec')::numeric))::numeric, 1), 0)::float AS p90_sec,
+  count(*)::int AS n
 FROM events
-WHERE is_dev=false AND event_name='satisfaction_answered'
+WHERE is_dev = false AND event_name = 'input_started'
+  AND properties->>'time_to_start_sec' ~ '^[0-9.]+$'
   AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
 `;
 
+// 차트 B: 일별 진입/결과 시계열 (visitor distinct)
+const SQL_DAILY = `
+SELECT
+  to_char(date_trunc('day', created_at AT TIME ZONE 'Asia/Seoul'), 'YYYY-MM-DD') AS day,
+  count(DISTINCT visitor_id) FILTER (WHERE event_name = 'service_entered')::int AS entered,
+  count(DISTINCT visitor_id) FILTER (WHERE event_name = 'input_started')::int   AS input_started,
+  count(DISTINCT visitor_id) FILTER (WHERE event_name = 'result_viewed')::int   AS resulted
+FROM events
+WHERE is_dev = false
+  AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
+GROUP BY 1
+ORDER BY 1
+`;
+
+// 차트 C: 예산 총액 분포 (만원 단위, 10개 버킷 0~20000만원).
+// total_amount는 result_viewed 일부 이벤트에만 있고 persona와 동일 이벤트에 공존하지 않으므로
+// 단일 시리즈 히스토그램으로만 집계한다 (persona 세그먼트는 별도 차트로).
+const SQL_BUDGET_DIST = `
+WITH amt AS (
+  SELECT (properties->>'total_amount')::numeric AS total_amount
+  FROM events
+  WHERE is_dev = false AND event_name = 'result_viewed'
+    AND properties->>'total_amount' ~ '^[0-9.]+$'
+    AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
+)
+SELECT
+  least(width_bucket(total_amount, 0, 20000, 10), 10)::int AS bucket,
+  count(*)::int AS n
+FROM amt
+GROUP BY 1
+ORDER BY 1
+`;
+
+// 보조: 페르소나 분포 (visitor distinct) — total_amount와 공존하지 않아 분리 집계
+const SQL_PERSONA_DIST = `
+SELECT
+  properties->>'persona' AS persona,
+  count(DISTINCT visitor_id)::int AS visitors
+FROM events
+WHERE is_dev = false AND properties ? 'persona'
+  AND (created_at AT TIME ZONE 'Asia/Seoul')::date BETWEEN $1 AND $2
+GROUP BY 1
+ORDER BY visitors DESC
+`;
+
 // ---- raw row 타입 ----
-type ScalarRow = Record<string, number>;
+type FunnelRow = {
+  entered: number;
+  started: number;
+  resulted: number;
+  intent: number;
+  returning_visitors: number;
+  total_visitors: number;
+};
+type TimeToStartRow = { p50_sec: number; p90_sec: number; n: number };
 type DailyRow = {
   day: string;
-  sessions: number;
   entered: number;
   input_started: number;
-  result_viewed: number;
-  saved_shared: number;
+  resulted: number;
 };
-type OnboardingRow = { question_id: string; sessions: number; answers: number };
-type ScrollRow = { depth_pct: number; events: number; sessions: number };
-type Dwell15Row = { denom: number; num: number };
-type AdjustRow = {
-  adjusted: boolean;
-  n: number;
-  budget_recheck: number;
-  saved_shared: number;
-};
-type DepthRow = { depth: string; n: number; saved_shared: number; exited: number };
-type CareAdjustRow = { denom: number; num: number };
-type RevisitRow = { saved: boolean; visitors: number; revisited: number };
-type SatisfactionRow = { total: number; matched_yes: number };
+type BudgetBucketRow = { bucket: number; n: number };
+type PersonaRow = { persona: string; visitors: number };
 
 // ---- 응답 타입 ----
-export type Ratio = { num: number; denom: number };
-export type NamedRatio = Ratio & { name: string };
-export type Kpi = Ratio & { name: string; target: number };
+
+/** 비율 KPI: pct(%, null=표본없음) + 직전 기간 대비 변화량(%p). */
+export type RateKpi = {
+  key: string;
+  label: string;
+  num: number;
+  denom: number;
+  pct: number | null;
+  prevPct: number | null;
+  deltaPct: number | null; // 현재 - 직전 (퍼센트포인트)
+};
+
+/** 시간(초) KPI: p50/p90 + 직전 기간 대비 p50 변화량. */
+export type DurationKpi = {
+  key: string;
+  label: string;
+  n: number;
+  p50Sec: number;
+  p90Sec: number;
+  prevP50Sec: number | null;
+  deltaP50Sec: number | null; // 현재 - 직전 (초)
+};
+
+export type FunnelStage = { key: string; label: string; visitors: number };
+export type DailyPoint = {
+  day: string;
+  entered: number;
+  inputStarted: number;
+  resulted: number;
+};
+/** 예산 분포 버킷: [lower, upper) 만원 단위, n = visitor 결과 건수. */
+export type BudgetBucket = { lower: number; upper: number; n: number };
+export type PersonaSlice = { persona: string; visitors: number };
 
 export type AnalyticsData = {
   window: {
@@ -263,77 +216,100 @@ export type AnalyticsData = {
     to: string;
     today: string;
     preset: string;
-    sessions: number;
-    visitors: number;
+    prevFrom: string;
+    prevTo: string;
+    totalVisitors: number;
   };
-  overview: {
-    scorecards: { label: string; value: number }[];
-    funnel: { label: string; value: number }[];
-    daily: DailyRow[];
-    onboarding: OnboardingRow[];
+  kpis: {
+    inputRate: RateKpi; // P(Input | Entered)
+    resultRate: RateKpi; // P(Result | Input)
+    intentRate: RateKpi; // P(Intent | Result)
+    overallIntentRate: RateKpi; // P(Intent | Entered)
+    revisitRate: RateKpi; // 재방문 visitor 비율
+    timeToStart: DurationKpi; // 입력 시작 소요시간 p50/p90
   };
-  decisionLog: {
-    kpis: Kpi[];
-    careTabRate: Ratio;
-    dwell: { n: number; avg: number; median: number };
-    explore: NamedRatio[];
-    saveShare: NamedRatio[];
-    scrollDepth: ScrollRow[];
-  };
-  strategyOkr: Kpi[];
-  executionOkr: {
-    careAdjust: Ratio;
-    adjustComparison: { group: string; n: number; budget_recheck: number; saved_shared: number }[];
-    depthComparison: DepthRow[];
-    revisit: { group: string; visitors: number; revisited: number }[];
-    satisfaction: SatisfactionRow;
-    viaShareLink: number;
+  charts: {
+    funnel: FunnelStage[]; // 차트 A
+    daily: DailyPoint[]; // 차트 B
+    budgetDistribution: BudgetBucket[]; // 차트 C
+    personaDistribution: PersonaSlice[]; // 보조
   };
 };
 
-function one<T>(rows: T[]): T {
-  return rows[0] ?? ({} as T);
+function one<T>(rows: T[], fallback: T): T {
+  return rows[0] ?? fallback;
 }
+
+function pct(num: number, denom: number): number | null {
+  if (!denom) return null;
+  return Math.round((1000 * num) / denom) / 10; // 소수 1자리
+}
+
+function rateKpi(
+  key: string,
+  label: string,
+  num: number,
+  denom: number,
+  prevNum: number,
+  prevDenom: number,
+): RateKpi {
+  const p = pct(num, denom);
+  const prevP = pct(prevNum, prevDenom);
+  const delta =
+    p === null || prevP === null ? null : Math.round((p - prevP) * 10) / 10;
+  return { key, label, num, denom, pct: p, prevPct: prevP, deltaPct: delta };
+}
+
+const EMPTY_FUNNEL: FunnelRow = {
+  entered: 0,
+  started: 0,
+  resulted: 0,
+  intent: 0,
+  returning_visitors: 0,
+  total_visitors: 0,
+};
+const EMPTY_TTS: TimeToStartRow = { p50_sec: 0, p90_sec: 0, n: 0 };
 
 export async function runAnalytics(range: Range): Promise<AnalyticsData> {
   const { from, to } = range;
-  const run = <T>(sql: string) => prisma.$queryRawUnsafe<T[]>(sql, from, to);
+  const prev = previousRange(from, to);
+
+  const run = <T>(sql: string, f: string, t: string) =>
+    prisma.$queryRawUnsafe<T[]>(sql, f, t);
 
   const [
-    scalarRows,
-    daily,
-    onboarding,
-    scrollDepth,
-    dwell15Rows,
-    adjustRows,
-    depthRows,
-    careAdjustRows,
-    revisitRows,
-    satisfactionRows,
+    funnelRows,
+    prevFunnelRows,
+    ttsRows,
+    prevTtsRows,
+    dailyRows,
+    budgetRows,
+    personaRows,
   ] = await Promise.all([
-    run<ScalarRow>(SQL_SCALARS),
-    run<DailyRow>(SQL_DAILY),
-    run<OnboardingRow>(SQL_ONBOARDING),
-    run<ScrollRow>(SQL_SCROLL_DEPTH),
-    run<Dwell15Row>(SQL_DWELL15),
-    run<AdjustRow>(SQL_ADJUST_COMPARE),
-    run<DepthRow>(SQL_DEPTH_COMPARE),
-    run<CareAdjustRow>(SQL_CARE_ADJUST),
-    run<RevisitRow>(SQL_REVISIT),
-    run<SatisfactionRow>(SQL_SATISFACTION),
+    run<FunnelRow>(SQL_VISITOR_FUNNEL, from, to),
+    run<FunnelRow>(SQL_VISITOR_FUNNEL, prev.from, prev.to),
+    run<TimeToStartRow>(SQL_TIME_TO_START, from, to),
+    run<TimeToStartRow>(SQL_TIME_TO_START, prev.from, prev.to),
+    run<DailyRow>(SQL_DAILY, from, to),
+    run<BudgetBucketRow>(SQL_BUDGET_DIST, from, to),
+    run<PersonaRow>(SQL_PERSONA_DIST, from, to),
   ]);
 
-  const s = one(scalarRows);
-  const dwell15 = one(dwell15Rows);
-  const careAdjust = one(careAdjustRows);
-  const satisfaction = one(satisfactionRows);
+  const f = one(funnelRows, EMPTY_FUNNEL);
+  const pf = one(prevFunnelRows, EMPTY_FUNNEL);
+  const tts = one(ttsRows, EMPTY_TTS);
+  const ptts = one(prevTtsRows, EMPTY_TTS);
 
-  const v = (k: string) => Number(s[k] ?? 0);
-  const svc = v('svc_entered');
-  const rv = v('result_viewed');
+  const prevP50 = ptts.n > 0 ? ptts.p50_sec : null;
+  const deltaP50 = prevP50 === null ? null : Math.round((tts.p50_sec - prevP50) * 10) / 10;
 
-  const adjusted = adjustRows.find((r) => r.adjusted);
-  const notAdjusted = adjustRows.find((r) => !r.adjusted);
+  // 예산 버킷: 0~20000만원을 10등분(버킷 폭 2000만원), 10번 버킷은 20000+ 오버플로
+  const bucketWidth = 2000;
+  const budgetDistribution: BudgetBucket[] = budgetRows.map((r) => ({
+    lower: (r.bucket - 1) * bucketWidth,
+    upper: r.bucket >= 10 ? Number.POSITIVE_INFINITY : r.bucket * bucketWidth,
+    n: r.n,
+  }));
 
   return {
     window: {
@@ -341,89 +317,79 @@ export async function runAnalytics(range: Range): Promise<AnalyticsData> {
       to,
       today: range.today,
       preset: range.preset,
-      sessions: v('sessions'),
-      visitors: v('visitors'),
+      prevFrom: prev.from,
+      prevTo: prev.to,
+      totalVisitors: f.total_visitors,
     },
-    overview: {
-      scorecards: [
-        { label: '운영 세션', value: v('sessions') },
-        { label: '랜딩 진입(svc)', value: svc },
-        { label: '진입(any)', value: v('entered_any') },
-        { label: '드래프트 직진입', value: v('draft_entered') },
-      ],
+    kpis: {
+      inputRate: rateKpi(
+        'inputRate',
+        '입력 전환율',
+        f.started,
+        f.entered,
+        pf.started,
+        pf.entered,
+      ),
+      resultRate: rateKpi(
+        'resultRate',
+        '결과 도달률',
+        f.resulted,
+        f.started,
+        pf.resulted,
+        pf.started,
+      ),
+      intentRate: rateKpi(
+        'intentRate',
+        '의도 생성률',
+        f.intent,
+        f.resulted,
+        pf.intent,
+        pf.resulted,
+      ),
+      overallIntentRate: rateKpi(
+        'overallIntentRate',
+        '진입→의도 전환율',
+        f.intent,
+        f.entered,
+        pf.intent,
+        pf.entered,
+      ),
+      revisitRate: rateKpi(
+        'revisitRate',
+        '재방문율',
+        f.returning_visitors,
+        f.entered,
+        pf.returning_visitors,
+        pf.entered,
+      ),
+      timeToStart: {
+        key: 'timeToStart',
+        label: '입력 시작 소요시간',
+        n: tts.n,
+        p50Sec: tts.p50_sec,
+        p90Sec: tts.p90_sec,
+        prevP50Sec: prevP50,
+        deltaP50Sec: deltaP50,
+      },
+    },
+    charts: {
       funnel: [
-        { label: '랜딩 진입', value: svc },
-        { label: '입력 시작', value: v('input_started') },
-        { label: '결과 확인', value: rv },
-        { label: '저장/공유', value: v('saved_shared') },
+        { key: 'entered', label: '진입', visitors: f.entered },
+        { key: 'input_started', label: '입력 시작', visitors: f.started },
+        { key: 'result_viewed', label: '결과 확인', visitors: f.resulted },
+        { key: 'intent', label: '의도(저장/공유)', visitors: f.intent },
       ],
-      daily,
-      onboarding,
-    },
-    decisionLog: {
-      kpis: [
-        { name: '결과 확인 전이율', num: v('svc_result'), denom: svc, target: TARGETS.kpi1_result },
-        { name: '저장(공유) 비율', num: v('svc_saved'), denom: svc, target: TARGETS.kpi2_save },
-        { name: '선택 답변 재수정률', num: v('svc_toggled'), denom: svc, target: TARGETS.kpi3_reedit },
-        { name: '시나리오 재생성률', num: v('svc_reset'), denom: svc, target: TARGETS.kpi4_reset },
-      ],
-      careTabRate: { num: v('svc_tab_care'), denom: svc },
-      dwell: { n: v('n_dwell'), avg: v('avg_dwell'), median: v('median_dwell') },
-      explore: [
-        { name: '항목별 내역 탭', num: v('rv_tab_itemized'), denom: rv },
-        { name: '추가금 케어 탭', num: v('rv_tab_care'), denom: rv },
-        { name: '종합설계서 스크롤', num: v('rv_scroll_comprehensive'), denom: rv },
-        { name: '항목별 내역 스크롤', num: v('rv_scroll_itemized'), denom: rv },
-        { name: '추가금 케어 스크롤', num: v('rv_scroll_care'), denom: rv },
-      ],
-      saveShare: [
-        { name: '저장/공유 전체', num: v('rv_saved'), denom: rv },
-        { name: 'PDF 저장', num: v('rv_pdf'), denom: rv },
-        { name: '카카오/링크', num: v('rv_link'), denom: rv },
-        { name: '이미지 저장', num: v('rv_image'), denom: rv },
-        { name: '전문가 상담', num: v('rv_expert'), denom: rv },
-      ],
-      scrollDepth,
-    },
-    strategyOkr: [
-      { name: 'R1a 매핑 완료→결과 확인', num: v('is_result'), denom: v('input_started'), target: TARGETS.r1a_mapping },
-      { name: 'R1b 종합설계서 도달', num: v('rv_tab_comprehensive'), denom: rv, target: TARGETS.r1b_comprehensive },
-      { name: 'R2a 종합설계서 탭 오픈', num: v('rv_tab_comprehensive'), denom: rv, target: TARGETS.r2a_open },
-      { name: 'R2b 15초+ 체류율', num: Number(dwell15.num ?? 0), denom: Number(dwell15.denom ?? 0), target: TARGETS.r2b_dwell15 },
-      { name: 'R3 추가옵션 탐색 재수정/재생성', num: v('rv_reedit'), denom: rv, target: TARGETS.r3_explore },
-      { name: 'R4 저장/공유 완료', num: v('rv_saved'), denom: rv, target: TARGETS.r4_save },
-    ],
-    executionOkr: {
-      careAdjust: { num: Number(careAdjust.num ?? 0), denom: Number(careAdjust.denom ?? 0) },
-      adjustComparison: [
-        {
-          group: '조정함',
-          n: adjusted?.n ?? 0,
-          budget_recheck: adjusted?.budget_recheck ?? 0,
-          saved_shared: adjusted?.saved_shared ?? 0,
-        },
-        {
-          group: '미조정',
-          n: notAdjusted?.n ?? 0,
-          budget_recheck: notAdjusted?.budget_recheck ?? 0,
-          saved_shared: notAdjusted?.saved_shared ?? 0,
-        },
-      ],
-      depthComparison: depthRows,
-      revisit: [
-        {
-          group: '저장/공유',
-          visitors: revisitRows.find((r) => r.saved)?.visitors ?? 0,
-          revisited: revisitRows.find((r) => r.saved)?.revisited ?? 0,
-        },
-        {
-          group: '미저장',
-          visitors: revisitRows.find((r) => !r.saved)?.visitors ?? 0,
-          revisited: revisitRows.find((r) => !r.saved)?.revisited ?? 0,
-        },
-      ],
-      satisfaction,
-      viaShareLink: v('via_share_link'),
+      daily: dailyRows.map((r) => ({
+        day: r.day,
+        entered: r.entered,
+        inputStarted: r.input_started,
+        resulted: r.resulted,
+      })),
+      budgetDistribution,
+      personaDistribution: personaRows.map((r) => ({
+        persona: r.persona,
+        visitors: r.visitors,
+      })),
     },
   };
 }
