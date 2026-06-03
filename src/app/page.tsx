@@ -42,7 +42,9 @@ export default function Home() {
 
       {/* Hero */}
       <section className="flex min-h-[calc(100svh-87px)] flex-col items-center justify-center gap-6 pb-24 pt-8 text-center">
-        <FilmStrip />
+        <div className="w-full px-6">
+          <FilmStrip />
+        </div>
         <h1 className="break-keep px-6 text-[32px] font-semibold leading-tight tracking-tight text-[#373737] sm:text-[48px]">
           결혼 준비, 검색 말고 선택하세요.
         </h1>
