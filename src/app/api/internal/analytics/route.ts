@@ -1,15 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { isAuthed, DASH_COOKIE } from '@/lib/analytics/auth';
 import { resolveRange, runAnalytics } from '@/lib/analytics/queries';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-  if (!isAuthed(req.cookies.get(DASH_COOKIE)?.value)) {
-    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
-  }
-
   const sp = req.nextUrl.searchParams;
   const range = resolveRange(sp.get('preset'), sp.get('from'), sp.get('to'));
   if (!range) {

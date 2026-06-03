@@ -51,23 +51,23 @@ export function AnalyticsDashboard() {
       url += `?preset=${preset}`;
     }
     let alive = true;
-    setLoading(true);
-    fetch(url)
-      .then((r) => {
-        if (r.status === 401) {
-          window.location.reload();
-          return null;
-        }
-        return r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`);
-      })
-      .then((d) => {
-        if (alive && d) {
+    async function load() {
+      setLoading(true);
+      try {
+        const r = await fetch(url);
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        const d = await r.json();
+        if (alive) {
           setData(d);
           setError('');
         }
-      })
-      .catch((e) => alive && setError(String(e)))
-      .finally(() => alive && setLoading(false));
+      } catch (e) {
+        if (alive) setError(String(e));
+      } finally {
+        if (alive) setLoading(false);
+      }
+    }
+    load();
     return () => {
       alive = false;
     };
