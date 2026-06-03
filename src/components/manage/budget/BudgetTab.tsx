@@ -92,11 +92,11 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, total
       {/* 지출 추가 모달 */}
       {showModal && (
         <div
-          className="fixed inset-0 z-40 flex items-end bg-black/40"
+          className="fixed inset-0 z-40 flex items-end justify-center bg-black/40"
           onClick={() => setShowModal(false)}
         >
           <div
-            className="w-full rounded-t-3xl bg-white p-6"
+            className="w-full max-w-[576px] rounded-t-3xl bg-white p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <p className="pb-5 text-lg font-semibold text-[#171717]">지출 추가하기</p>

@@ -14,8 +14,8 @@ const TABS: { id: ManageTab; label: string }[] = [
 
 export function ManageTabBar({ active, onChange }: Props) {
   return (
-    <div className="sticky top-14 z-20 w-full border-b border-[#E5E5E5] bg-white">
-      <div className="mx-auto flex h-10 w-full max-w-[576px]">
+    <div className="sticky top-14 z-20 border-b border-[#E5E5E5] bg-white">
+      <div className="mx-auto flex h-10 max-w-[576px]">
         {TABS.map(({ id, label }) => (
           <button
             key={id}
