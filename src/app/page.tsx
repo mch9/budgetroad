@@ -41,22 +41,27 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section className="flex min-h-[calc(100svh-87px)] flex-col items-center justify-center gap-6 pb-24 pt-8 text-center">
-        <div className="w-full px-6">
+      <section className="flex min-h-[calc(100svh-87px)] flex-col pb-24 pt-8 text-center">
+        {/* FilmStrip: 헤딩 위 남은 공간을 모두 채움, 이미지가 넘치면 아래쪽 클립 */}
+        <div className="flex min-h-0 flex-1 items-end overflow-hidden px-6">
           <FilmStrip />
         </div>
-        <h1 className="break-keep px-6 text-[32px] font-semibold leading-tight tracking-tight text-[#373737] sm:text-[48px]">
-          결혼 준비, 검색 말고 선택하세요.
-        </h1>
-        <p className="break-keep px-6 text-base text-[#373737] sm:text-[22px]">
-          몇 번의 선택만으로 우리 커플에게 맞는 결혼 예산과 준비 순서를 짜드릴게요.
-        </p>
-        <CtaLink />
-        <div className="mt-4 flex flex-col items-center gap-2 text-xs text-[#373737]">
-          <span>스크롤</span>
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="animate-bounce">
-            <path d="M3 6l6 6 6-6" stroke="#373737" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+
+        {/* 텍스트 콘텐츠 */}
+        <div className="mt-8 flex shrink-0 flex-col items-center gap-6 px-6">
+          <h1 className="break-keep text-[32px] font-semibold leading-tight tracking-tight text-[#373737] sm:text-[48px]">
+            결혼 준비, 검색 말고 선택하세요.
+          </h1>
+          <p className="break-keep text-base text-[#373737] sm:text-[22px]">
+            몇 번의 선택만으로 우리 커플에게 맞는 결혼 예산과 준비 순서를 짜드릴게요.
+          </p>
+          <CtaLink />
+          <div className="flex flex-col items-center gap-2 text-xs text-[#373737]">
+            <span>스크롤</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="animate-bounce">
+              <path d="M3 6l6 6 6-6" stroke="#373737" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
         </div>
       </section>
 

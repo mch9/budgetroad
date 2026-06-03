@@ -40,10 +40,9 @@ export function FilmStrip() {
             aria-hidden="true"
             style={{
               width: 'calc(33.333vw - 4px)',
-              height: 'calc(16.667vw - 2px)',
+              height: 'calc(33.333vw - 4px)',
               flexShrink: 0,
               display: 'block',
-              objectFit: 'contain',
             }}
           />
         ))}
