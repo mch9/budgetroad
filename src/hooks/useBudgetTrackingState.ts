@@ -13,7 +13,7 @@ export type BudgetItem = {
   id: string;
   name: string;
   category: string;
-  filterCategory: 'venue' | 'studio' | 'other';
+  filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other';
   estimatedAmount: number; // 만원
   custom?: boolean; // 직접 추가한 항목 (예상 금액 없음)
 };
@@ -21,7 +21,7 @@ export type BudgetItem = {
 type StoredCustomItem = {
   id: string;
   name: string;
-  filterCategory: 'venue' | 'studio' | 'other';
+  filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other';
   amount: number; // 만원
 };
 
@@ -59,17 +59,17 @@ function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
     const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
     if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'studio', estimatedAmount: price });
   }
-  items.push({ id: 'dress-base', name: '드레스 기본', category: '스드메', filterCategory: 'studio', estimatedAmount: sdmDetail.dressBase });
+  items.push({ id: 'dress-base', name: '드레스 기본', category: '스드메', filterCategory: 'dress', estimatedAmount: sdmDetail.dressBase });
   for (const meta of TOGGLES_META) {
     if (meta.group !== '드레스' || !toggles[meta.id]) continue;
     const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'studio', estimatedAmount: price });
+    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'dress', estimatedAmount: price });
   }
-  items.push({ id: 'makeup-base', name: '메이크업 기본', category: '스드메', filterCategory: 'studio', estimatedAmount: sdmDetail.makeupBase });
+  items.push({ id: 'makeup-base', name: '메이크업 기본', category: '스드메', filterCategory: 'makeup', estimatedAmount: sdmDetail.makeupBase });
   for (const meta of TOGGLES_META) {
     if (meta.group !== '메이크업' || !toggles[meta.id]) continue;
     const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'studio', estimatedAmount: price });
+    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'makeup', estimatedAmount: price });
   }
 
   // 기타
@@ -126,11 +126,11 @@ export function useBudgetTrackingState() {
     });
   }
 
-  function addCustomItem(name: string, filterCategory: 'venue' | 'studio' | 'other', amount: number) {
+  function addCustomItem(name: string, filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other', amount: number) {
     const id = `custom-${Date.now()}`;
     const newItem: BudgetItem = {
       id, name,
-      category: filterCategory === 'venue' ? '예식장' : filterCategory === 'studio' ? '스드메' : '기타',
+      category: filterCategory === 'venue' ? '예식장' : filterCategory === 'other' ? '기타' : '스드메',
       filterCategory,
       estimatedAmount: 0,
       custom: true,

@@ -1,12 +1,13 @@
 'use client';
 
+import Link from 'next/link';
+
 type Props = {
   totalEstimated: number;
   totalActual: number;
-  onShareClick: () => void;
 };
 
-export function ManageBottomBar({ totalEstimated, totalActual, onShareClick }: Props) {
+export function ManageBottomBar({ totalEstimated, totalActual }: Props) {
   const delta = totalActual - totalEstimated;
 
   return (
@@ -30,13 +31,12 @@ export function ManageBottomBar({ totalEstimated, totalActual, onShareClick }: P
             <span className="ml-1 text-sm font-normal text-white/80">만원</span>
           </span>
         </div>
-        <button
-          type="button"
-          onClick={onShareClick}
+        <Link
+          href="/budget-draft"
           className="shrink-0 rounded-2xl bg-[#AAC7E1] px-5 py-[10px] text-sm font-semibold text-[#171717] transition-opacity active:opacity-80"
         >
-          저장 &amp; 공유
-        </button>
+          결과페이지로
+        </Link>
       </div>
     </nav>
   );

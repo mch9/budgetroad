@@ -10,14 +10,16 @@ type Props = {
   items: BudgetItem[];
   actual: ActualAmounts;
   setActualAmount: (itemId: string, amount: number | undefined) => void;
-  addCustomItem: (name: string, filterCategory: 'venue' | 'studio' | 'other', amount: number) => void;
+  addCustomItem: (name: string, filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other', amount: number) => void;
   totalEstimated: number;
   totalActual: number;
 };
 
-const CATEGORY_OPTIONS: { label: string; value: 'venue' | 'studio' | 'other' }[] = [
+const CATEGORY_OPTIONS: { label: string; value: 'venue' | 'studio' | 'dress' | 'makeup' | 'other' }[] = [
   { label: '예식장', value: 'venue' },
   { label: '스튜디오', value: 'studio' },
+  { label: '드레스', value: 'dress' },
+  { label: '메이크업', value: 'makeup' },
   { label: '기타', value: 'other' },
 ];
 
@@ -26,7 +28,7 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, total
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState('');
   const [newAmount, setNewAmount] = useState('');
-  const [newCategory, setNewCategory] = useState<'venue' | 'studio' | 'other'>('other');
+  const [newCategory, setNewCategory] = useState<'venue' | 'studio' | 'dress' | 'makeup' | 'other'>('other');
 
   const filtered =
     filter === 'all' ? items : items.filter((item) => item.filterCategory === filter);

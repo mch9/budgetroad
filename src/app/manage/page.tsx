@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ChevronLeft, Share2 } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { ManageTabBar, type ManageTab } from '@/components/manage/ManageTabBar';
 import { ManageBottomBar } from '@/components/manage/ManageBottomBar';
 import { ChecklistTab } from '@/components/manage/checklist/ChecklistTab';
@@ -44,16 +44,8 @@ export default function ManagePage() {
   return (
     <div className="flex min-h-screen flex-col bg-[#F9FAFB]">
       {/* 헤더 */}
-      <header className="sticky top-0 z-30 flex h-14 items-center justify-between border-b border-[#E5E7EB] bg-[#F9FAFB]/90 px-4 backdrop-blur-sm">
-        <Link
-          href="/budget-draft"
-          className="flex items-center gap-1 text-sm font-medium text-[#373737]"
-        >
-          <ChevronLeft size={18} strokeWidth={2} />
-          결과로
-        </Link>
+      <header className="sticky top-0 z-30 flex h-14 items-center justify-center border-b border-[#E5E7EB] bg-[#F9FAFB]/90 backdrop-blur-sm">
         <img src="/brand/logo-ko-nav.png" alt="버짓로드" className="h-6 w-auto" />
-        <div className="w-14" /> {/* 우측 균형용 */}
       </header>
 
       <ManageTabBar active={activeTab} onChange={setActiveTab} />
@@ -91,7 +83,6 @@ export default function ManagePage() {
       <ManageBottomBar
         totalEstimated={totalEstimated}
         totalActual={totalActual}
-        onShareClick={() => setShareOpen(true)}
       />
 
       {/* 공유 모달 */}
