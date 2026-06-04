@@ -90,11 +90,11 @@ export function ChecklistGroup({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // 초기 로드 시 1회만 동기화 — 이후엔 submitAdd/deleteSelected에서 명시적 업데이트
+  // 실제 데이터 로드 후 1회만 동기화 — userItems가 비어있을 땐 localStorage 미로드 상태
   useEffect(() => {
-    if (!loadedRef.current) {
-      loadedRef.current = true;
+    if (!loadedRef.current && userItems.length > 0) {
       setLocalUserItems(userItems);
+      loadedRef.current = true;
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userItems]);
