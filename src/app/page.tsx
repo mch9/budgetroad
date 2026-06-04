@@ -4,9 +4,6 @@ import { Sparkles, Check, TrendingUp, Wallet } from 'lucide-react';
 import TrackPageEnter from '@/components/common/TrackPageEnter';
 import { CtaLink } from './cta-link';
 
-// 웨딩 커플 일러스트 (Figma 에셋 — 만료 전 /public으로 이동 필요)
-const IMG_COUPLE = 'https://www.figma.com/api/mcp/asset/38048667-6339-4e7a-a1a4-d9c2667e0d31';
-
 // Figma-hosted screenshots (expire 2026-06-11 — replace with /public assets)
 const IMG_STEP1 = 'https://www.figma.com/api/mcp/asset/6b407af9-9cd9-470c-8ce8-607f899ba0f1';
 const IMG_STEP2 = 'https://www.figma.com/api/mcp/asset/ec1549a7-1a20-49cb-bba7-a23f181c7c90';
@@ -47,7 +44,7 @@ export default function Home() {
         {/* 웨딩 커플 일러스트 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={IMG_COUPLE}
+          src="/couple-illustration.svg"
           alt=""
           aria-hidden
           className="h-[160px] w-auto sm:h-[220px] lg:h-[269px]"
