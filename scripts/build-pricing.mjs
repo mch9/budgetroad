@@ -122,11 +122,11 @@ function normalize(row) {
     item: row['항목'],
     type: row['유형'],
     // P10/P25/P50/P75/P90
-    p10: parsePrice(row['6열']),
-    p25: parsePrice(row['7열']),
-    mid: parsePrice(row['8열']),
-    p75: parsePrice(row['9열']),
-    p90: parsePrice(row['10열']),
+    p10: parsePrice(row['하위 10%']),
+    p25: parsePrice(row['하위 25%']),
+    mid: parsePrice(row['중간값']),
+    p75: parsePrice(row['상위 25%']),
+    p90: parsePrice(row['상위 10%']),
   };
 }
 

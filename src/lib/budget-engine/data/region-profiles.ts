@@ -22,15 +22,15 @@ export const REGION_PROFILES: Record<UserRegion, RegionProfile> = {
     "peak": {
       "bojeung": 218,
       "perHead": 8,
-      "daegwan": 638,
-      "baseMeal": 1835,
+      "daegwan": 654,
+      "baseMeal": 1775,
       "baseDecoration": 0
     },
     "offPeak": {
       "bojeung": 215,
-      "perHead": 9,
-      "daegwan": 639,
-      "baseMeal": 1828,
+      "perHead": 8,
+      "daegwan": 655,
+      "baseMeal": 1769,
       "baseDecoration": 0
     }
   },
@@ -38,47 +38,47 @@ export const REGION_PROFILES: Record<UserRegion, RegionProfile> = {
     "peak": {
       "bojeung": 200,
       "perHead": 7,
-      "daegwan": 422,
-      "baseMeal": 1306,
+      "daegwan": 444,
+      "baseMeal": 1292,
       "baseDecoration": 0
     },
     "offPeak": {
       "bojeung": 200,
       "perHead": 7,
-      "daegwan": 421,
-      "baseMeal": 1302,
+      "daegwan": 461,
+      "baseMeal": 1294,
       "baseDecoration": 0
     }
   },
   "광역시": {
     "peak": {
       "bojeung": 192,
-      "perHead": 6,
-      "daegwan": 221,
-      "baseMeal": 1013,
+      "perHead": 5,
+      "daegwan": 224,
+      "baseMeal": 1005,
       "baseDecoration": 6
     },
     "offPeak": {
       "bojeung": 192,
-      "perHead": 6,
-      "daegwan": 223,
-      "baseMeal": 1012,
+      "perHead": 5,
+      "daegwan": 222,
+      "baseMeal": 995,
       "baseDecoration": 5
     }
   },
   "이외": {
     "peak": {
-      "bojeung": 198,
+      "bojeung": 202,
       "perHead": 5,
-      "daegwan": 239,
-      "baseMeal": 1016,
+      "daegwan": 247,
+      "baseMeal": 1005,
       "baseDecoration": 0
     },
     "offPeak": {
-      "bojeung": 197,
+      "bojeung": 196,
       "perHead": 5,
-      "daegwan": 241,
-      "baseMeal": 1004,
+      "daegwan": 255,
+      "baseMeal": 965,
       "baseDecoration": 0
     }
   }
