@@ -27,6 +27,7 @@ type Props = {
   onToggle: (id: string) => void;
   dynamicItems: DynamicChecklistItem[];
   highlightedIds: Set<string>;
+  preservedIds: Set<string>;
   userItems: UserChecklistItem[];
   onAddUserItem: (text: string, groupId: string) => void;
   onRemoveUserItem: (id: string) => void;
@@ -39,6 +40,7 @@ type FlatItem = {
   text: string;
   highlight?: boolean;
   isDynamic?: boolean;
+  isPreserved?: boolean;
 };
 
 function SortableRow({ id, children }: { id: string; children: React.ReactNode }) {
@@ -64,7 +66,7 @@ function SortableRow({ id, children }: { id: string; children: React.ReactNode }
 }
 
 export function ChecklistGroup({
-  group, checked, onToggle, dynamicItems, highlightedIds,
+  group, checked, onToggle, dynamicItems, highlightedIds, preservedIds,
   userItems, onAddUserItem, onRemoveUserItem, hiddenIds, onHideItem,
 }: Props) {
   const storageKey = `budgetroad_checklist_order_${group.id}`;
@@ -96,7 +98,7 @@ export function ChecklistGroup({
   // 모든 항목을 flat 리스트로 합치고 localOrder 기준으로 정렬
   const allFlat: FlatItem[] = [
     ...visibleStatic.map((i) => ({ id: i.id, text: i.text, highlight: highlightedIds.has(i.id) })),
-    ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true })),
+    ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true, isPreserved: preservedIds.has(d.id) })),
     ...userItems.map((u) => ({ id: u.id, text: u.text })),
   ];
 
@@ -254,6 +256,7 @@ export function ChecklistGroup({
                     onToggle={onToggle}
                     highlight={item.highlight}
                     dynamic={item.isDynamic}
+                    preserved={item.isPreserved}
                   />
                 ))}
               </div>

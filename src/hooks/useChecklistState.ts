@@ -10,6 +10,7 @@ const STORAGE_KEY = 'budgetroad_checklist';
 const SESSION_KEY = 'budgetroad_manage_session';
 const USER_ITEMS_KEY = 'budgetroad_checklist_user';
 const HIDDEN_KEY = 'budgetroad_checklist_hidden';
+const USER_HIDDEN_KEY = 'budgetroad_checklist_user_hidden';
 
 type CheckedState = Record<string, boolean>;
 
@@ -30,6 +31,7 @@ export function useChecklistState() {
   const [checked, setChecked] = useState<CheckedState>({});
   const [dynamicItems, setDynamicItems] = useState<DynamicChecklistItem[]>([]);
   const [highlightedIds, setHighlightedIds] = useState<Set<string>>(new Set());
+  const [preservedIds, setPreservedIds] = useState<Set<string>>(new Set());
   const [userItems, setUserItems] = useState<UserChecklistItem[]>([]);
   const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set());
 
@@ -80,10 +82,27 @@ export function useChecklistState() {
       if (session) {
         const { toggles } = JSON.parse(session) as { toggles: ToggleState };
         if (!toggles) return;
+
+        let localChecked: Record<string, boolean> = {};
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) localChecked = JSON.parse(raw) as Record<string, boolean>;
+        } catch { /* ignore */ }
+
         const items: DynamicChecklistItem[] = [];
         const ids = new Set<string>();
+        const preserved = new Set<string>();
         for (const entry of TOGGLE_CHECKLIST_MAP) {
-          if (!toggles[entry.toggleId as keyof ToggleState]) continue;
+          if (!toggles[entry.toggleId as keyof ToggleState]) {
+            if (entry.type !== 'highlight') {
+              const itemId = `toggle-${entry.toggleId}`;
+              if (localChecked[itemId]) {
+                items.push({ id: itemId, text: entry.text, groupId: entry.groupId, sectionTitle: entry.sectionTitle });
+                preserved.add(itemId);
+              }
+            }
+            continue;
+          }
           if (entry.type === 'highlight') {
             ids.add(entry.existingItemId);
           } else {
@@ -97,6 +116,7 @@ export function useChecklistState() {
         }
         setDynamicItems(items);
         setHighlightedIds(ids);
+        setPreservedIds(preserved);
       }
     } catch { /* ignore */ }
   }, []);
@@ -141,12 +161,20 @@ export function useChecklistState() {
       try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
       return next;
     });
+    try {
+      const raw = localStorage.getItem(USER_HIDDEN_KEY);
+      const prev: string[] = raw ? (JSON.parse(raw) as string[]) : [];
+      if (!prev.includes(id)) {
+        localStorage.setItem(USER_HIDDEN_KEY, JSON.stringify([...prev, id]));
+      }
+    } catch { /* ignore */ }
   }
 
   function unhideAll() {
     setHiddenIds(new Set());
     try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([])); } catch { /* ignore */ }
+    try { localStorage.setItem(USER_HIDDEN_KEY, JSON.stringify([])); } catch { /* ignore */ }
   }
 
-  return { checked, toggle, dynamicItems, highlightedIds, userItems, addUserItem, removeUserItem, hiddenIds, hideItem, unhideAll };
+  return { checked, toggle, dynamicItems, highlightedIds, preservedIds, userItems, addUserItem, removeUserItem, hiddenIds, hideItem, unhideAll };
 }

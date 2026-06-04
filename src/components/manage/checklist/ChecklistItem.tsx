@@ -8,6 +8,7 @@ type Props = {
   onToggle: (id: string) => void;
   highlight?: boolean;
   dynamic?: boolean;
+  preserved?: boolean;
   onDelete?: () => void;
   selectable?: boolean;
   selected?: boolean;
@@ -25,7 +26,7 @@ const CHECK_SVG = (
   </svg>
 );
 
-export function ChecklistItem({ item, checked, onToggle, highlight, dynamic, onDelete, selectable, selected, onSelect }: Props) {
+export function ChecklistItem({ item, checked, onToggle, highlight, dynamic, preserved, onDelete, selectable, selected, onSelect }: Props) {
   if (selectable) {
     return (
       <label className="flex cursor-pointer items-center gap-2.5 py-1.5">
@@ -68,6 +69,10 @@ export function ChecklistItem({ item, checked, onToggle, highlight, dynamic, onD
             <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
         </button>
+      ) : preserved ? (
+        <span className="shrink-0 rounded-full bg-[rgba(153,161,175,0.15)] px-2 py-0.5 text-[10px] font-medium text-[#99A1AF]">
+          완료한 항목이라 유지됨
+        </span>
       ) : showMyChoice ? (
         <span className="shrink-0 rounded-full bg-[rgba(116,153,186,0.15)] px-2 py-0.5 text-[10px] font-medium text-[#7499BA]">
           내 선택
