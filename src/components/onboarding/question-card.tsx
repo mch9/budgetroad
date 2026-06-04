@@ -34,10 +34,10 @@ export function QuestionCard({ selected, label, desc, disabled, onClick }: Props
     <button
       type="button"
       onClick={onClick}
-      className={`flex ${CARD_HEIGHT} w-full items-center justify-between gap-3 rounded-[14px] border-2 px-5 py-5 text-left ${
+      className={`flex ${CARD_HEIGHT} w-full cursor-pointer items-center justify-between gap-3 rounded-[14px] border-2 px-5 py-5 text-left ${
         selected
           ? 'border-[#AAC7E1] bg-[rgba(170,199,225,0.3)]'
-          : 'border-[#E5E7EB] bg-white hover:border-[rgba(170,199,225,0.7)] hover:bg-[rgba(170,199,225,0.06)] hover:shadow-sm'
+          : 'border-[#E5E7EB] bg-white hover:border-[#AAC7E1] hover:bg-[rgba(170,199,225,0.1)] hover:shadow-sm'
       }`}
     >
       <div className="flex min-w-0 flex-col">
