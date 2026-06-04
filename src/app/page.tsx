@@ -41,23 +41,32 @@ export default function Home() {
 
       {/* Hero */}
       <section className="flex min-h-[calc(100svh-87px)] flex-col items-center justify-center gap-8 pb-24 pt-8 text-center">
-        {/* 웨딩 커플 일러스트 */}
+        {/* 웨딩 커플 일러스트 — SVG가 100% 기반이라 w·h 명시 필요 */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/couple-illustration.svg"
           alt=""
           aria-hidden
-          className="h-[160px] w-auto sm:h-[220px] lg:h-[269px]"
+          className="h-[160px] w-[160px] sm:h-[220px] sm:w-[220px] lg:h-[269px] lg:w-[269px]"
         />
 
         {/* 텍스트 콘텐츠 */}
         <div className="flex shrink-0 flex-col items-center gap-5 px-6">
           <h1 className="break-keep text-[42px] font-bold leading-tight tracking-tighter text-[#373737] sm:text-[64px] lg:text-[88px]">
             <span className="relative whitespace-nowrap">
+              {/* 파란 하이라이트 채우기 */}
               <span
-                className="absolute -inset-x-2 inset-y-1 -rotate-1 rounded-sm bg-[rgba(170,199,225,0.3)]"
+                className="absolute -inset-x-2 inset-y-1 -rotate-1 bg-[rgba(170,199,225,0.3)]"
                 aria-hidden
               />
+              {/* 점선 박스 (Figma Group8) */}
+              <span
+                className="absolute -inset-x-3 -inset-y-2 -rotate-1"
+                aria-hidden
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/highlight-dashes.svg" alt="" className="h-full w-full" />
+              </span>
               <span className="relative">결혼 준비,</span>
             </span>
             <br />
