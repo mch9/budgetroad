@@ -1,4 +1,19 @@
+import type { PersonaType } from '@/lib/onboarding-v6';
+
 export type ChecklistTag = '중요' | '계약';
+
+// 페르소나별 기본 숨김 항목 — 실행 task만 포함 (결정 task는 전 페르소나 항상 노출)
+// ⚠️ 약한 근거 항목: snap-2/4, photo-6, parents-3, prep-10, prep-7 (보수적 처리)
+// 전통격식·탐색미결정: 숨김 없음 (전체 노출)
+export const PERSONA_HIDDEN_DEFAULT: Partial<Record<PersonaType, string[]>> = {
+  '표준실용': ['snap-2', 'snap-4', 'photo-6', 'prep-8', 'prep-9', 'prep-11', 'prep-12'],
+  '경험연출': ['hall-8', 'parents-3', 'prep-8', 'prep-9', 'prep-10'],
+  '본질미니멀': [
+    'hall-8', 'snap-2', 'snap-3', 'snap-4', 'photo-6', 'parents-3',
+    'prep-2', 'prep-4', 'prep-7', 'prep-8', 'prep-9', 'prep-10',
+    'prep-11', 'prep-12', 'prep-17',
+  ],
+};
 
 export type ToggleChecklistEntry =
   | { toggleId: string; type: 'highlight'; existingItemId: string }

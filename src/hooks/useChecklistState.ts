@@ -2,7 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import type { ToggleState } from '@/lib/budget-engine';
-import { TOGGLE_CHECKLIST_MAP } from '@/lib/checklist-data';
+import { TOGGLE_CHECKLIST_MAP, PERSONA_HIDDEN_DEFAULT } from '@/lib/checklist-data';
+import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
+import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 
 const STORAGE_KEY = 'budgetroad_checklist';
 const SESSION_KEY = 'budgetroad_manage_session';
@@ -46,8 +48,31 @@ export function useChecklistState() {
 
     try {
       const raw = localStorage.getItem(HIDDEN_KEY);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (raw) setHiddenIds(new Set(JSON.parse(raw) as string[]));
+      if (raw) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setHiddenIds(new Set(JSON.parse(raw) as string[]));
+      } else {
+        // 첫 방문: 페르소나 기반 기본 숨김 적용
+        const sessionRaw = localStorage.getItem(SESSION_KEY);
+        if (sessionRaw) {
+          const parsed = JSON.parse(sessionRaw) as { answers?: OnboardingAnswers; toggles?: ToggleState };
+          if (parsed.answers) {
+            const persona = classifyPersona(scoreAxis(parsed.answers));
+            const defaults = PERSONA_HIDDEN_DEFAULT[persona] ?? [];
+            // T3: 토글 ON으로 highlight된 항목은 숨김에서 제외
+            const activeToggleIds = new Set(
+              TOGGLE_CHECKLIST_MAP
+                .filter((e): e is Extract<typeof e, { type: 'highlight' }> =>
+                  e.type === 'highlight' && !!(parsed.toggles?.[e.toggleId as keyof ToggleState]))
+                .map((e) => e.existingItemId),
+            );
+            const initial = new Set(defaults.filter((id) => !activeToggleIds.has(id)));
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setHiddenIds(initial);
+            try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([...initial])); } catch { /* ignore */ }
+          }
+        }
+      }
     } catch { /* ignore */ }
 
     try {
@@ -118,5 +143,10 @@ export function useChecklistState() {
     });
   }
 
-  return { checked, toggle, dynamicItems, highlightedIds, userItems, addUserItem, removeUserItem, hiddenIds, hideItem };
+  function unhideAll() {
+    setHiddenIds(new Set());
+    try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([])); } catch { /* ignore */ }
+  }
+
+  return { checked, toggle, dynamicItems, highlightedIds, userItems, addUserItem, removeUserItem, hiddenIds, hideItem, unhideAll };
 }
