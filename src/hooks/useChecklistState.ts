@@ -7,6 +7,7 @@ import { TOGGLE_CHECKLIST_MAP } from '@/lib/checklist-data';
 const STORAGE_KEY = 'budgetroad_checklist';
 const SESSION_KEY = 'budgetroad_manage_session';
 const USER_ITEMS_KEY = 'budgetroad_checklist_user';
+const HIDDEN_KEY = 'budgetroad_checklist_hidden';
 
 type CheckedState = Record<string, boolean>;
 
@@ -28,6 +29,7 @@ export function useChecklistState() {
   const [dynamicItems, setDynamicItems] = useState<DynamicChecklistItem[]>([]);
   const [highlightedIds, setHighlightedIds] = useState<Set<string>>(new Set());
   const [userItems, setUserItems] = useState<UserChecklistItem[]>([]);
+  const [hiddenIds, setHiddenIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     try {
@@ -40,6 +42,12 @@ export function useChecklistState() {
       const raw = localStorage.getItem(USER_ITEMS_KEY);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setUserItems(JSON.parse(raw) as UserChecklistItem[]);
+    } catch { /* ignore */ }
+
+    try {
+      const raw = localStorage.getItem(HIDDEN_KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (raw) setHiddenIds(new Set(JSON.parse(raw) as string[]));
     } catch { /* ignore */ }
 
     try {
@@ -101,5 +109,14 @@ export function useChecklistState() {
     });
   }
 
-  return { checked, toggle, dynamicItems, highlightedIds, userItems, addUserItem, removeUserItem };
+  function hideItem(id: string) {
+    setHiddenIds((prev) => {
+      const next = new Set(prev);
+      next.add(id);
+      try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
+      return next;
+    });
+  }
+
+  return { checked, toggle, dynamicItems, highlightedIds, userItems, addUserItem, removeUserItem, hiddenIds, hideItem };
 }
