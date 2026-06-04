@@ -47,16 +47,14 @@ export const EMPTY_ANSWERS: OnboardingAnswers = {
 // ── 13 Steps (메인 6 + 태그 3 + Modifier 4) ──
 
 export const STEPS: StepMeta[] = [
-  // [0] Q1 — 메인 (축 B / 돈)
+  // [0] Q3 — 메인 (축 B / 행동) — 맥락 없이 이해하기 쉬운 질문을 첫 번째로
   {
     type: 'main',
-    id: 'Q1',
-    title: '추가로 100만 원을 쓸 수 있다면, 어디에 먼저 쓰고 싶나요?',
+    id: 'Q3',
+    title: '식장을 처음 보러 갔을 때, 가장 먼저 보게 될 것 같은 부분은 무엇인가요?',
     options: [
-      { id: 'A', label: '하객들이 더 만족할 수 있도록 식사 퀄리티를 높일래요', scoreA: 0, scoreB: 2 },
-      { id: 'B', label: '오래 남는 사진이나 영상 퀄리티를 높일래요', scoreA: 0, scoreB: -2 },
-      { id: 'C', label: '혼주 헤어·메이크업, 폐백처럼 양가가 신경 쓰는 항목을 보강할래요', scoreA: 1, scoreB: 1 },
-      { id: 'D', label: '결혼식보다는 신혼집이나 신혼여행 예산에 보탤래요', scoreA: -1, scoreB: -2 },
+      { id: 'A', label: '하객들이 오기 편한 위치, 주차, 식사 수준', scoreA: 0, scoreB: 2 },
+      { id: 'B', label: '공간 분위기, 조명, 사진이 예쁘게 나올지 여부', scoreA: 0, scoreB: -2 },
     ],
   },
 
@@ -71,14 +69,16 @@ export const STEPS: StepMeta[] = [
     ],
   },
 
-  // [2] Q3 — 메인 (축 B / 행동)
+  // [2] Q1 — 메인 (축 B / 돈) — 맥락이 충분히 쌓인 뒤 추가금 관련 질문
   {
     type: 'main',
-    id: 'Q3',
-    title: '식장을 처음 보러 갔을 때, 가장 먼저 보게 될 것 같은 부분은 무엇인가요?',
+    id: 'Q1',
+    title: '추가로 100만 원을 쓸 수 있다면, 어디에 먼저 쓰고 싶나요?',
     options: [
-      { id: 'A', label: '하객들이 오기 편한 위치, 주차, 식사 수준', scoreA: 0, scoreB: 2 },
-      { id: 'B', label: '공간 분위기, 조명, 사진이 예쁘게 나올지 여부', scoreA: 0, scoreB: -2 },
+      { id: 'A', label: '하객들이 더 만족할 수 있도록 식사 퀄리티를 높일래요', scoreA: 0, scoreB: 2 },
+      { id: 'B', label: '오래 남는 사진이나 영상 퀄리티를 높일래요', scoreA: 0, scoreB: -2 },
+      { id: 'C', label: '혼주 헤어·메이크업, 폐백처럼 양가가 신경 쓰는 항목을 보강할래요', scoreA: 1, scoreB: 1 },
+      { id: 'D', label: '결혼식보다는 신혼집이나 신혼여행 예산에 보탤래요', scoreA: -1, scoreB: -2 },
     ],
   },
 
@@ -99,12 +99,12 @@ export const STEPS: StepMeta[] = [
   {
     type: 'main',
     id: 'Q7',
-    title: '식장 상담 중 추가 옵션을 제안받는다면, 가장 솔깃한 옵션은 무엇인가요?',
+    title: '식장 상담 중 추가 유료 옵션을 제안받는다면, 가장 솔깃한 옵션은 무엇인가요?',
     options: [
       { id: 'A', label: '하객 만족도를 높일 수 있는 식사 코스 업그레이드나 꽃장식 보강', scoreA: 1, scoreB: 1 },
       { id: 'B', label: '더 예쁘게 남길 수 있는 본식 스냅 추가나 얼리스타트 촬영', scoreA: 1, scoreB: -1 },
       { id: 'C', label: '혼주 헤어·메이크업, 폐백처럼 양가가 신경 쓰는 패키지', scoreA: 2, scoreB: 1 },
-      { id: 'D', label: '추가 옵션은 최대한 넣지 않고 기본 구성으로 진행하고 싶어요', scoreA: -2, scoreB: 0 },
+      { id: 'D', label: '추가 유료 옵션은 최대한 넣지 않고 기본 구성으로 진행하고 싶어요', scoreA: -2, scoreB: 0 },
     ],
   },
 

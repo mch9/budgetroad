@@ -48,7 +48,8 @@ function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
   items.push({ id: 'bonsik', name: '본식 촬영', category: '예식장', filterCategory: 'venue', estimatedAmount: venueDetail.bonsik });
   for (const meta of TOGGLES_META) {
     if (meta.group !== '예식장' || !toggles[meta.id]) continue;
-    const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    const price = rawPrice * (meta.priceMultiplier ?? 1);
     if (price) items.push({ id: meta.id, name: meta.label, category: '예식장', filterCategory: 'venue', estimatedAmount: price });
   }
 
@@ -56,21 +57,18 @@ function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
   items.push({ id: 'studio-base', name: '스튜디오 기본', category: '스드메', filterCategory: 'studio', estimatedAmount: sdmDetail.studioBase });
   for (const meta of TOGGLES_META) {
     if (meta.group !== '스튜디오' || !toggles[meta.id]) continue;
-    const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    const price = rawPrice * (meta.priceMultiplier ?? 1);
     if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'studio', estimatedAmount: price });
   }
   items.push({ id: 'dress-base', name: '드레스 기본', category: '스드메', filterCategory: 'dress', estimatedAmount: sdmDetail.dressBase });
   for (const meta of TOGGLES_META) {
     if (meta.group !== '드레스' || !toggles[meta.id]) continue;
-    const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    const price = rawPrice * (meta.priceMultiplier ?? 1);
     if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'dress', estimatedAmount: price });
   }
   items.push({ id: 'makeup-base', name: '메이크업 기본', category: '스드메', filterCategory: 'makeup', estimatedAmount: sdmDetail.makeupBase });
-  for (const meta of TOGGLES_META) {
-    if (meta.group !== '메이크업' || !toggles[meta.id]) continue;
-    const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'makeup', estimatedAmount: price });
-  }
 
   // 기타
   items.push({ id: 'gift', name: '예물·예단', category: '예물·예단', filterCategory: 'other', estimatedAmount: result.budget.categories['예물·예단'] });

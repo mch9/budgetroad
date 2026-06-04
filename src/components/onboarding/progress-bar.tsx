@@ -7,7 +7,7 @@ type Props = {
 };
 
 export function ProgressBar({ currentStep, totalSteps }: Props) {
-  const percent = Math.round(((currentStep + 1) / totalSteps) * 100);
+  const percent = Math.round((currentStep / totalSteps) * 100);
 
   return (
     <div className="w-full">
@@ -22,7 +22,7 @@ export function ProgressBar({ currentStep, totalSteps }: Props) {
           <div
             key={i}
             className={`h-[10px] flex-1 rounded-full transition-colors duration-300 ${
-              i <= currentStep ? 'bg-[#AAC7E1]' : 'bg-[#E5E7EB]'
+              i < currentStep ? 'bg-[#AAC7E1]' : 'bg-[#E5E7EB]'
             }`}
           />
         ))}

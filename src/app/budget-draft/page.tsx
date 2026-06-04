@@ -193,6 +193,7 @@ export default function BudgetDraftPage() {
     setSharedToggles(null);
     try {
       sessionStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem('budgetroad_manage_session');
     } catch {
       /* ignore */
     }

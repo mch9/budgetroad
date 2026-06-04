@@ -44,18 +44,19 @@ function calcVenueMeal(vars: SetupVars, venueType: VenueType) {
 
 // 토글 ON된 항목 가격을 카테고리별·그룹별로 합산
 function sumActiveToggles(vars: SetupVars, toggles: ToggleState) {
-  const byGroup = { 스튜디오: 0, 드레스: 0, 메이크업: 0, 예식장: 0 };
+  const byGroup = { 스튜디오: 0, 드레스: 0, 예식장: 0 };
   for (const meta of TOGGLES_META) {
     if (!toggles[meta.id]) continue;
-    const price = TOGGLE_PRICES[meta.id]?.[vars.region]?.[vars.season] ?? 0;
-    if (!price) continue;
+    const rawPrice = TOGGLE_PRICES[meta.id]?.[vars.region]?.[vars.season] ?? 0;
+    if (!rawPrice) continue;
+    const price = rawPrice * (meta.priceMultiplier ?? 1);
     byGroup[meta.group] += price;
   }
   return {
     byGroup,
-    스드메: byGroup.스튜디오 + byGroup.드레스 + byGroup.메이크업,
+    스드메: byGroup.스튜디오 + byGroup.드레스,
     예식장: byGroup.예식장,
-    total: byGroup.스튜디오 + byGroup.드레스 + byGroup.메이크업 + byGroup.예식장,
+    total: byGroup.스튜디오 + byGroup.드레스 + byGroup.예식장,
   };
 }
 
@@ -104,8 +105,7 @@ export function calculateBudget(
     dressBase +
     makeupBase +
     toggleSums.byGroup.스튜디오 +
-    toggleSums.byGroup.드레스 +
-    toggleSums.byGroup.메이크업;
+    toggleSums.byGroup.드레스;
 
   const sdmDetail = {
     studioBase,
@@ -113,7 +113,7 @@ export function calculateBudget(
     makeupBase,
     studioToggles: toggleSums.byGroup.스튜디오,
     dressToggles: toggleSums.byGroup.드레스,
-    makeupToggles: toggleSums.byGroup.메이크업,
+    makeupToggles: 0, // 메이크업 토글 그룹 제거됨 — 타입 호환용
   };
 
   // 기타 — 유형별 추정값

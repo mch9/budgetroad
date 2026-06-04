@@ -99,7 +99,7 @@ export const TOGGLES_META: ToggleMeta[] = [
   {
     id: '본식 헬퍼',
     label: '본식 헬퍼',
-    desc: '본식 당일 드레스 도우미',
+    desc: '본식 드레스 전담 케어',
     group: '드레스',
     gainCategory: '스드메',
     defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
@@ -115,7 +115,7 @@ export const TOGGLES_META: ToggleMeta[] = [
   {
     id: '퍼스트웨어',
     label: '퍼스트웨어',
-    desc: '신부 1차 의상 별도 준비',
+    desc: '새 드레스 첫 착용 비용',
     group: '드레스',
     gainCategory: '스드메',
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
@@ -145,36 +145,28 @@ export const TOGGLES_META: ToggleMeta[] = [
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
   },
 
-  // ── [메이크업] ──
-  {
-    id: '혼주 메이크업',
-    label: '혼주 메이크업',
-    desc: '양가 혼주 헤어·메이크업',
-    group: '메이크업',
-    gainCategory: '스드메',
-    defaultByType: { 전통격식: true, 표준실용: false, 경험연출: false, 본질미니멀: false, 탐색미결정: false },
-  },
-  {
-    id: '헤어변형',
-    label: '헤어변형',
-    desc: '본식 중 헤어스타일 변경',
-    group: '메이크업',
-    gainCategory: '스드메',
-    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
-  },
+  // ── [스튜디오 — 메이크업 이관 항목] ──
   {
     id: '신랑 메이크업',
     label: '신랑 메이크업',
     desc: '신랑 헤어·메이크업',
-    group: '메이크업',
+    group: '스튜디오',
     gainCategory: '스드메',
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
+  },
+  {
+    id: '웨딩 촬영 헤어변형',
+    label: '웨딩 촬영 헤어변형',
+    desc: '스튜디오 촬영 중 헤어스타일 변경',
+    group: '스튜디오',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
   },
   {
     id: '휴무일 진행비',
     label: '휴무일 진행비',
     desc: '공휴일·휴무일 진행 추가비',
-    group: '메이크업',
+    group: '스튜디오',
     gainCategory: '스드메',
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: false, 본질미니멀: false, 탐색미결정: false },
   },
@@ -182,20 +174,38 @@ export const TOGGLES_META: ToggleMeta[] = [
     id: '촬영 출장비',
     label: '촬영 출장비',
     desc: '촬영 장소 메이크업 출장비',
-    group: '메이크업',
+    group: '스튜디오',
     gainCategory: '스드메',
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
   },
+
+  // ── [드레스 — 메이크업 이관 항목] ──
   {
     id: '헤어피스 시술',
     label: '헤어피스 시술',
     desc: '본식용 헤어피스 착용 시술',
-    group: '메이크업',
+    group: '드레스',
     gainCategory: '스드메',
     defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
   },
 
-  // ── [예식장 연출] ──
+  // ── [예식장 연출 + 메이크업 이관 항목] ──
+  {
+    id: '혼주 메이크업',
+    label: '혼주 메이크업',
+    desc: '양가 혼주 헤어·메이크업',
+    group: '예식장',
+    gainCategory: '예식장',
+    defaultByType: { 전통격식: true, 표준실용: false, 경험연출: false, 본질미니멀: false, 탐색미결정: false },
+  },
+  {
+    id: '본식 이후 헤어변형',
+    label: '본식 이후 헤어변형',
+    desc: '본식 종료 후 헤어스타일 변경',
+    group: '예식장',
+    gainCategory: '예식장',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
   {
     id: '생화 꽃장식',
     label: '생화 꽃장식',
@@ -297,10 +307,11 @@ export const TOGGLES_META: ToggleMeta[] = [
   {
     id: '한복 대여',
     label: '한복 대여',
-    desc: '양가 한복 대여',
+    desc: '양가 한복 대여 (2벌)',
     group: '예식장',
     gainCategory: '예식장',
     defaultByType: { 전통격식: true, 표준실용: false, 경험연출: false, 본질미니멀: false, 탐색미결정: false },
+    priceMultiplier: 2,
   },
 ];
 

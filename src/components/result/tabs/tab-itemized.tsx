@@ -33,8 +33,9 @@ function enabledToggleLines(
   for (const meta of TOGGLES_META) {
     if (!toggles[meta.id]) continue;
     if (!groups.includes(meta.group)) continue;
-    const price = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    if (!price) continue;
+    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
+    if (!rawPrice) continue;
+    const price = rawPrice * (meta.priceMultiplier ?? 1);
     lines.push({ label: meta.label, price });
   }
   return lines;
@@ -209,7 +210,7 @@ function CategoryBreakdown({
     const base = result.vars.base;
     const studioOptions = enabledToggleLines(result, toggles, ['스튜디오']);
     const dressOptions = enabledToggleLines(result, toggles, ['드레스']);
-    const makeupOptions = enabledToggleLines(result, toggles, ['메이크업']);
+    const makeupOptions: ToggleLine[] = []; // 메이크업 토글 그룹 제거됨
     return (
       <div className="flex flex-col gap-1 text-sm text-[#525252]">
         <p className="pb-2 text-xs text-[#A1A1A1]">

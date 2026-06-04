@@ -62,7 +62,8 @@ const TOGGLE_CSV_MAP = {
     items: ['남성혼주 헤어&메이크업', '여성혼주 헤어&메이크업'],
     agg: 'avg', // 양가 평균 단가
   },
-  '헤어변형': { category: '메이크업', items: ['헤어변형'], agg: 'sum' },
+  '본식 이후 헤어변형': { category: '메이크업', items: ['헤어변형'], agg: 'sum' },
+  '웨딩 촬영 헤어변형': { category: '메이크업', items: ['헤어변형'], agg: 'sum' },
   '신랑 메이크업': { category: '메이크업', items: ['신랑 메이크업', '신랑헤어'], agg: 'avg' },
   '휴무일 진행비': { category: '메이크업', items: ['휴무일 진행비'], agg: 'sum' },
   '촬영 출장비': { category: '메이크업', items: ['촬영 출장비'], agg: 'sum' },

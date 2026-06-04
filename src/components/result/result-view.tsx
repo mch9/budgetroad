@@ -108,6 +108,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     const isFirst = !viewedTabs.current.has(tab);
     viewedTabs.current.add(tab);
     setActiveTab(tab);
+    window.scrollTo({ top: 0, behavior: 'instant' });
     trackEvent('result_tab_viewed', {
       tab,
       is_first_view: isFirst ? 1 : 0,

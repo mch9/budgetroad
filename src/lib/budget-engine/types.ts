@@ -32,8 +32,8 @@ export type ToggleId =
   // [드레스]
   | '드레스 지정' | '본식 헬퍼' | '2부 드레스' | '퍼스트웨어' | '가봉 스냅' | '턱시도 대여'
   | '촬영 헬퍼'
-  // [메이크업]
-  | '혼주 메이크업' | '헤어변형'
+  // [메이크업 → 스튜디오/드레스/예식장으로 분산]
+  | '혼주 메이크업' | '본식 이후 헤어변형' | '웨딩 촬영 헤어변형'
   | '신랑 메이크업' | '휴무일 진행비' | '촬영 출장비' | '헤어피스 시술'
   // [예식장 연출]
   | '생화 꽃장식' | '부케' | '플라워 샤워' | '포토테이블' | '웨딩 케이크'
@@ -41,17 +41,18 @@ export type ToggleId =
   // [예식장 진행·가족]
   | '본식 사회자' | '주례' | '축하공연 섭외' | '본식 도우미' | '폐백 음식' | '폐백 수모' | '한복 대여';
 
-export type ToggleGroup = '예식장' | '스튜디오' | '드레스' | '메이크업';
+export type ToggleGroup = '예식장' | '스튜디오' | '드레스';
 // 결과 카테고리 가산처. 스튜디오·드레스·메이크업 그룹 → '스드메', 예식장 그룹 → '예식장'
 export type ToggleGainCategory = '스드메' | '예식장';
 
 export type ToggleMeta = {
   id: ToggleId;
   label: string;            // 사용자에게 노출
-  desc: string;             // 보조 설명 (예: "본식 당일 헬퍼 동행 서비스")
-  group: ToggleGroup;       // UI 4 그룹
+  desc: string;             // 보조 설명
+  group: ToggleGroup;       // UI 3 그룹 (메이크업 제거됨)
   gainCategory: ToggleGainCategory; // 토글 ON 시 가산처
   defaultByType: Record<PersonaType, boolean>;
+  priceMultiplier?: number; // 단가 배수 (기본 1). 예: 양가 한복 대여 = 2
 };
 
 export type ToggleState = Record<ToggleId, boolean>;

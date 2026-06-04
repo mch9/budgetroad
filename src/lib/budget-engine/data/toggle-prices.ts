@@ -334,7 +334,25 @@ export const TOGGLE_PRICES: Record<ToggleId, Record<UserRegion, TogglePriceSeaso
       "offPeak": 14
     }
   },
-  "헤어변형": {
+  "본식 이후 헤어변형": {
+    "서울": {
+      "peak": 35,
+      "offPeak": 35
+    },
+    "수도권": {
+      "peak": 35,
+      "offPeak": 35
+    },
+    "광역시": {
+      "peak": 17,
+      "offPeak": 17
+    },
+    "이외": {
+      "peak": 29,
+      "offPeak": 29
+    }
+  },
+  "웨딩 촬영 헤어변형": {
     "서울": {
       "peak": 35,
       "offPeak": 35

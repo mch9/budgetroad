@@ -34,7 +34,8 @@ const TOGGLE_ICONS: Record<ToggleId, LucideIcon> = {
   '턱시도 대여': User,
   '촬영 헬퍼': Camera,
   '혼주 메이크업': Users,
-  '헤어변형': UserRound,
+  '본식 이후 헤어변형': UserRound,
+  '웨딩 촬영 헤어변형': UserRound,
   '신랑 메이크업': Brush,
   '휴무일 진행비': CalendarX,
   '촬영 출장비': MapPin,
@@ -61,34 +62,36 @@ type Props = {
   setAllToggles: (on: boolean) => void;
 };
 
-const GROUP_ORDER: ToggleGroup[] = ['예식장', '스튜디오', '드레스', '메이크업'];
+const GROUP_ORDER: ToggleGroup[] = ['예식장', '스튜디오', '드레스'];
 
 export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
   const grouped: Record<ToggleGroup, typeof TOGGLES_META> = {
     예식장: [],
     스튜디오: [],
     드레스: [],
-    메이크업: [],
   };
   for (const t of TOGGLES_META) grouped[t.group].push(t);
 
+  const allOn = Object.values(toggles).every((v) => v);
+  const allOff = Object.values(toggles).every((v) => !v);
+
   return (
     <div className="flex flex-col gap-4 px-5 pb-6 pt-5">
-      {/* 컨트롤 바 — 좌 "전체 옵션" 라벨 / 우 그룹: [모두 끄기 검정] [전체 켜기 액센트] */}
+      {/* 컨트롤 바 */}
       <div className="flex items-center justify-between px-1">
         <span className="text-sm font-medium text-[#737373]">전체 옵션</span>
         <div className="flex items-center gap-4">
           <button
             type="button"
             onClick={() => setAllToggles(false)}
-            className="text-sm font-medium text-[#373737]"
+            className={`text-sm text-[#373737] ${allOff ? 'font-bold' : 'font-normal'}`}
           >
-            모두 끄기
+            전체 끄기
           </button>
           <button
             type="button"
             onClick={() => setAllToggles(true)}
-            className="text-sm font-bold text-[#7499BA]"
+            className={`text-sm text-[#7499BA] ${allOn ? 'font-bold' : 'font-normal'}`}
           >
             전체 켜기
           </button>
@@ -102,12 +105,11 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
           <div className="overflow-hidden rounded-2xl border border-[rgba(170,199,225,0.4)] bg-white">
             {grouped[group].map((t, idx) => {
               const on = toggles[t.id];
-              // result.vars.toggleDefaults는 persona 기본 매트릭스 + M3/T2 응답 보정까지
-              // 모두 반영된 "초기 자동 적용" 상태. 양가 압력·인생샷 보정으로 켜진 토글도 잡힘.
               const isDefaultOn = result.vars.toggleDefaults[t.id] === true;
               const isAutoApplied = on && isDefaultOn;
-              const price =
+              const rawPrice =
                 TOGGLE_PRICES[t.id]?.[result.vars.region]?.[result.vars.season] ?? null;
+              const price = rawPrice !== null ? rawPrice * (t.priceMultiplier ?? 1) : null;
               const Icon = TOGGLE_ICONS[t.id];
               return (
                 <div
@@ -122,9 +124,12 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
                   >
                     <Icon size={16} color="#7499BA" strokeWidth={2} aria-hidden />
                   </div>
-                  <div className="flex min-w-0 flex-1 flex-col gap-1">
-                    <div className="flex items-center gap-2">
-                      <span className="truncate text-sm font-semibold text-[#171717]">{t.label}</span>
+                  <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      <span className="min-w-0 truncate text-sm font-semibold text-[#171717]">{t.label}</span>
+                      {price !== null && (
+                        <span className="shrink-0 text-xs font-semibold text-[#7499BA]">+{price.toLocaleString()}만원</span>
+                      )}
                       {isAutoApplied && (
                         <span
                           className="shrink-0 rounded-full bg-[rgba(170,199,225,0.22)] px-2 py-0.5 text-[10px] font-semibold text-[#7499BA]"
@@ -134,9 +139,7 @@ export function TabCare({ result, toggles, setToggle, setAllToggles }: Props) {
                         </span>
                       )}
                     </div>
-                    <span className="truncate text-xs text-[#737373]">
-                      {price !== null ? `+${price.toLocaleString()}만원` : '가격 미정'} · {t.desc}
-                    </span>
+                    <span className="text-xs leading-4 text-[#737373]">{t.desc}</span>
                   </div>
                   <button
                     type="button"
