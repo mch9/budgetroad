@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect, useCallback } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { ChevronDown, ChevronUp, GripVertical } from 'lucide-react';
 import {
   DndContext,
@@ -102,14 +102,12 @@ export function ChecklistGroup({
     ...userItems.map((u) => ({ id: u.id, text: u.text })),
   ];
 
-  const orderedFlat = useCallback((): FlatItem[] => {
+  const orderedFlat: FlatItem[] = (() => {
     if (localOrder.length === 0) return allFlat;
     const inOrder = localOrder.map((id) => allFlat.find((i) => i.id === id)).filter(Boolean) as FlatItem[];
     const rest = allFlat.filter((i) => !localOrder.includes(i.id));
     return [...inOrder, ...rest];
-  // allFlat은 매 렌더마다 새 배열 → 의존성에 넣으면 무한루프, localOrder 변경 시만 재계산
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localOrder])();
+  })();
 
   const orderedIds = orderedFlat.map((i) => i.id);
 
