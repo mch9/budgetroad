@@ -33,10 +33,6 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, total
   const filtered =
     filter === 'all' ? items : items.filter((item) => item.filterCategory === filter);
 
-  const unrecordedEstimated = items
-    .filter((item) => !item.custom && actual[item.id] === undefined)
-    .reduce((s, item) => s + item.estimatedAmount, 0);
-
   function openModal() {
     setNewName('');
     setNewAmount('');
@@ -56,7 +52,6 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, total
       <BudgetSummary
         totalEstimated={totalEstimated}
         totalActual={totalActual}
-        unrecordedEstimated={unrecordedEstimated}
       />
 
       <div className="px-5 py-3">
