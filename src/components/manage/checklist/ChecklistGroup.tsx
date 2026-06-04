@@ -25,6 +25,7 @@ export function ChecklistGroup({
 }: Props) {
   const [open, setOpen] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [adding, setAdding] = useState(false);
   const [newText, setNewText] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -33,12 +34,46 @@ export function ChecklistGroup({
   const visibleStatic = allStaticItems.filter((i) => !hiddenIds.has(i.id));
   const visibleDynamic = dynamicItems.filter((d) => !hiddenIds.has(d.id));
 
-  const total = visibleStatic.length + visibleDynamic.length + userItems.length;
+  const allVisibleIds = [
+    ...visibleStatic.map((i) => i.id),
+    ...visibleDynamic.map((d) => d.id),
+    ...userItems.map((u) => u.id),
+  ];
+  const total = allVisibleIds.length;
   const done =
     visibleStatic.filter((i) => checked[i.id]).length +
     visibleDynamic.filter((d) => checked[d.id]).length +
     userItems.filter((u) => checked[u.id]).length;
   const progress = total > 0 ? (done / total) * 100 : 0;
+
+  const allSelected = total > 0 && allVisibleIds.every((id) => selectedIds.has(id));
+
+  function toggleSelect(id: string) {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  }
+
+  function selectAll() {
+    setSelectedIds(allSelected ? new Set() : new Set(allVisibleIds));
+  }
+
+  function deleteSelected() {
+    selectedIds.forEach((id) => {
+      if (userItems.some((u) => u.id === id)) onRemoveUserItem(id);
+      else onHideItem(id);
+    });
+    setSelectedIds(new Set());
+    if (allVisibleIds.every((id) => selectedIds.has(id))) setEditing(false);
+  }
+
+  function toggleEditing() {
+    setEditing((v) => !v);
+    setSelectedIds(new Set());
+    if (adding) setAdding(false);
+  }
 
   function openAdding() {
     setAdding(true);
@@ -53,21 +88,9 @@ export function ChecklistGroup({
     setAdding(false);
   }
 
-  function toggleEditing() {
-    setEditing((v) => !v);
-    if (adding) setAdding(false);
-  }
-
-  function hideAll() {
-    visibleStatic.forEach((i) => onHideItem(i.id));
-    visibleDynamic.forEach((d) => onHideItem(d.id));
-    userItems.forEach((u) => onRemoveUserItem(u.id));
-    setEditing(false);
-  }
-
   return (
     <div className="rounded-2xl border border-[rgba(170,199,225,0.3)] bg-white p-5">
-      {/* 헤더 — button 중첩 방지를 위해 div로 래핑 */}
+      {/* 헤더 */}
       <div className="flex w-full items-center justify-between">
         <button
           type="button"
@@ -104,15 +127,25 @@ export function ChecklistGroup({
 
       {open && (
         <div className="mt-4 space-y-4">
-          {/* 편집 모드 — 모두 제거 */}
-          {editing && total > 0 && (
-            <div className="flex justify-end">
+          {/* 편집 모드 — 전체 선택 / 선택 삭제 */}
+          {editing && (
+            <div className="flex items-center justify-between border-b border-[#F4F4F4] pb-3">
               <button
                 type="button"
-                onClick={hideAll}
-                className="text-xs text-red-400 transition-colors hover:text-red-500"
+                onClick={selectAll}
+                className="text-sm font-medium text-[#7499BA]"
               >
-                모두 제거
+                {allSelected ? '전체 해제' : '전체 선택'}
+              </button>
+              <button
+                type="button"
+                onClick={deleteSelected}
+                disabled={selectedIds.size === 0}
+                className={`text-sm font-medium transition-colors ${
+                  selectedIds.size > 0 ? 'text-red-400' : 'text-[#D1D5DC]'
+                }`}
+              >
+                선택 삭제{selectedIds.size > 0 ? ` (${selectedIds.size})` : ''}
               </button>
             </div>
           )}
@@ -132,7 +165,9 @@ export function ChecklistGroup({
                       checked={!!checked[item.id]}
                       onToggle={onToggle}
                       highlight={highlightedIds.has(item.id)}
-                      onDelete={editing ? () => onHideItem(item.id) : undefined}
+                      selectable={editing}
+                      selected={selectedIds.has(item.id)}
+                      onSelect={() => toggleSelect(item.id)}
                     />
                   ))}
                   {sectionDynamic.map((item) => (
@@ -142,7 +177,9 @@ export function ChecklistGroup({
                       checked={!!checked[item.id]}
                       onToggle={onToggle}
                       dynamic
-                      onDelete={editing ? () => onHideItem(item.id) : undefined}
+                      selectable={editing}
+                      selected={selectedIds.has(item.id)}
+                      onSelect={() => toggleSelect(item.id)}
                     />
                   ))}
                 </div>
@@ -159,13 +196,16 @@ export function ChecklistGroup({
                   item={{ id: item.id, text: item.text }}
                   checked={!!checked[item.id]}
                   onToggle={onToggle}
-                  onDelete={() => onRemoveUserItem(item.id)}
+                  selectable={editing}
+                  selected={selectedIds.has(item.id)}
+                  onSelect={() => toggleSelect(item.id)}
+                  onDelete={editing ? undefined : () => onRemoveUserItem(item.id)}
                 />
               ))}
             </div>
           )}
 
-          {/* 항목 추가 */}
+          {/* 항목 추가 (편집 모드 아닐 때만) */}
           {!editing && (
             adding ? (
               <div className="flex items-center gap-2">
