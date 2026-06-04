@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Sparkles, Check, TrendingUp, Wallet } from 'lucide-react';
 import TrackPageEnter from '@/components/common/TrackPageEnter';
-import { CtaLink } from './cta-link';
+import { CtaLink, ManageLink } from './cta-link';
 
 // Figma-hosted screenshots (expire 2026-06-11 — replace with /public assets)
 const IMG_STEP1 = 'https://www.figma.com/api/mcp/asset/6b407af9-9cd9-470c-8ce8-607f899ba0f1';
@@ -76,6 +76,7 @@ export default function Home() {
             몇 가지 선택만으로 내 결혼 예산을 바로 확인하세요
           </p>
           <CtaLink />
+          <ManageLink />
           <div className="flex flex-col items-center gap-2 text-xs text-[#373737]">
             <span>스크롤</span>
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="animate-bounce">

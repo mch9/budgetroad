@@ -1,7 +1,10 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
+
+const MANAGE_SESSION_KEY = 'budgetroad_manage_session';
 
 function ArrowIcon() {
   return (
@@ -12,6 +15,14 @@ function ArrowIcon() {
 }
 
 export function CtaLink() {
+  const [href, setHref] = useState('/budget-draft');
+
+  useEffect(() => {
+    try {
+      if (localStorage.getItem(MANAGE_SESSION_KEY)) setHref('/manage');
+    } catch { /* ignore */ }
+  }, []);
+
   function handleClick() {
     try { sessionStorage.removeItem('budgetroad_result'); } catch { /* ignore */ }
     trackEvent('cta_clicked');
@@ -21,7 +32,7 @@ export function CtaLink() {
     <>
       {/* Hero inline button */}
       <Link
-        href="/budget-draft"
+        href={href}
         onClick={handleClick}
         className="flex h-16 items-center gap-3 rounded-full bg-white px-6 shadow-[0px_4px_6px_-4px_rgba(0,0,0,0.1),0px_10px_15px_-3px_rgba(0,0,0,0.1)] transition-all hover:shadow-[0px_6px_10px_-4px_rgba(0,0,0,0.15),0px_14px_20px_-3px_rgba(0,0,0,0.12)] active:scale-[0.98]"
       >
@@ -34,7 +45,7 @@ export function CtaLink() {
       {/* Mobile fixed-bottom button */}
       <div className="fixed inset-x-0 bottom-0 z-40 flex justify-center border-t border-[#E5E7EB] bg-[#F9FAFB]/90 px-6 py-4 pb-[calc(1rem+env(safe-area-inset-bottom))] backdrop-blur-md sm:hidden">
         <Link
-          href="/budget-draft"
+          href={href}
           onClick={handleClick}
           className="inline-flex h-14 w-full items-center justify-center gap-2 rounded-full bg-[#373737] px-10 text-base font-medium text-white transition-all hover:bg-[#2a2a2a] active:scale-[0.98]"
         >
@@ -42,5 +53,26 @@ export function CtaLink() {
         </Link>
       </div>
     </>
+  );
+}
+
+export function ManageLink() {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    try {
+      setShow(!!localStorage.getItem(MANAGE_SESSION_KEY));
+    } catch { /* ignore */ }
+  }, []);
+
+  if (!show) return null;
+
+  return (
+    <Link
+      href="/manage"
+      className="text-sm text-[#7499BA] underline underline-offset-2 transition-opacity hover:opacity-70"
+    >
+      이전 준비 내역 이어보기
+    </Link>
   );
 }

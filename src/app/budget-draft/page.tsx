@@ -88,6 +88,19 @@ export default function BudgetDraftPage() {
         } else {
           sessionStorage.removeItem(STORAGE_KEY);
         }
+      } else {
+        // sessionStorage 만료 시 localStorage manage_session으로 결과 페이지 복원
+        const manageRaw = localStorage.getItem('budgetroad_manage_session');
+        if (manageRaw) {
+          const ms = JSON.parse(manageRaw) as { answers?: OnboardingAnswers; axisScore?: AxisScore; persona?: PersonaType };
+          if (ms.answers && 'Q1' in ms.answers) {
+            const score = ms.axisScore ?? scoreAxis(ms.answers);
+            setAnswers(ms.answers);
+            setAxisScore(score);
+            setPersona(ms.persona ?? classifyPersona(score));
+            setStep(TOTAL_STEPS + 1);
+          }
+        }
       }
     } catch {
       /* ignore */

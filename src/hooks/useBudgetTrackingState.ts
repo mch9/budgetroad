@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { diagnose, TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
 import type { ResultPayload, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
+import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
+import type { PersonaType, AxisScore } from '@/lib/onboarding-v6';
 
 const SESSION_KEY = 'budgetroad_manage_session';
 const ACTUAL_KEY = 'budgetroad_budget_actual';
@@ -31,6 +33,8 @@ export type ActualAmounts = Record<string, number | undefined>;
 type SessionData = {
   answers: OnboardingAnswers;
   toggles: ToggleState;
+  persona?: PersonaType;
+  axisScore?: AxisScore;
 };
 
 function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
@@ -110,6 +114,8 @@ export function useBudgetTrackingState() {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setItems([...filteredPresets, ...customItems]);
         setSession(parsed);
+        // 옛 세션에 persona 없으면 한 번 계산해 저장 (이후 복원 시 재계산 불필요)
+        if (!parsed.persona) saveSession(parsed.answers, parsed.toggles);
       }
       const actualRaw = localStorage.getItem(ACTUAL_KEY);
       if (actualRaw) setActual(JSON.parse(actualRaw) as ActualAmounts);
@@ -198,9 +204,16 @@ export function useBudgetTrackingState() {
 }
 
 /** 결과 페이지에서 /manage로 이동 전 세션 저장 */
-export function saveSession(answers: OnboardingAnswers, toggles: ToggleState) {
+export function saveSession(
+  answers: OnboardingAnswers,
+  toggles: ToggleState,
+  persona?: PersonaType,
+  axisScore?: AxisScore,
+) {
   try {
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ answers, toggles }));
+    const ax = axisScore ?? scoreAxis(answers);
+    const p = persona ?? classifyPersona(ax);
+    localStorage.setItem(SESSION_KEY, JSON.stringify({ answers, toggles, persona: p, axisScore: ax }));
   } catch {
     /* ignore */
   }

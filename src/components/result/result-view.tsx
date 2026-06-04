@@ -77,10 +77,11 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
   // 토글 변경 시 세션 자동 저장 (Bug 1: 체크리스트가 항상 최신 토글 반영)
   // 공유 링크 결과는 저장 안 함 — 남의 토글이 내 세션을 덮지 않도록
   const autoSaveRef = useRef(false);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (!autoSaveRef.current) { autoSaveRef.current = true; return; }
     if (initialToggles) return;
-    saveSession(answers, toggles);
+    saveSession(answers, toggles, result.vars.persona);
   }, [toggles, answers, initialToggles]);
 
   // 토글 변경 시 재진단 (instant)
@@ -252,7 +253,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
   }
 
   function handleManageClick() {
-    saveSession(answers, toggles);
+    saveSession(answers, toggles, result.vars.persona);
     trackEvent('manage_cta_clicked', { persona: result.vars.persona });
     window.location.href = '/manage';
   }
