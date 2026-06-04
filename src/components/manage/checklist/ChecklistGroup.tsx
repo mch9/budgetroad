@@ -34,7 +34,12 @@ type Props = {
   onHideItem: (id: string) => void;
 };
 
-type FlatItem = { id: string; text: string; highlight?: boolean; isDynamic?: boolean };
+type FlatItem = {
+  id: string;
+  text: string;
+  highlight?: boolean;
+  isDynamic?: boolean;
+};
 
 function SortableRow({ id, children }: { id: string; children: React.ReactNode }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id });
@@ -88,27 +93,27 @@ export function ChecklistGroup({
   const visibleStatic = group.sections.flatMap((s) => s.items).filter((i) => !hiddenIds.has(i.id));
   const visibleDynamic = dynamicItems.filter((d) => !hiddenIds.has(d.id));
 
-  // flat list combining all visible items
+  // 모든 항목을 flat 리스트로 합치고 localOrder 기준으로 정렬
   const allFlat: FlatItem[] = [
     ...visibleStatic.map((i) => ({ id: i.id, text: i.text, highlight: highlightedIds.has(i.id) })),
     ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true })),
     ...userItems.map((u) => ({ id: u.id, text: u.text })),
   ];
 
-  const applyOrder = useCallback(<T extends { id: string }>(items: T[]): T[] => {
-    if (localOrder.length === 0) return items;
-    const inOrder = localOrder.map((id) => items.find((i) => i.id === id)).filter(Boolean) as T[];
-    const rest = items.filter((i) => !localOrder.includes(i.id));
+  const orderedFlat = useCallback((): FlatItem[] => {
+    if (localOrder.length === 0) return allFlat;
+    const inOrder = localOrder.map((id) => allFlat.find((i) => i.id === id)).filter(Boolean) as FlatItem[];
+    const rest = allFlat.filter((i) => !localOrder.includes(i.id));
     return [...inOrder, ...rest];
-  }, [localOrder]);
+  // allFlat은 매 렌더마다 새 배열 → 의존성에 넣으면 무한루프, localOrder 변경 시만 재계산
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localOrder])();
 
-  const orderedFlat = applyOrder(allFlat);
   const orderedIds = orderedFlat.map((i) => i.id);
 
   const total = orderedIds.length;
   const done = orderedFlat.filter((i) => checked[i.id]).length;
   const progress = total > 0 ? (done / total) * 100 : 0;
-
   const allSelected = total > 0 && orderedIds.every((id) => selectedIds.has(id));
 
   function handleDragEnd(event: DragEndEvent) {
@@ -201,10 +206,9 @@ export function ChecklistGroup({
 
       {open && (
         <div className="mt-4 space-y-4">
-          {/* ── 편집 모드 ── */}
           {editing ? (
+            /* ── 편집 모드 ── */
             <>
-              {/* 전체 선택 / 선택 삭제 바 */}
               <div className="flex items-center justify-between border-b border-[#F4F4F4] pb-3">
                 <button type="button" onClick={selectAll} className="text-sm font-medium text-[#7499BA]">
                   {allSelected ? '전체 해제' : '전체 선택'}
@@ -219,7 +223,6 @@ export function ChecklistGroup({
                 </button>
               </div>
 
-              {/* 드래그 정렬 flat 리스트 */}
               <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
                 <SortableContext items={orderedIds} strategy={verticalListSortingStrategy}>
                   <div className="space-y-0.5">
@@ -240,54 +243,21 @@ export function ChecklistGroup({
               </DndContext>
             </>
           ) : (
-            /* ── 일반 모드 (섹션 뷰, 커스텀 순서 반영) ── */
+            /* ── 일반 모드: orderedFlat 그대로 사용 → 편집 순서 즉시 반영 ── */
             <>
-              {group.sections.map((section) => {
-                const sectionDynamic = applyOrder(visibleDynamic.filter((d) => d.sectionTitle === section.title));
-                const sectionStatic = applyOrder(section.items.filter((i) => !hiddenIds.has(i.id)));
-                if (sectionStatic.length === 0 && sectionDynamic.length === 0) return null;
-                return (
-                  <div key={section.title}>
-                    <p className="mb-2 text-xs font-medium text-[#6A7282]">{section.title}</p>
-                    <div className="space-y-0.5">
-                      {sectionStatic.map((item) => (
-                        <ChecklistItem
-                          key={item.id}
-                          item={item}
-                          checked={!!checked[item.id]}
-                          onToggle={onToggle}
-                          highlight={highlightedIds.has(item.id)}
-                        />
-                      ))}
-                      {sectionDynamic.map((item) => (
-                        <ChecklistItem
-                          key={item.id}
-                          item={{ id: item.id, text: item.text }}
-                          checked={!!checked[item.id]}
-                          onToggle={onToggle}
-                          dynamic
-                        />
-                      ))}
-                    </div>
-                  </div>
-                );
-              })}
+              <div className="space-y-0.5">
+                {orderedFlat.map((item) => (
+                  <ChecklistItem
+                    key={item.id}
+                    item={{ id: item.id, text: item.text }}
+                    checked={!!checked[item.id]}
+                    onToggle={onToggle}
+                    highlight={item.highlight}
+                    dynamic={item.isDynamic}
+                  />
+                ))}
+              </div>
 
-              {/* 직접 추가한 항목 */}
-              {userItems.length > 0 && (
-                <div className="space-y-0.5">
-                  {applyOrder(userItems).map((item) => (
-                    <ChecklistItem
-                      key={item.id}
-                      item={{ id: item.id, text: item.text }}
-                      checked={!!checked[item.id]}
-                      onToggle={onToggle}
-                    />
-                  ))}
-                </div>
-              )}
-
-              {/* 항목 추가 */}
               {adding ? (
                 <div className="flex items-center gap-2">
                   <input
