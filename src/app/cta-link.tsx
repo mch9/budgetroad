@@ -19,6 +19,7 @@ export function CtaLink() {
 
   useEffect(() => {
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (localStorage.getItem(MANAGE_SESSION_KEY)) setHref('/manage');
     } catch { /* ignore */ }
   }, []);
@@ -61,6 +62,7 @@ export function ManageLink() {
 
   useEffect(() => {
     try {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShow(!!localStorage.getItem(MANAGE_SESSION_KEY));
     } catch { /* ignore */ }
   }, []);

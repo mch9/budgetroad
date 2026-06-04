@@ -131,7 +131,7 @@ export default function Home() {
               취향을 발견하는 스마트 분석
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-[#444748]">
-              추상적인 '느낌'을 구체적인 데이터로 전환합니다. AI가 당신의 숨겨진 선호를 분석하여 가장 적합한 웨딩 가치를 찾아냅니다.
+              추상적인 &apos;느낌&apos;을 구체적인 데이터로 전환합니다. AI가 당신의 숨겨진 선호를 분석하여 가장 적합한 웨딩 가치를 찾아냅니다.
             </div>
             <div className="mt-2 inline-flex items-center gap-3 self-start rounded-[12px] bg-[rgba(170,199,225,0.3)] px-5 py-3">
               <Sparkles className="size-4 shrink-0 text-[#5d8fa8]" />
