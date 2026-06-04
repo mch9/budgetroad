@@ -1,15 +1,17 @@
 'use client';
 
 import { useState } from 'react';
+import { Trash2 } from 'lucide-react';
 import type { BudgetItem } from '@/hooks/useBudgetTrackingState';
 
 type Props = {
   item: BudgetItem;
   actualAmount: number | undefined;
   onSetActual: (id: string, amount: number | undefined) => void;
+  onDelete: (id: string) => void;
 };
 
-export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
+export function BudgetItemCard({ item, actualAmount, onSetActual, onDelete }: Props) {
   const [editing, setEditing] = useState(false);
   const [inputValue, setInputValue] = useState('');
 
@@ -33,19 +35,29 @@ export function BudgetItemCard({ item, actualAmount, onSetActual }: Props) {
 
   return (
     <div className="rounded-2xl border border-[#E2E8F0] bg-white p-5">
-      {/* 헤더: 상태 배지 + 카테고리 + 항목명 */}
-      <div className="flex flex-col gap-1">
-        <div className="flex items-center gap-2">
-          <span
-            className={`rounded-[4px] px-2 py-px text-[11px] ${
-              isDone ? 'bg-[#D1FAE5] text-[#065F46]' : 'bg-[#DCE9FF] text-[#1E293B]'
-            }`}
-          >
-            {isDone ? '완료' : '준비'}
-          </span>
-          <span className="text-xs font-light text-[#1E293B]">{item.category}</span>
+      {/* 헤더: 상태 배지 + 카테고리 + 항목명 + 삭제 */}
+      <div className="flex items-start justify-between gap-2">
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center gap-2">
+            <span
+              className={`rounded-[4px] px-2 py-px text-[11px] ${
+                isDone ? 'bg-[#D1FAE5] text-[#065F46]' : 'bg-[#DCE9FF] text-[#1E293B]'
+              }`}
+            >
+              {isDone ? '완료' : '준비'}
+            </span>
+            <span className="text-xs font-light text-[#1E293B]">{item.category}</span>
+          </div>
+          <p className="text-xl font-semibold text-[#1E293B]">{item.name}</p>
         </div>
-        <p className="text-xl font-semibold text-[#1E293B]">{item.name}</p>
+        <button
+          type="button"
+          onClick={() => onDelete(item.id)}
+          className="shrink-0 rounded-lg p-1.5 text-[#C4C9D4] transition-colors hover:bg-red-50 hover:text-red-400"
+          aria-label="항목 삭제"
+        >
+          <Trash2 size={15} />
+        </button>
       </div>
 
       <div className="mt-4 h-px bg-[#F4F4F4]" />

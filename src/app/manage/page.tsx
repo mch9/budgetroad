@@ -15,7 +15,7 @@ export default function ManagePage() {
   const [activeTab, setActiveTab] = useState<ManageTab>('checklist');
   const [shareOpen, setShareOpen] = useState(false);
   const [toast, setToast] = useState<string | null>(null);
-  const { items, actual, setActualAmount, addCustomItem, totalEstimated, totalActual, answers, toggles, hasSession } =
+  const { items, actual, setActualAmount, addCustomItem, removeItem, totalEstimated, totalActual, answers, toggles, hasSession } =
     useBudgetTrackingState();
 
   function showToast(msg: string) {
@@ -73,6 +73,7 @@ export default function ManagePage() {
               actual={actual}
               setActualAmount={setActualAmount}
               addCustomItem={addCustomItem}
+              removeItem={removeItem}
               totalEstimated={totalEstimated}
               totalActual={totalActual}
             />

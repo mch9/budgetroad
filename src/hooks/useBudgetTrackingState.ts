@@ -8,6 +8,7 @@ import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 const SESSION_KEY = 'budgetroad_manage_session';
 const ACTUAL_KEY = 'budgetroad_budget_actual';
 const CUSTOM_KEY = 'budgetroad_custom_items';
+const DELETED_KEY = 'budgetroad_deleted_items';
 
 export type BudgetItem = {
   id: string;
@@ -91,6 +92,10 @@ export function useBudgetTrackingState() {
         const result = diagnose(parsed.answers, parsed.toggles);
         const presetItems = buildItems(result, parsed.toggles);
 
+        const deletedRaw = localStorage.getItem(DELETED_KEY);
+        const deletedIds = new Set<string>(deletedRaw ? (JSON.parse(deletedRaw) as string[]) : []);
+        const filteredPresets = presetItems.filter((item) => !deletedIds.has(item.id));
+
         const customRaw = localStorage.getItem(CUSTOM_KEY);
         const customs: StoredCustomItem[] = customRaw ? (JSON.parse(customRaw) as StoredCustomItem[]) : [];
         const customItems: BudgetItem[] = customs.map((c) => ({
@@ -103,7 +108,7 @@ export function useBudgetTrackingState() {
         }));
 
         // eslint-disable-next-line react-hooks/set-state-in-effect
-        setItems([...presetItems, ...customItems]);
+        setItems([...filteredPresets, ...customItems]);
         setSession(parsed);
       }
       const actualRaw = localStorage.getItem(ACTUAL_KEY);
@@ -123,6 +128,33 @@ export function useBudgetTrackingState() {
       }
       return next;
     });
+  }
+
+  function removeItem(itemId: string) {
+    const isCustom = items.find((i) => i.id === itemId)?.custom ?? false;
+    setItems((prev) => prev.filter((i) => i.id !== itemId));
+    setActual((prev) => {
+      const next = { ...prev };
+      delete next[itemId];
+      try { localStorage.setItem(ACTUAL_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+    if (isCustom) {
+      try {
+        const raw = localStorage.getItem(CUSTOM_KEY);
+        const customs: StoredCustomItem[] = raw ? (JSON.parse(raw) as StoredCustomItem[]) : [];
+        localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs.filter((c) => c.id !== itemId)));
+      } catch { /* ignore */ }
+    } else {
+      try {
+        const raw = localStorage.getItem(DELETED_KEY);
+        const deleted: string[] = raw ? (JSON.parse(raw) as string[]) : [];
+        if (!deleted.includes(itemId)) {
+          deleted.push(itemId);
+          localStorage.setItem(DELETED_KEY, JSON.stringify(deleted));
+        }
+      } catch { /* ignore */ }
+    }
   }
 
   function addCustomItem(name: string, filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other', amount: number) {
@@ -155,6 +187,7 @@ export function useBudgetTrackingState() {
     items,
     actual,
     setActualAmount,
+    removeItem,
     totalEstimated,
     totalActual,
     answers: session?.answers ?? null,

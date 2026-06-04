@@ -11,6 +11,7 @@ type Props = {
   actual: ActualAmounts;
   setActualAmount: (itemId: string, amount: number | undefined) => void;
   addCustomItem: (name: string, filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other', amount: number) => void;
+  removeItem: (itemId: string) => void;
   totalEstimated: number;
   totalActual: number;
 };
@@ -23,7 +24,7 @@ const CATEGORY_OPTIONS: { label: string; value: 'venue' | 'studio' | 'dress' | '
   { label: '기타', value: 'other' },
 ];
 
-export function BudgetTab({ items, actual, setActualAmount, addCustomItem, totalEstimated, totalActual }: Props) {
+export function BudgetTab({ items, actual, setActualAmount, addCustomItem, removeItem, totalEstimated, totalActual }: Props) {
   const [filter, setFilter] = useState<FilterCategory>('all');
   const [showModal, setShowModal] = useState(false);
   const [newName, setNewName] = useState('');
@@ -44,6 +45,7 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, total
     const parsed = parseInt(newAmount, 10);
     if (!newName.trim() || isNaN(parsed) || parsed <= 0) return;
     addCustomItem(newName.trim(), newCategory, parsed);
+    setFilter('all');
     setShowModal(false);
   }
 
@@ -81,6 +83,7 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, total
               item={item}
               actualAmount={actual[item.id]}
               onSetActual={setActualAmount}
+              onDelete={removeItem}
             />
           ))}
         </div>
