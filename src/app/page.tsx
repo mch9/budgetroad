@@ -3,7 +3,9 @@ import Link from 'next/link';
 import { Sparkles, Check, TrendingUp, Wallet } from 'lucide-react';
 import TrackPageEnter from '@/components/common/TrackPageEnter';
 import { CtaLink } from './cta-link';
-import { FilmStrip } from '@/components/landing/FilmStrip';
+
+// 웨딩 커플 일러스트 (Figma 에셋 — 만료 전 /public으로 이동 필요)
+const IMG_COUPLE = 'https://www.figma.com/api/mcp/asset/38048667-6339-4e7a-a1a4-d9c2667e0d31';
 
 // Figma-hosted screenshots (expire 2026-06-11 — replace with /public assets)
 const IMG_STEP1 = 'https://www.figma.com/api/mcp/asset/6b407af9-9cd9-470c-8ce8-607f899ba0f1';
@@ -41,19 +43,31 @@ export default function Home() {
       </header>
 
       {/* Hero */}
-      <section className="flex min-h-[calc(100svh-87px)] flex-col pb-24 pt-8 text-center">
-        {/* FilmStrip: 헤딩 위 남은 공간을 모두 채움, 이미지가 넘치면 아래쪽 클립 */}
-        <div className="flex min-h-0 flex-1 items-end overflow-hidden px-6">
-          <FilmStrip />
-        </div>
+      <section className="flex min-h-[calc(100svh-87px)] flex-col items-center justify-center gap-8 pb-24 pt-8 text-center">
+        {/* 웨딩 커플 일러스트 */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={IMG_COUPLE}
+          alt=""
+          aria-hidden
+          className="h-[160px] w-auto sm:h-[220px] lg:h-[269px]"
+        />
 
         {/* 텍스트 콘텐츠 */}
-        <div className="mt-8 flex shrink-0 flex-col items-center gap-6 px-6">
-          <h1 className="break-keep text-[32px] font-semibold leading-tight tracking-tight text-[#373737] sm:text-[48px]">
-            결혼 준비, 검색 말고 선택하세요.
+        <div className="flex shrink-0 flex-col items-center gap-5 px-6">
+          <h1 className="break-keep text-[42px] font-bold leading-tight tracking-tighter text-[#373737] sm:text-[64px] lg:text-[88px]">
+            <span className="relative whitespace-nowrap">
+              <span
+                className="absolute -inset-x-2 inset-y-1 -rotate-1 rounded-sm bg-[rgba(170,199,225,0.3)]"
+                aria-hidden
+              />
+              <span className="relative">결혼 준비,</span>
+            </span>
+            <br />
+            어디서부터 시작할까?
           </h1>
-          <p className="break-keep text-base text-[#373737] sm:text-[22px]">
-            몇 번의 선택만으로 우리 커플에게 맞는 결혼 예산과 준비 순서를 짜드릴게요.
+          <p className="break-keep text-base text-[#373737] sm:text-[20px]">
+            몇 가지 선택만으로 내 결혼 예산을 바로 확인하세요
           </p>
           <CtaLink />
           <div className="flex flex-col items-center gap-2 text-xs text-[#373737]">
