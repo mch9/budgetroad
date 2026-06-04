@@ -96,6 +96,7 @@ export function ChecklistGroup({
   const visibleDynamic = dynamicItems.filter((d) => !hiddenIds.has(d.id));
 
   // 모든 항목을 flat 리스트로 합치고 localOrder 기준으로 정렬
+  console.log('[ChecklistGroup]', group.id, 'render userItems:', userItems.length);
   const allFlat: FlatItem[] = [
     ...visibleStatic.map((i) => ({ id: i.id, text: i.text, highlight: highlightedIds.has(i.id) })),
     ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true, isPreserved: preservedIds.has(d.id) })),

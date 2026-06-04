@@ -133,8 +133,10 @@ export function useChecklistState() {
 
   function addUserItem(text: string, groupId: string) {
     const id = `user-cl-${Date.now()}`;
+    console.log('[addUserItem] called', { text, groupId, id });
     setUserItems((prev) => {
       const next = [...prev, { id, text, groupId }];
+      console.log('[addUserItem] setUserItems', { prevLen: prev.length, nextLen: next.length });
       try { localStorage.setItem(USER_ITEMS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
