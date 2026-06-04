@@ -77,8 +77,9 @@ export function ChecklistGroup({
   const [localOrder, setLocalOrder] = useState<string[]>([]);
   const [adding, setAdding] = useState(false);
   const [newText, setNewText] = useState('');
-  const [localUserItems, setLocalUserItems] = useState(userItems);
+  const [localUserItems, setLocalUserItems] = useState<UserChecklistItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -89,8 +90,13 @@ export function ChecklistGroup({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // 초기 로드 시 1회만 동기화 — 이후엔 submitAdd/deleteSelected에서 명시적 업데이트
   useEffect(() => {
-    setLocalUserItems(userItems);
+    if (!loadedRef.current) {
+      loadedRef.current = true;
+      setLocalUserItems(userItems);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userItems]);
 
   const sensors = useSensors(
@@ -144,8 +150,10 @@ export function ChecklistGroup({
 
   function deleteSelected() {
     const remaining = orderedIds.filter((id) => !selectedIds.has(id));
+    const toRemove = new Set(selectedIds);
+    setLocalUserItems((prev) => prev.filter((u) => !toRemove.has(u.id)));
     selectedIds.forEach((id) => {
-      if (userItems.some((u) => u.id === id)) onRemoveUserItem(id);
+      if (localUserItems.some((u) => u.id === id)) onRemoveUserItem(id);
       else onHideItem(id);
     });
     setSelectedIds(new Set());
