@@ -29,7 +29,7 @@ type Props = {
   highlightedIds: Set<string>;
   preservedIds: Set<string>;
   userItems: UserChecklistItem[];
-  onAddUserItem: (text: string, groupId: string) => void;
+  onAddUserItem: (text: string, groupId: string) => string;
   onRemoveUserItem: (id: string) => void;
   hiddenIds: Set<string>;
   onHideItem: (id: string) => void;
@@ -95,8 +95,6 @@ export function ChecklistGroup({
   const visibleStatic = group.sections.flatMap((s) => s.items).filter((i) => !hiddenIds.has(i.id));
   const visibleDynamic = dynamicItems.filter((d) => !hiddenIds.has(d.id));
 
-  // 모든 항목을 flat 리스트로 합치고 localOrder 기준으로 정렬
-  console.log('[ChecklistGroup]', group.id, 'render userItems:', userItems.length);
   const allFlat: FlatItem[] = [
     ...visibleStatic.map((i) => ({ id: i.id, text: i.text, highlight: highlightedIds.has(i.id) })),
     ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true, isPreserved: preservedIds.has(d.id) })),
@@ -163,7 +161,13 @@ export function ChecklistGroup({
 
   function submitAdd() {
     if (!newText.trim()) { setAdding(false); return; }
-    onAddUserItem(newText.trim(), group.id);
+    const newId = onAddUserItem(newText.trim(), group.id);
+    setLocalOrder((prev) => {
+      if (prev.length === 0) return prev;
+      const next = [...prev, newId];
+      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
     setNewText('');
     setAdding(false);
   }
