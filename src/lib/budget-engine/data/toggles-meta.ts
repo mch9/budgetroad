@@ -46,6 +46,46 @@ export const TOGGLES_META: ToggleMeta[] = [
     gainCategory: '스드메',
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
   },
+  {
+    id: '앨범페이지 추가',
+    label: '앨범페이지 추가',
+    desc: '기본 앨범에 페이지 수 추가',
+    group: '스튜디오',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
+  {
+    id: '드레스 추가',
+    label: '드레스 추가',
+    desc: '촬영 시 의상 추가 착용',
+    group: '스튜디오',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
+  {
+    id: '모바일 사진 제공',
+    label: '모바일 사진 제공',
+    desc: '모바일 전용 사진 파일 제공',
+    group: '스튜디오',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
+  },
+  {
+    id: '수정본구매비',
+    label: '수정본 구매',
+    desc: '보정 완료된 수정본 파일 구매',
+    group: '스튜디오',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
+  },
+  {
+    id: '촬영시간 추가',
+    label: '촬영시간 추가',
+    desc: '기본 촬영 시간 초과 시 추가비',
+    group: '스튜디오',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
 
   // ── [드레스] ──
   {
@@ -96,6 +136,14 @@ export const TOGGLES_META: ToggleMeta[] = [
     gainCategory: '스드메',
     defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: true, 탐색미결정: true },
   },
+  {
+    id: '촬영 헬퍼',
+    label: '촬영 헬퍼',
+    desc: '스튜디오 촬영 당일 도우미',
+    group: '드레스',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
 
   // ── [메이크업] ──
   {
@@ -113,6 +161,38 @@ export const TOGGLES_META: ToggleMeta[] = [
     group: '메이크업',
     gainCategory: '스드메',
     defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
+  {
+    id: '신랑 메이크업',
+    label: '신랑 메이크업',
+    desc: '신랑 헤어·메이크업',
+    group: '메이크업',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
+  },
+  {
+    id: '휴무일 진행비',
+    label: '휴무일 진행비',
+    desc: '공휴일·휴무일 진행 추가비',
+    group: '메이크업',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: false, 본질미니멀: false, 탐색미결정: false },
+  },
+  {
+    id: '촬영 출장비',
+    label: '촬영 출장비',
+    desc: '촬영 장소 메이크업 출장비',
+    group: '메이크업',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: false, 표준실용: false, 경험연출: true, 본질미니멀: false, 탐색미결정: false },
+  },
+  {
+    id: '헤어피스 시술',
+    label: '헤어피스 시술',
+    desc: '본식용 헤어피스 착용 시술',
+    group: '메이크업',
+    gainCategory: '스드메',
+    defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
   },
 
   // ── [예식장 연출] ──
@@ -152,6 +232,14 @@ export const TOGGLES_META: ToggleMeta[] = [
     id: '웨딩 케이크',
     label: '웨딩 케이크',
     desc: '컷팅용 웨딩 케이크',
+    group: '예식장',
+    gainCategory: '예식장',
+    defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },
+  },
+  {
+    id: '본식 원판 구매',
+    label: '본식 원판 구매',
+    desc: '예식장 본식 촬영 원본 구매',
     group: '예식장',
     gainCategory: '예식장',
     defaultByType: { 전통격식: true, 표준실용: true, 경험연출: true, 본질미니멀: false, 탐색미결정: true },

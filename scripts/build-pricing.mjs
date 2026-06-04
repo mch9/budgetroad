@@ -27,6 +27,13 @@ const REGION_MAP = {
 const PEAK_MONTHS = ['3월', '4월', '5월', '6월', '9월', '10월', '11월'];
 const OFF_PEAK_MONTHS = ['7월', '8월', '12월', '1월', '2월'];
 
+// CSV 신뢰도 낮은 항목 수동 지정 (모든 지역·시즌 동일 적용, 단위: 만원)
+const HARDCODE_PRICES = {
+  '드레스 추가': 20,
+  '모바일 사진 제공': 10,
+  '신랑 메이크업': 20,
+};
+
 // spec 토글 ID → CSV 항목명 매핑 (1:N 가능)
 // note: 본식 도우미 = 본식드레스도우미 평균, 축하공연 섭외 = 축가/축하공연 + 축주비 합산, 혼주 메이크업 = 남성혼주+여성혼주 평균
 const TOGGLE_CSV_MAP = {
@@ -36,6 +43,11 @@ const TOGGLE_CSV_MAP = {
   '서브 스냅': { category: '스튜디오', items: ['서브 스냅'], agg: 'sum' },
   '야외 촬영': { category: '스튜디오', items: ['야외촬영'], agg: 'sum' },
   '얼리스타트': { category: '스튜디오', items: ['얼리스타트비'], agg: 'sum' },
+  '앨범페이지 추가': { category: '스튜디오', items: ['앨범페이지 추가'], agg: 'sum' },
+  '드레스 추가': { category: '스튜디오', items: ['드레스 추가', '드레스 외 의상 추가'], agg: 'avg' },
+  '모바일 사진 제공': { category: '스튜디오', items: ['모바일 사진 제공'], agg: 'sum' },
+  '수정본구매비': { category: '스튜디오', items: ['수정본구매비'], agg: 'sum' },
+  '촬영시간 추가': { category: '스튜디오', items: ['촬영시간 추가'], agg: 'sum' },
   // [드레스]
   '드레스 지정': { category: '드레스', items: ['드레스 지정비'], agg: 'sum' },
   '본식 헬퍼': { category: '드레스', items: ['본식 헬퍼'], agg: 'sum' },
@@ -43,6 +55,7 @@ const TOGGLE_CSV_MAP = {
   '퍼스트웨어': { category: '드레스', items: ['퍼스트웨어'], agg: 'sum' },
   '가봉 스냅': { category: '드레스', items: ['가봉스냅'], agg: 'sum' },
   '턱시도 대여': { category: '드레스', items: ['턱시도 대여'], agg: 'sum' },
+  '촬영 헬퍼': { category: '드레스', items: ['촬영 헬퍼'], agg: 'sum' },
   // [메이크업]
   '혼주 메이크업': {
     category: '메이크업',
@@ -50,12 +63,17 @@ const TOGGLE_CSV_MAP = {
     agg: 'avg', // 양가 평균 단가
   },
   '헤어변형': { category: '메이크업', items: ['헤어변형'], agg: 'sum' },
+  '신랑 메이크업': { category: '메이크업', items: ['신랑 메이크업', '신랑헤어'], agg: 'avg' },
+  '휴무일 진행비': { category: '메이크업', items: ['휴무일 진행비'], agg: 'sum' },
+  '촬영 출장비': { category: '메이크업', items: ['촬영 출장비'], agg: 'sum' },
+  '헤어피스 시술': { category: '메이크업', items: ['헤어피스 시술'], agg: 'sum' },
   // [예식장 연출]
   '생화 꽃장식': { category: '예식장', items: ['생화꽃장식'], agg: 'sum' },
   '부케': { category: '예식장', items: ['부케'], agg: 'sum' },
   '플라워 샤워': { category: '예식장', items: ['플라워 샤워'], agg: 'sum' },
   '포토테이블': { category: '예식장', items: ['포토테이블'], agg: 'sum' },
   '웨딩 케이크': { category: '예식장', items: ['웨딩케이크'], agg: 'sum' },
+  '본식 원판 구매': { category: '예식장', items: ['본식 원판 구매'], agg: 'sum' },
   // [예식장 진행·가족]
   '본식 사회자': { category: '예식장', items: ['본식 사회자'], agg: 'sum' },
   '주례': { category: '예식장', items: ['주례비'], agg: 'sum' },
@@ -233,6 +251,17 @@ function buildTogglePrices(rows) {
   const out = {};
   for (const [toggleId, def] of Object.entries(TOGGLE_CSV_MAP)) {
     out[toggleId] = {};
+    for (const [userRegion] of Object.entries(REGION_MAP)) {
+      // 하드코딩된 항목은 CSV 계산 건너뜀
+      if (HARDCODE_PRICES[toggleId] !== undefined) {
+        const price = HARDCODE_PRICES[toggleId];
+        out[toggleId][userRegion] = { peak: price, offPeak: price };
+        continue;
+      }
+    }
+  }
+  for (const [toggleId, def] of Object.entries(TOGGLE_CSV_MAP)) {
+    if (HARDCODE_PRICES[toggleId] !== undefined) continue;
     for (const [userRegion, csvRegion] of Object.entries(REGION_MAP)) {
       const seasonAggregate = (months) => {
         // items가 여러개면 agg에 따라 합산/평균

@@ -100,6 +100,96 @@ export const TOGGLE_PRICES: Record<ToggleId, Record<UserRegion, TogglePriceSeaso
       "offPeak": 5
     }
   },
+  "앨범페이지 추가": {
+    "서울": {
+      "peak": 3,
+      "offPeak": 3
+    },
+    "수도권": {
+      "peak": 3,
+      "offPeak": 3
+    },
+    "광역시": {
+      "peak": 4,
+      "offPeak": 4
+    },
+    "이외": {
+      "peak": 3,
+      "offPeak": 3
+    }
+  },
+  "드레스 추가": {
+    "서울": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "수도권": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "광역시": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "이외": {
+      "peak": 20,
+      "offPeak": 20
+    }
+  },
+  "모바일 사진 제공": {
+    "서울": {
+      "peak": 10,
+      "offPeak": 10
+    },
+    "수도권": {
+      "peak": 10,
+      "offPeak": 10
+    },
+    "광역시": {
+      "peak": 10,
+      "offPeak": 10
+    },
+    "이외": {
+      "peak": 10,
+      "offPeak": 10
+    }
+  },
+  "수정본구매비": {
+    "서울": {
+      "peak": 14,
+      "offPeak": 14
+    },
+    "수도권": {
+      "peak": 14,
+      "offPeak": 14
+    },
+    "광역시": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "이외": {
+      "peak": 19,
+      "offPeak": 20
+    }
+  },
+  "촬영시간 추가": {
+    "서울": {
+      "peak": 11,
+      "offPeak": 11
+    },
+    "수도권": {
+      "peak": 11,
+      "offPeak": 11
+    },
+    "광역시": {
+      "peak": 10,
+      "offPeak": 10
+    },
+    "이외": {
+      "peak": 11,
+      "offPeak": 11
+    }
+  },
   "드레스 지정": {
     "서울": {
       "peak": 74,
@@ -208,6 +298,24 @@ export const TOGGLE_PRICES: Record<ToggleId, Record<UserRegion, TogglePriceSeaso
       "offPeak": 15
     }
   },
+  "촬영 헬퍼": {
+    "서울": {
+      "peak": 25,
+      "offPeak": 25
+    },
+    "수도권": {
+      "peak": 25,
+      "offPeak": 25
+    },
+    "광역시": {
+      "peak": 19,
+      "offPeak": 19
+    },
+    "이외": {
+      "peak": 22,
+      "offPeak": 22
+    }
+  },
   "혼주 메이크업": {
     "서울": {
       "peak": 20,
@@ -242,6 +350,78 @@ export const TOGGLE_PRICES: Record<ToggleId, Record<UserRegion, TogglePriceSeaso
     "이외": {
       "peak": 29,
       "offPeak": 29
+    }
+  },
+  "신랑 메이크업": {
+    "서울": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "수도권": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "광역시": {
+      "peak": 20,
+      "offPeak": 20
+    },
+    "이외": {
+      "peak": 20,
+      "offPeak": 20
+    }
+  },
+  "휴무일 진행비": {
+    "서울": {
+      "peak": 21,
+      "offPeak": 21
+    },
+    "수도권": {
+      "peak": 21,
+      "offPeak": 21
+    },
+    "광역시": {
+      "peak": 8,
+      "offPeak": 8
+    },
+    "이외": {
+      "peak": 5,
+      "offPeak": 5
+    }
+  },
+  "촬영 출장비": {
+    "서울": {
+      "peak": 15,
+      "offPeak": 15
+    },
+    "수도권": {
+      "peak": 15,
+      "offPeak": 15
+    },
+    "광역시": {
+      "peak": 22,
+      "offPeak": 22
+    },
+    "이외": {
+      "peak": 16,
+      "offPeak": 16
+    }
+  },
+  "헤어피스 시술": {
+    "서울": {
+      "peak": 11,
+      "offPeak": 11
+    },
+    "수도권": {
+      "peak": 11,
+      "offPeak": 11
+    },
+    "광역시": {
+      "peak": 13,
+      "offPeak": 13
+    },
+    "이외": {
+      "peak": 9,
+      "offPeak": 10
     }
   },
   "생화 꽃장식": {
@@ -332,6 +512,24 @@ export const TOGGLE_PRICES: Record<ToggleId, Record<UserRegion, TogglePriceSeaso
     "이외": {
       "peak": 28,
       "offPeak": 26
+    }
+  },
+  "본식 원판 구매": {
+    "서울": {
+      "peak": 51,
+      "offPeak": 51
+    },
+    "수도권": {
+      "peak": 51,
+      "offPeak": 51
+    },
+    "광역시": {
+      "peak": 50,
+      "offPeak": 50
+    },
+    "이외": {
+      "peak": 50,
+      "offPeak": 50
     }
   },
   "본식 사회자": {
