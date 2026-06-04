@@ -8,6 +8,7 @@ type Props = {
   onToggle: (id: string) => void;
   highlight?: boolean;
   dynamic?: boolean;
+  onDelete?: () => void;
 };
 
 const TAG_STYLES: Record<string, string> = {
@@ -15,7 +16,7 @@ const TAG_STYLES: Record<string, string> = {
   계약: 'bg-[rgba(170,199,225,0.3)] text-[#364153]',
 };
 
-export function ChecklistItem({ item, checked, onToggle, highlight, dynamic }: Props) {
+export function ChecklistItem({ item, checked, onToggle, highlight, dynamic, onDelete }: Props) {
   const showMyChoice = highlight || dynamic;
 
   return (
@@ -48,7 +49,18 @@ export function ChecklistItem({ item, checked, onToggle, highlight, dynamic }: P
       >
         {item.text}
       </span>
-      {showMyChoice ? (
+      {onDelete ? (
+        <button
+          type="button"
+          onClick={(e) => { e.preventDefault(); onDelete(); }}
+          className="shrink-0 rounded p-0.5 text-[#C4C9D4] transition-colors hover:text-red-400"
+          aria-label="항목 삭제"
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+            <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+        </button>
+      ) : showMyChoice ? (
         <span className="shrink-0 rounded-full bg-[rgba(116,153,186,0.15)] px-2 py-0.5 text-[10px] font-medium text-[#7499BA]">
           내 선택
         </span>

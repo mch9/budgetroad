@@ -6,6 +6,7 @@ import { TOGGLE_CHECKLIST_MAP } from '@/lib/checklist-data';
 
 const STORAGE_KEY = 'budgetroad_checklist';
 const SESSION_KEY = 'budgetroad_manage_session';
+const USER_ITEMS_KEY = 'budgetroad_checklist_user';
 
 type CheckedState = Record<string, boolean>;
 
@@ -16,16 +17,29 @@ export type DynamicChecklistItem = {
   sectionTitle: string;
 };
 
+export type UserChecklistItem = {
+  id: string;
+  text: string;
+  groupId: string;
+};
+
 export function useChecklistState() {
   const [checked, setChecked] = useState<CheckedState>({});
   const [dynamicItems, setDynamicItems] = useState<DynamicChecklistItem[]>([]);
   const [highlightedIds, setHighlightedIds] = useState<Set<string>>(new Set());
+  const [userItems, setUserItems] = useState<UserChecklistItem[]>([]);
 
   useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setChecked(JSON.parse(raw) as CheckedState);
+    } catch { /* ignore */ }
+
+    try {
+      const raw = localStorage.getItem(USER_ITEMS_KEY);
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (raw) setUserItems(JSON.parse(raw) as UserChecklistItem[]);
     } catch { /* ignore */ }
 
     try {
@@ -64,5 +78,28 @@ export function useChecklistState() {
     });
   }
 
-  return { checked, toggle, dynamicItems, highlightedIds };
+  function addUserItem(text: string, groupId: string) {
+    const id = `user-cl-${Date.now()}`;
+    setUserItems((prev) => {
+      const next = [...prev, { id, text, groupId }];
+      try { localStorage.setItem(USER_ITEMS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }
+
+  function removeUserItem(id: string) {
+    setUserItems((prev) => {
+      const next = prev.filter((i) => i.id !== id);
+      try { localStorage.setItem(USER_ITEMS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+    setChecked((prev) => {
+      const next = { ...prev };
+      delete next[id];
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }
+
+  return { checked, toggle, dynamicItems, highlightedIds, userItems, addUserItem, removeUserItem };
 }
