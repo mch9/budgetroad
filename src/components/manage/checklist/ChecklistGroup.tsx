@@ -77,6 +77,7 @@ export function ChecklistGroup({
   const [localOrder, setLocalOrder] = useState<string[]>([]);
   const [adding, setAdding] = useState(false);
   const [newText, setNewText] = useState('');
+  const [localUserItems, setLocalUserItems] = useState(userItems);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -88,6 +89,10 @@ export function ChecklistGroup({
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    setLocalUserItems(userItems);
+  }, [userItems]);
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
   );
@@ -98,7 +103,7 @@ export function ChecklistGroup({
   const allFlat: FlatItem[] = [
     ...visibleStatic.map((i) => ({ id: i.id, text: i.text, highlight: highlightedIds.has(i.id) })),
     ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true, isPreserved: preservedIds.has(d.id) })),
-    ...userItems.map((u) => ({ id: u.id, text: u.text })),
+    ...localUserItems.map((u) => ({ id: u.id, text: u.text })),
   ];
 
   const orderedFlat: FlatItem[] = (() => {
@@ -161,10 +166,12 @@ export function ChecklistGroup({
 
   function submitAdd() {
     if (!newText.trim()) { setAdding(false); return; }
-    const newId = onAddUserItem(newText.trim(), group.id);
+    const text = newText.trim();
+    const id = onAddUserItem(text, group.id);
+    setLocalUserItems((prev) => [...prev, { id, text, groupId: group.id }]);
     setLocalOrder((prev) => {
       if (prev.length === 0) return prev;
-      const next = [...prev, newId];
+      const next = [...prev, id];
       try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
