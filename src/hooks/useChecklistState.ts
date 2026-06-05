@@ -6,6 +6,7 @@ import { TOGGLE_CHECKLIST_MAP, PERSONA_HIDDEN_DEFAULT } from '@/lib/checklist-da
 import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 import { STORAGE_KEYS } from '@/lib/storage-keys';
+import { trackEvent } from '@/lib/gtag';
 
 
 type CheckedState = Record<string, boolean>;
@@ -118,6 +119,8 @@ export function useChecklistState() {
   }, []);
 
   function toggle(itemId: string) {
+    // 네모 체크박스(일반 모드) 완료/해제 — checked는 토글 후 새 값
+    trackEvent('checklist_item_toggled', { item_id: itemId, checked: checked[itemId] ? 0 : 1 });
     setChecked((prev: CheckedState) => {
       const next = { ...prev, [itemId]: !prev[itemId] };
       try {
@@ -128,6 +131,7 @@ export function useChecklistState() {
   }
 
   function addUserItem(text: string, groupId: string): string {
+    trackEvent('checklist_item_added', { group: groupId });
     const id = `user-cl-${Date.now()}`;
     setUserItems((prev) => {
       const next = [...prev, { id, text, groupId }];
@@ -138,6 +142,7 @@ export function useChecklistState() {
   }
 
   function removeUserItem(id: string) {
+    trackEvent('checklist_item_removed', { kind: 'user' });
     setUserItems((prev) => {
       const next = prev.filter((i) => i.id !== id);
       try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_USER, JSON.stringify(next)); } catch { /* ignore */ }
@@ -152,6 +157,7 @@ export function useChecklistState() {
   }
 
   function hideItem(id: string) {
+    trackEvent('checklist_item_removed', { kind: 'preset' });
     setHiddenIds((prev) => {
       const next = new Set(prev);
       next.add(id);

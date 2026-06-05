@@ -256,7 +256,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
   function handleManageClick() {
     saveSession(answers, toggles, result.vars.persona);
     trackEvent('manage_cta_clicked', { persona: result.vars.persona });
-    window.location.href = '/manage';
+    window.location.href = '/manage?from=result';
   }
 
   function handleShareAction(action: string) {

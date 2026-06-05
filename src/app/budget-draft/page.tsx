@@ -44,6 +44,8 @@ export default function BudgetDraftPage() {
   // 공유 링크(?r=)로 본 결과인지 — 이 경우 sessionStorage에 저장하지 않아
   // 로고/CTA로 재진입 시 공유 결과가 아니라 '내 온보딩'이 시작되게 한다.
   const fromSharedRef = useRef(false);
+  // 마운트 직후 복원으로 step이 바뀔 때, 초기 step=0의 '유령' onboarding_step_viewed 발사를 막는 플래그
+  const pendingResume = useRef(false);
 
   /* eslint-disable react-hooks/set-state-in-effect */
   useEffect(() => {
@@ -80,6 +82,7 @@ export default function BudgetDraftPage() {
           parsed.answers &&
           'Q1' in parsed.answers
         ) {
+          pendingResume.current = true; // 마운트 직후 복원 → 초기 step_viewed(유령) 스킵
           setStep(parsed.step);
           setAnswers(parsed.answers);
           setPersona(parsed.persona ?? null);
@@ -87,20 +90,9 @@ export default function BudgetDraftPage() {
         } else {
           sessionStorage.removeItem(STORAGE_KEYS.ONBOARDING_V6);
         }
-      } else {
-        // sessionStorage 만료 시 localStorage manage_session으로 결과 페이지 복원
-        const manageRaw = localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
-        if (manageRaw) {
-          const ms = JSON.parse(manageRaw) as { answers?: OnboardingAnswers; axisScore?: AxisScore; persona?: PersonaType };
-          if (ms.answers && 'Q1' in ms.answers) {
-            const score = ms.axisScore ?? scoreAxis(ms.answers);
-            setAnswers(ms.answers);
-            setAxisScore(score);
-            setPersona(ms.persona ?? classifyPersona(score));
-            setStep(TOTAL_STEPS + 1);
-          }
-        }
       }
+      // 재방문자는 '시작하기 → 항상 질문부터'. 이전 결과는 '이어보기 → /manage'로 접근하므로
+      // /budget-draft에서 MANAGE_SESSION으로 결과 화면을 자동 복원하지 않는다.
     } catch {
       /* ignore */
     }
@@ -121,6 +113,11 @@ export default function BudgetDraftPage() {
   // 온보딩 질문 노출 추적 (14문항 이탈 퍼널). 공유 링크 진입은 제외.
   useEffect(() => {
     if (fromSharedRef.current) return;
+    // 복원으로 곧 step이 바뀔 마운트 첫 렌더(step=0)는 건너뜀 → 유령 Q3 방지
+    if (pendingResume.current) {
+      pendingResume.current = false;
+      return;
+    }
     if (step < TOTAL_STEPS) {
       trackEvent('onboarding_step_viewed', {
         step: step + 1,

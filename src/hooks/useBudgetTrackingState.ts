@@ -7,6 +7,7 @@ import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
 import type { PersonaType, AxisScore } from '@/lib/onboarding-v6';
 import { STORAGE_KEYS } from '@/lib/storage-keys';
+import { trackEvent } from '@/lib/gtag';
 
 
 export function filterCategoryToLabel(
@@ -120,6 +121,7 @@ export function useBudgetTrackingState() {
   }, []);
 
   function setActualAmount(itemId: string, amount: number | undefined) {
+    trackEvent('budget_item_edited', { item_id: itemId, has_value: amount !== undefined ? 1 : 0 });
     setActual((prev) => {
       const next = { ...prev, [itemId]: amount };
       try {
@@ -132,6 +134,7 @@ export function useBudgetTrackingState() {
   }
 
   function removeItem(itemId: string) {
+    trackEvent('budget_item_removed', { item_id: itemId });
     const isCustom = items.find((i) => i.id === itemId)?.custom ?? false;
     setItems((prev) => prev.filter((i) => i.id !== itemId));
     setActual((prev) => {
@@ -159,6 +162,7 @@ export function useBudgetTrackingState() {
   }
 
   function addCustomItem(name: string, filterCategory: 'venue' | 'studio' | 'dress' | 'makeup' | 'other', amount: number) {
+    trackEvent('budget_item_added', { category: filterCategory });
     const id = `custom-${Date.now()}`;
     const newItem: BudgetItem = {
       id, name,
