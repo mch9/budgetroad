@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db": "dotenv -e .env.local -- prisma",
     "build:pricing": "node scripts/build-pricing.mjs",
+    "test": "vitest run",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@fission-ai/openspec": "^1.4.1",
+    "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
@@ -41,9 +43,11 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.7",
     "eslint-config-prettier": "^10.1.8",
+    "playwright": "^1.60.0",
     "prettier": "^3.8.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.8"
   },
   "ignoreScripts": [
     "sharp",

@@ -12,6 +12,14 @@ const ACTUAL_KEY = 'budgetroad_budget_actual';
 const CUSTOM_KEY = 'budgetroad_custom_items';
 const DELETED_KEY = 'budgetroad_deleted_items';
 
+export function filterCategoryToLabel(
+  fc: 'venue' | 'studio' | 'dress' | 'makeup' | 'other',
+): string {
+  if (fc === 'venue') return '예식장';
+  if (fc === 'other') return '기타';
+  return '스드메';
+}
+
 export type BudgetItem = {
   id: string;
   name: string;
@@ -105,7 +113,7 @@ export function useBudgetTrackingState() {
         const customItems: BudgetItem[] = customs.map((c) => ({
           id: c.id,
           name: c.name,
-          category: c.filterCategory === 'venue' ? '예식장' : c.filterCategory === 'studio' ? '스드메' : '기타',
+          category: filterCategoryToLabel(c.filterCategory),
           filterCategory: c.filterCategory,
           estimatedAmount: 0,
           custom: true,
