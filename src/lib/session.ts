@@ -1,4 +1,4 @@
-const SESSION_KEY = 'budgetroad_session';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 const TIMEOUT_MS = 30 * 60 * 1000; // 30분 비활동 시 새 세션
 
 export type SessionRecord = { id: string; ts: number; seq: number };
@@ -20,14 +20,14 @@ export function nextSessionContext(): { session_id: string; event_seq: number } 
   if (typeof window === 'undefined') return { session_id: '', event_seq: 0 };
   let stored: SessionRecord | null = null;
   try {
-    const raw = localStorage.getItem(SESSION_KEY);
+    const raw = localStorage.getItem(STORAGE_KEYS.SESSION);
     if (raw) stored = JSON.parse(raw) as SessionRecord;
   } catch {
     /* ignore */
   }
   const next = rotateSession(stored, Date.now(), crypto.randomUUID());
   try {
-    localStorage.setItem(SESSION_KEY, JSON.stringify(next));
+    localStorage.setItem(STORAGE_KEYS.SESSION, JSON.stringify(next));
   } catch {
     /* ignore */
   }

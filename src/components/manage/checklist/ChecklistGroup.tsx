@@ -20,6 +20,7 @@ import { CSS } from '@dnd-kit/utilities';
 import type { ChecklistGroup as ChecklistGroupType } from '@/lib/checklist-data';
 import type { DynamicChecklistItem, UserChecklistItem } from '@/hooks/useChecklistState';
 import { ChecklistItem } from './ChecklistItem';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
 type Props = {
   group: ChecklistGroupType;
@@ -69,7 +70,6 @@ export function ChecklistGroup({
   group, checked, onToggle, dynamicItems, highlightedIds, preservedIds,
   userItems, onAddUserItem, onRemoveUserItem, hiddenIds, onHideItem,
 }: Props) {
-  const storageKey = `budgetroad_checklist_order_${group.id}`;
 
   const [open, setOpen] = useState(true);
   const [editing, setEditing] = useState(false);
@@ -81,7 +81,7 @@ export function ChecklistGroup({
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(storageKey);
+      const raw = localStorage.getItem(STORAGE_KEYS.checklistOrder(group.id));
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setLocalOrder(JSON.parse(raw) as string[]);
     } catch { /* ignore */ }
@@ -122,7 +122,7 @@ export function ChecklistGroup({
     const newIndex = orderedIds.indexOf(over.id as string);
     const newIds = arrayMove(orderedIds, oldIndex, newIndex);
     setLocalOrder(newIds);
-    try { localStorage.setItem(storageKey, JSON.stringify(newIds)); } catch { /* ignore */ }
+    try { localStorage.setItem(STORAGE_KEYS.checklistOrder(group.id), JSON.stringify(newIds)); } catch { /* ignore */ }
   }
 
   function toggleSelect(id: string) {
@@ -166,7 +166,7 @@ export function ChecklistGroup({
     setLocalOrder((prev) => {
       if (prev.length === 0) return prev;
       const next = [...prev, id];
-      try { localStorage.setItem(storageKey, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.checklistOrder(group.id), JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
     setNewText('');

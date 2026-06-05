@@ -23,9 +23,8 @@ import {
 import type { ToggleState } from '@/lib/budget-engine';
 import { diagnose } from '@/lib/budget-engine';
 import { decodeShare } from '@/lib/share-state';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
-const STORAGE_KEY = 'budgetroad_onboarding_v6';
-const LEGACY_STORAGE_KEY = 'budgetroad_result';
 
 type SavedState = {
   step: number;
@@ -69,8 +68,8 @@ export default function BudgetDraftPage() {
       /* ignore */
     }
     try {
-      sessionStorage.removeItem(LEGACY_STORAGE_KEY);
-      const saved = sessionStorage.getItem(STORAGE_KEY);
+      sessionStorage.removeItem(STORAGE_KEYS.LEGACY_RESULT);
+      const saved = sessionStorage.getItem(STORAGE_KEYS.ONBOARDING_V6);
       if (saved) {
         const parsed = JSON.parse(saved) as SavedState;
         // step 범위 검증 — 옛 schema는 무시. 현재 유효 범위: 0 ~ TOTAL_STEPS+1 (loading=14, result=15)
@@ -86,11 +85,11 @@ export default function BudgetDraftPage() {
           setPersona(parsed.persona ?? null);
           setAxisScore(parsed.axisScore ?? null);
         } else {
-          sessionStorage.removeItem(STORAGE_KEY);
+          sessionStorage.removeItem(STORAGE_KEYS.ONBOARDING_V6);
         }
       } else {
         // sessionStorage 만료 시 localStorage manage_session으로 결과 페이지 복원
-        const manageRaw = localStorage.getItem('budgetroad_manage_session');
+        const manageRaw = localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
         if (manageRaw) {
           const ms = JSON.parse(manageRaw) as { answers?: OnboardingAnswers; axisScore?: AxisScore; persona?: PersonaType };
           if (ms.answers && 'Q1' in ms.answers) {
@@ -113,7 +112,7 @@ export default function BudgetDraftPage() {
     if (step === 0 && answers.Q1 === null) return;
     try {
       const data: SavedState = { step, answers, persona, axisScore };
-      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+      sessionStorage.setItem(STORAGE_KEYS.ONBOARDING_V6, JSON.stringify(data));
     } catch {
       /* ignore */
     }
@@ -205,8 +204,8 @@ export default function BudgetDraftPage() {
     setAxisScore(null);
     setSharedToggles(null);
     try {
-      sessionStorage.removeItem(STORAGE_KEY);
-      localStorage.removeItem('budgetroad_manage_session');
+      sessionStorage.removeItem(STORAGE_KEYS.ONBOARDING_V6);
+      localStorage.removeItem(STORAGE_KEYS.MANAGE_SESSION);
     } catch {
       /* ignore */
     }

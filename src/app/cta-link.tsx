@@ -3,8 +3,8 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
-const MANAGE_SESSION_KEY = 'budgetroad_manage_session';
 
 function ArrowIcon() {
   return (
@@ -20,12 +20,12 @@ export function CtaLink() {
   useEffect(() => {
     try {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (localStorage.getItem(MANAGE_SESSION_KEY)) setHref('/manage');
+      if (localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION)) setHref('/manage');
     } catch { /* ignore */ }
   }, []);
 
   function handleClick() {
-    try { sessionStorage.removeItem('budgetroad_result'); } catch { /* ignore */ }
+    try { sessionStorage.removeItem(STORAGE_KEYS.LEGACY_RESULT); } catch { /* ignore */ }
     trackEvent('cta_clicked');
   }
 
@@ -63,7 +63,7 @@ export function ManageLink() {
   useEffect(() => {
     try {
       // eslint-disable-next-line react-hooks/set-state-in-effect
-      setShow(!!localStorage.getItem(MANAGE_SESSION_KEY));
+      setShow(!!localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION));
     } catch { /* ignore */ }
   }, []);
 
