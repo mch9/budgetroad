@@ -1,13 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import type { ResultPayload, ResultCategory, ToggleState, ToggleGroup } from '@/lib/budget-engine';
-import { TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
+import type { ResultPayload, ResultCategory, ToggleLine } from '@/lib/budget-engine';
 import { DonutChart } from '../charts/donut-chart';
 import { CATEGORY_COLORS } from '../charts/category-colors';
 import { trackEvent } from '@/lib/gtag';
 
-type Props = { result: ResultPayload; toggles: ToggleState; forceExpand?: boolean };
+type Props = { result: ResultPayload; forceExpand?: boolean };
 
 // 카테고리별 아이콘 (32×32 SVG with built-in accent bg). 도넛/legend 색상은 별도로 카테고리 식별.
 const CATEGORY_ICONS: Record<ResultCategory, string> = {
@@ -18,30 +17,7 @@ const CATEGORY_ICONS: Record<ResultCategory, string> = {
   신혼여행: '/icons/category/honeymoon.svg',
 };
 
-type ToggleLine = { label: string; price: number };
-
-// 켜진 추가금 옵션을 그룹별로 추려 개별 항목으로 반환.
-// stage5-budget의 sumActiveToggles와 동일한 단가표(TOGGLE_PRICES[지역][시즌])를 사용하므로
-// 여기 개별 합 = 엔진의 그룹 합계와 정확히 일치한다.
-function enabledToggleLines(
-  result: ResultPayload,
-  toggles: ToggleState,
-  groups: ToggleGroup[],
-): ToggleLine[] {
-  const { region, season } = result.vars;
-  const lines: ToggleLine[] = [];
-  for (const meta of TOGGLES_META) {
-    if (!toggles[meta.id]) continue;
-    if (!groups.includes(meta.group)) continue;
-    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    if (!rawPrice) continue;
-    const price = rawPrice * (meta.priceMultiplier ?? 1);
-    lines.push({ label: meta.label, price });
-  }
-  return lines;
-}
-
-export function TabItemized({ result, toggles, forceExpand }: Props) {
+export function TabItemized({ result, forceExpand }: Props) {
   const [expanded, setExpanded] = useState<Set<ResultCategory>>(new Set());
 
   const categories = Object.keys(result.budget.categories) as ResultCategory[];
@@ -136,7 +112,7 @@ export function TabItemized({ result, toggles, forceExpand }: Props) {
               </button>
               {isOpen && (
                 <div className="border-t border-[#F5F5F5] bg-[#FAFAFA] px-4 py-3">
-                  <CategoryBreakdown category={cat} result={result} toggles={toggles} />
+                  <CategoryBreakdown category={cat} result={result} />
                 </div>
               )}
             </div>
@@ -167,15 +143,13 @@ function withJosa(word: string, subject: 'eun' | 'i' = 'eun'): string {
 function CategoryBreakdown({
   category,
   result,
-  toggles,
 }: {
   category: ResultCategory;
   result: ResultPayload;
-  toggles: ToggleState;
 }) {
   if (category === '예식장') {
     const v = result.budget.venueDetail;
-    const venueOptions = enabledToggleLines(result, toggles, ['예식장']);
+    const venueOptions = result.budget.toggleLines['예식장'];
     const mealSub = v.minGuaranteeApplied
       ? `최소 보증인원 ${v.minGuarantee}명 × ${v.perHead}만원 (실제 하객 ${v.guests}명)`
       : `${v.guests.toLocaleString()}명 × ${v.perHead.toLocaleString()}만원`;
@@ -208,9 +182,8 @@ function CategoryBreakdown({
   if (category === '스드메') {
     const s = result.budget.sdmDetail;
     const base = result.vars.base;
-    const studioOptions = enabledToggleLines(result, toggles, ['스튜디오']);
-    const dressOptions = enabledToggleLines(result, toggles, ['드레스']);
-    const makeupOptions: ToggleLine[] = []; // 메이크업 토글 그룹 제거됨
+    const studioOptions = result.budget.toggleLines['스튜디오'];
+    const dressOptions = result.budget.toggleLines['드레스'];
     return (
       <div className="flex flex-col gap-1 text-sm text-[#525252]">
         <p className="pb-2 text-xs text-[#A1A1A1]">
@@ -233,9 +206,6 @@ function CategoryBreakdown({
           sub={`${base.makeup} 등급`}
           v={`${s.makeupBase.toLocaleString()}만원`}
         />
-        {makeupOptions.map((it) => (
-          <Row key={it.label} k={it.label} v={`+${it.price.toLocaleString()}만원`} accent indent />
-        ))}
         <TotalRow v={`${result.budget.categories.스드메.toLocaleString()}만원`} />
       </div>
     );

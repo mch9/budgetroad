@@ -45,6 +45,8 @@ export type ToggleGroup = '예식장' | '스튜디오' | '드레스';
 // 결과 카테고리 가산처. 스튜디오·드레스·메이크업 그룹 → '스드메', 예식장 그룹 → '예식장'
 export type ToggleGainCategory = '스드메' | '예식장';
 
+export type ToggleLine = { id: ToggleId; label: string; price: number };
+
 export type ToggleMeta = {
   id: ToggleId;
   label: string;            // 사용자에게 노출
@@ -121,6 +123,7 @@ export type BudgetResult = {
   toggleDelta: number;     // 토글 ON된 항목 합
   venueDetail: VenueBreakdown;
   sdmDetail: SdmBreakdown;
+  toggleLines: Record<ToggleGroup, ToggleLine[]>; // 그룹별 ON 토글 개별 항목 (엔진 계산 결과)
 };
 
 export type ConsistencyStatus = 'WARN' | 'OVER' | 'UNDER' | 'FIT';

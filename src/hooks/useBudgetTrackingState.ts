@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { diagnose, TOGGLES_META, TOGGLE_PRICES } from '@/lib/budget-engine';
+import { diagnose } from '@/lib/budget-engine';
 import type { ResultPayload, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
@@ -42,9 +42,8 @@ type SessionData = {
   axisScore?: AxisScore;
 };
 
-function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
-  const { venueDetail, sdmDetail } = result.budget;
-  const { region, season } = result.vars;
+function buildItems(result: ResultPayload): BudgetItem[] {
+  const { venueDetail, sdmDetail, toggleLines } = result.budget;
   const items: BudgetItem[] = [];
 
   // 예식장
@@ -56,27 +55,18 @@ function buildItems(result: ResultPayload, toggles: ToggleState): BudgetItem[] {
     items.push({ id: 'decoration', name: '기본 장식비', category: '예식장', filterCategory: 'venue', estimatedAmount: venueDetail.baseDecoration });
   }
   items.push({ id: 'bonsik', name: '본식 촬영', category: '예식장', filterCategory: 'venue', estimatedAmount: venueDetail.bonsik });
-  for (const meta of TOGGLES_META) {
-    if (meta.group !== '예식장' || !toggles[meta.id]) continue;
-    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    const price = rawPrice * (meta.priceMultiplier ?? 1);
-    if (price) items.push({ id: meta.id, name: meta.label, category: '예식장', filterCategory: 'venue', estimatedAmount: price });
+  for (const line of toggleLines['예식장']) {
+    items.push({ id: line.id, name: line.label, category: '예식장', filterCategory: 'venue', estimatedAmount: line.price });
   }
 
   // 스드메
   items.push({ id: 'studio-base', name: '스튜디오 기본', category: '스드메', filterCategory: 'studio', estimatedAmount: sdmDetail.studioBase });
-  for (const meta of TOGGLES_META) {
-    if (meta.group !== '스튜디오' || !toggles[meta.id]) continue;
-    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    const price = rawPrice * (meta.priceMultiplier ?? 1);
-    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'studio', estimatedAmount: price });
+  for (const line of toggleLines['스튜디오']) {
+    items.push({ id: line.id, name: line.label, category: '스드메', filterCategory: 'studio', estimatedAmount: line.price });
   }
   items.push({ id: 'dress-base', name: '드레스 기본', category: '스드메', filterCategory: 'dress', estimatedAmount: sdmDetail.dressBase });
-  for (const meta of TOGGLES_META) {
-    if (meta.group !== '드레스' || !toggles[meta.id]) continue;
-    const rawPrice = TOGGLE_PRICES[meta.id]?.[region]?.[season] ?? 0;
-    const price = rawPrice * (meta.priceMultiplier ?? 1);
-    if (price) items.push({ id: meta.id, name: meta.label, category: '스드메', filterCategory: 'dress', estimatedAmount: price });
+  for (const line of toggleLines['드레스']) {
+    items.push({ id: line.id, name: line.label, category: '스드메', filterCategory: 'dress', estimatedAmount: line.price });
   }
   items.push({ id: 'makeup-base', name: '메이크업 기본', category: '스드메', filterCategory: 'makeup', estimatedAmount: sdmDetail.makeupBase });
 
@@ -99,7 +89,7 @@ export function useBudgetTrackingState() {
       if (sessionRaw) {
         const parsed = JSON.parse(sessionRaw) as SessionData;
         const result = diagnose(parsed.answers, parsed.toggles);
-        const presetItems = buildItems(result, parsed.toggles);
+        const presetItems = buildItems(result);
 
         const deletedRaw = localStorage.getItem(STORAGE_KEYS.DELETED_ITEMS);
         const deletedIds = new Set<string>(deletedRaw ? (JSON.parse(deletedRaw) as string[]) : []);
