@@ -106,8 +106,8 @@ export default function Home() {
               },
               {
                 num: '03',
-                title: '자동화 추천 솔루션',
-                desc: '분석된 타입에 꼭 맞는 웨딩 아이템과 개인 맞춤형 할 일 리스트(To-do)를 시스템이 자동으로 구성합니다.',
+                title: '맞춤 To-do & 예산 보드',
+                desc: '분석된 타입에 꼭 맞는 예산안과 개인 맞춤형 할일 리스트를 자동으로 구성합니다.',
               },
             ].map(({ num, title, desc }) => (
               <div key={num} className="flex flex-col items-center gap-4 text-center">
@@ -128,7 +128,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#5d5f5f]">STEP 01</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-[#1b1c1c] sm:text-[48px]">
-              취향을 발견하는 스마트 분석
+              취향을 발견하는<br />스마트 분석
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-[#444748]">
               추상적인 &apos;느낌&apos;을 구체적인 데이터로 전환합니다. AI가 당신의 숨겨진 선호를 분석하여 가장 적합한 웨딩 가치를 찾아냅니다.
@@ -158,7 +158,7 @@ export default function Home() {
               데이터가 정의하는 우리만의 스타일
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-white">
-              수만 가지의 옵션 중 당신에게 최적화된 웨딩 타입을 매칭합니다. 단순한 추천을 넘어 데이터로 증명된 스타일 가이드를 제공합니다.
+              수만 가지의 옵션 중 당신에게 최적화된 웨딩 타입을 매칭합니다.<br />단순한 추천을 넘어 데이터로 증명된 스타일 가이드를 제공합니다.
             </div>
             <div className="mt-4 grid grid-cols-2 gap-4">
               {['맞춤형 타입 매칭', '실시간 트렌드 반영'].map((label) => (
@@ -177,13 +177,13 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#5d5f5f]">STEP 03</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-[#1b1c1c] sm:text-[48px]">
-              납득 가능한 예산 가이드라인
+              납득 가능한<br />예산 가이드라인
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-[#444748]">
               불필요한 거품을 걷어낸 정직한 견적을 제안합니다. 시장 시세와 선호도를 반영하여 예산 수립의 명확한 근거를 제시합니다.
             </div>
             <ul className="mt-4 flex flex-col gap-4">
-              {['시장 시세 실시간 연동 시스템', '하객 규모별 변동성 분석'].map((item) => (
+              {['시장 시세 실시간 연동 시스템', '하객 규모에 따른 비용 변화 예측'].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-base text-[#1b1c1c]">
                   <Check className="size-[18px] shrink-0 text-[#aac7e1]" strokeWidth={2.5} />
                   {item}
