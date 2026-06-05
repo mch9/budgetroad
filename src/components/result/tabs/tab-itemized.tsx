@@ -184,7 +184,6 @@ function CategoryBreakdown({
     const base = result.vars.base;
     const studioOptions = result.budget.toggleLines['스튜디오'];
     const dressOptions = result.budget.toggleLines['드레스'];
-    const makeupOptions: ToggleLine[] = []; // 메이크업 토글 그룹 제거됨
     return (
       <div className="flex flex-col gap-1 text-sm text-[#525252]">
         <p className="pb-2 text-xs text-[#A1A1A1]">
@@ -207,9 +206,6 @@ function CategoryBreakdown({
           sub={`${base.makeup} 등급`}
           v={`${s.makeupBase.toLocaleString()}만원`}
         />
-        {makeupOptions.map((it) => (
-          <Row key={it.label} k={it.label} v={`+${it.price.toLocaleString()}만원`} accent indent />
-        ))}
         <TotalRow v={`${result.budget.categories.스드메.toLocaleString()}만원`} />
       </div>
     );
