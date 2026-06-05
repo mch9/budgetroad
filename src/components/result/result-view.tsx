@@ -74,6 +74,9 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     return initial.vars.toggleDefaults;
   });
 
+  // 토글 변경 시 재진단 (instant)
+  const result = useMemo(() => diagnose(answers, toggles), [answers, toggles]);
+
   // 토글 변경 시 세션 자동 저장 (Bug 1: 체크리스트가 항상 최신 토글 반영)
   // 공유 링크 결과는 저장 안 함 — 남의 토글이 내 세션을 덮지 않도록
   const autoSaveRef = useRef(false);
@@ -83,9 +86,6 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     if (initialToggles) return;
     saveSession(answers, toggles, result.vars.persona);
   }, [toggles, answers, initialToggles]);
-
-  // 토글 변경 시 재진단 (instant)
-  const result = useMemo(() => diagnose(answers, toggles), [answers, toggles]);
 
   // ── 결과 페이지 계측 (탭 조회·스크롤·탭별 체류·이탈) — persona=result.vars.persona ──
   const enteredAt = useRef(0);

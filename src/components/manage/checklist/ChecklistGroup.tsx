@@ -77,9 +77,7 @@ export function ChecklistGroup({
   const [localOrder, setLocalOrder] = useState<string[]>([]);
   const [adding, setAdding] = useState(false);
   const [newText, setNewText] = useState('');
-  const [localUserItems, setLocalUserItems] = useState<UserChecklistItem[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const loadedRef = useRef(false);
 
   useEffect(() => {
     try {
@@ -89,15 +87,6 @@ export function ChecklistGroup({
     } catch { /* ignore */ }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // 실제 데이터 로드 후 1회만 동기화 — userItems가 비어있을 땐 localStorage 미로드 상태
-  useEffect(() => {
-    if (!loadedRef.current && userItems.length > 0) {
-      setLocalUserItems(userItems);
-      loadedRef.current = true;
-    }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userItems]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -109,7 +98,7 @@ export function ChecklistGroup({
   const allFlat: FlatItem[] = [
     ...visibleStatic.map((i) => ({ id: i.id, text: i.text, highlight: highlightedIds.has(i.id) })),
     ...visibleDynamic.map((d) => ({ id: d.id, text: d.text, isDynamic: true, isPreserved: preservedIds.has(d.id) })),
-    ...localUserItems.map((u) => ({ id: u.id, text: u.text })),
+    ...userItems.map((u) => ({ id: u.id, text: u.text })),
   ];
 
   const orderedFlat: FlatItem[] = (() => {
@@ -150,10 +139,8 @@ export function ChecklistGroup({
 
   function deleteSelected() {
     const remaining = orderedIds.filter((id) => !selectedIds.has(id));
-    const toRemove = new Set(selectedIds);
-    setLocalUserItems((prev) => prev.filter((u) => !toRemove.has(u.id)));
     selectedIds.forEach((id) => {
-      if (localUserItems.some((u) => u.id === id)) onRemoveUserItem(id);
+      if (userItems.some((u) => u.id === id)) onRemoveUserItem(id);
       else onHideItem(id);
     });
     setSelectedIds(new Set());
@@ -176,7 +163,6 @@ export function ChecklistGroup({
     if (!newText.trim()) { setAdding(false); return; }
     const text = newText.trim();
     const id = onAddUserItem(text, group.id);
-    setLocalUserItems((prev) => [...prev, { id, text, groupId: group.id }]);
     setLocalOrder((prev) => {
       if (prev.length === 0) return prev;
       const next = [...prev, id];

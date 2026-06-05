@@ -1,4 +1,18 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
 # 버짓로드 (budgetroad)
+
+## 명령어
+- `npm run dev` — 개발 서버 (http://localhost:3000)
+- `npm run build` — `prisma generate` 후 `next build` (빌드 전 Prisma 클라이언트 생성 필수)
+- `npm run lint` — ESLint (Next core-web-vitals + TS + Prettier)
+- `npm run db -- <args>` — `.env.local` 로드 후 Prisma CLI 실행 (예: `npm run db -- migrate dev`, `npm run db -- studio`)
+- `npm run build:pricing` — `가격 정보 DB.csv` → `src/lib/budget-engine/data/*.ts` 재생성 (아래 "데이터 파이프라인" 참조)
+- 테스트 러너 없음 — 검증은 `npm run lint` + `npm run build`로 한다.
+
+> ⚠️ Next.js 16 / React 19 사용. `AGENTS.md`가 경고하듯 학습 데이터의 Next.js와 API·관례가 다를 수 있으니, 불확실하면 `node_modules/next/dist/docs/`의 가이드를 먼저 읽을 것.
 
 ## 프로젝트 개요
 결혼 준비 중인 사용자가 온보딩 질문(가치관 + 예산·하객수·지역 등 실측 입력)에 답하면, 페르소나 분류와 통계 기반 값으로 예산 초안을 자동 생성해주는 웹앱.
@@ -28,7 +42,7 @@ Entered → Input Started → Result Viewed → Intent Created (Save/Share) → 
 - P(Revisited | Intent Created): 재방문율
 
 ## 기술 스택
-- **Framework**: Next.js 14+ (App Router)
+- **Framework**: Next.js 16.1.7 (App Router) + React 19
 - **Language**: TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Database**: Supabase PostgreSQL (dev/prod 공통) + Prisma — `is_dev` 플래그로 환경 구분
@@ -121,6 +135,25 @@ budgetroad/
 - 지역: 서울 / 수도권 / 광역시 / 지방
 - 항목: 식장, 스드메, 혼수, 예물, 예단, 신혼여행, 한복, 폐백음식, 청첩장, 답례품
 - 통계 데이터: 정적 데이터로 관리 (실시간 시세 연동 제외)
+
+## 예산 엔진 아키텍처 (`src/lib/budget-engine/`)
+진입점은 `index.ts`의 `diagnose(answers, toggles?)` — **결정론적 순수 함수**(같은 입력 → 같은 결과). 단계별 stage 함수를 순서대로 체이닝한다:
+1. `scoreAxis` → `classifyPersona` (`onboarding-v6.ts`): 답변 2축 점수 → 페르소나 분류
+2. `stage3-variables` `setupVars`: 페르소나·응답 → 변수 + 유형별 토글 디폴트(`toggleDefaults`)
+3. `stage4-venue` `recommendVenue`: 식장 유형 추천
+4. `stage5-budget` `calculateBudget`: 변수 + 활성 토글 + 식장 유형 → 항목별 예산
+5. `stage6-consistency` `diagnoseConsistency`: 예산 정합성 진단
+6. `stage7-advice` `buildAdvice`: 진단 기반 조언 생성
+
+반환값 `ResultPayload = { vars, venue, budget, consistency, advice }` (타입은 `types.ts`). 정적 입력 데이터는 `data/`(`category-base`, `region-profiles`, `toggle-prices`, `toggles-meta`, `type-config`, `venue-profiles`). **stage 로직이나 데이터를 수정하면 `diagnose`의 결정론적 출력이 바뀌므로 전체 파이프라인 영향을 고려할 것.**
+
+## 데이터 파이프라인 (가격 데이터)
+`가격 정보 DB.csv`(진실의 원천) → `npm run build:pricing`(`scripts/build-pricing.mjs`) → `src/lib/budget-engine/data/*.ts` 자동 생성.
+- ⚠️ 생성된 `data/*.ts`를 **직접 손으로 수정하지 말 것** — CSV 갱신 후 재생성하면 덮어쓰여진다. 가격을 바꾸려면 CSV를 고치고 `build:pricing`을 다시 돌린 뒤 생성된 파일을 커밋한다.
+- 스크립트 내부에 지역 매핑(`REGION_MAP`), 시즌(peak/off-peak), 신뢰도 낮은 항목 하드코딩(`HARDCODE_PRICES`), 토글↔CSV 매핑(`TOGGLE_CSV_MAP`)이 정의돼 있다.
+
+## 이벤트 수집 (Prisma/Supabase)
+- 단일 `Event` 모델(`prisma/schema.prisma`, `events` 테이블): 플랫 JSON `properties` + `is_dev` 플래그로 dev/prod 구분. API는 `src/app/api/events/route.ts`, 클라이언트 식별은 `src/lib/visitor.ts`·`session.ts`.
 
 ## 데이터 수집
 - 이벤트: GA4 + Vercel Analytics 운영 중. Supabase 자체 수집(events 테이블)은 구축 진행 중 — 세부는 `.omniscitus/history/devops/2026-04-24-supabase-migration.md`
