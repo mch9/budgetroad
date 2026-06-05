@@ -69,6 +69,28 @@ export default function BudgetDraftPage() {
     } catch {
       /* ignore */
     }
+    // manage '결과페이지로'(?view=result) → 저장된 플랜으로 결과 복원.
+    // '시작하기'(파라미터 없음)는 질문부터 시작하도록, 이 경로로만 결과를 띄운다.
+    try {
+      if (new URLSearchParams(window.location.search).get('view') === 'result') {
+        const raw = localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
+        if (raw) {
+          const ms = JSON.parse(raw) as { answers?: OnboardingAnswers; axisScore?: AxisScore; persona?: PersonaType };
+          if (ms.answers && 'Q1' in ms.answers) {
+            const score = ms.axisScore ?? scoreAxis(ms.answers);
+            pendingResume.current = true; // 유령 step_viewed 차단
+            setAnswers(ms.answers);
+            setAxisScore(score);
+            setPersona(ms.persona ?? classifyPersona(score));
+            setStep(TOTAL_STEPS + 1);
+            window.history.replaceState({}, '', '/budget-draft'); // 파라미터 제거
+            return;
+          }
+        }
+      }
+    } catch {
+      /* ignore */
+    }
     try {
       sessionStorage.removeItem(STORAGE_KEYS.LEGACY_RESULT);
       const saved = sessionStorage.getItem(STORAGE_KEYS.ONBOARDING_V6);

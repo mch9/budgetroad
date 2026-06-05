@@ -35,7 +35,7 @@ export function ManageBottomBar({ totalEstimated, totalActual }: Props) {
           </div>
         </div>
         <Link
-          href="/budget-draft"
+          href="/budget-draft?view=result"
           className="shrink-0 rounded-2xl bg-[#AAC7E1] px-5 py-[10px] text-sm font-semibold text-[#171717] transition-opacity active:opacity-80"
         >
           결과페이지로
