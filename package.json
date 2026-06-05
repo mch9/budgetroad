@@ -9,6 +9,7 @@
     "lint": "eslint",
     "db": "dotenv -e .env.local -- prisma",
     "build:pricing": "node scripts/build-pricing.mjs",
+    "test": "vitest run",
     "postinstall": "prisma generate"
   },
   "dependencies": {
@@ -43,7 +44,8 @@
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.8.2",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.1.8"
   },
   "ignoreScripts": [
     "sharp",
