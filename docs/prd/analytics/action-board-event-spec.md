@@ -23,7 +23,7 @@
 
 | 이벤트 | 속성 | **정확히 언제** |
 |---|---|---|
-| `manage_entered` | `has_session` | `/manage` 페이지가 열리는 즉시 (도착 1회) |
+| `manage_entered` | `source`(result/continue/direct), `has_session` | `/manage` 페이지가 열리는 즉시 (도착 1회). `source`=진입 출처(결과CTA/이어보기/직접) — 진입률과 재진입 분리에 필수 |
 | `checklist_tab_viewed` | — | 상단 탭바에서 **체크리스트 탭**을 누를 때 |
 | `budget_tab_viewed` | — | 상단 탭바에서 **예산 탭**을 누를 때 |
 | `manage_exited` | `action_count` | `/manage`를 떠날 때(다른 화면 이동·탭 닫기) |
@@ -55,14 +55,14 @@
 
 | OKR 지표 | 산출식 (이벤트 기반) |
 |---|---|
-| 액션보드 진입률 | `manage_entered` 세션수 ÷ `result_viewed` 세션수 |
-| 첫 행동 전환율 | (`checklist_item_toggled`[checked=true] 또는 `budget_item_edited`[has_value=true]) 1회+ 세션수 ÷ `manage_entered` 세션수 |
+| 액션보드 진입률 | `manage_entered`[source=result] ÷ `result_viewed` (같은 세션, **결과→액션보드 전환만**) |
+| 첫 행동 전환율 | (`checklist_item_toggled`[checked=true] 또는 `budget_item_edited`[has_value=true]) 1회+ 세션수 ÷ `manage_entered`[source=result] 세션수 |
 | 체크리스트 항목별 완료율 | `checklist_item_toggled`[checked=true] DISTINCT visitor ÷ 진입 visitor (item_id별) |
 | 체크 → 비용 전환율 | 체크 완료 visitor 중 이후 `budget_item_edited` 발생 비율 |
 | 업데이트(조작) 횟수 분포 | 세션별 모든 액션 이벤트 합산 → 0 / 1–2 / 3+ 버킷 |
 | 비용 입력 중 이탈(혼란) | `budget_edit_started` 있고 `budget_item_edited`(has_value) 없이 `manage_exited` |
 | 이탈률(깊이별) | `manage_exited`를 `action_count` 버킷(0/1-2/3+)으로 |
-| 루프(체크+비용) | 한 세션(session_id)에 `checklist_item_toggled` AND `budget_item_*` 동시 발생 |
+| 루프 | 새 세션(visitor의 첫 세션 이후)에 `checklist_item_toggled`[checked] **또는** `budget_item_edited/added` 1개+ (둘 중 **하나만** 해도 인정). 루프 0회=그런 세션 0개 |
 | 재진입 후 행동 재개율 | 재방문 세션 중 액션 1회+ 세션 ÷ 재방문 세션 (is_returning + 액션 이벤트) |
 | Retention d7/d30 | visitor_id 기준 재방문, 액션 깊이별 비교 |
 
@@ -75,11 +75,16 @@
 
 ---
 
-## 5. 팀 합의 사항
-- 그룹 펼치기/접기 추적: ❌ 안 함
-- 예산 카테고리 필터 추적: ❌ 안 함
-- 드래그 순서변경·전체복원·공유: ❌ 안 함
-- 금액 비우기(clear)도 "수정"으로 간주: ✅ 함 (`budget_item_edited` + `has_value:false`)
+## 5. 지표 정의 확정 (측정 일관성용)
+
+**추적 여부:** 그룹 펼치기/접기·예산 카테고리 필터·드래그/전체복원/공유 = ❌ 안 함 / 금액 비우기(clear)도 "수정"으로 간주 = ✅ (`budget_item_edited` + `has_value:false`)
+
+**측정 정의 (A~E):**
+- **A. "업데이트(상호작용) 1회"** = 확정 액션 6종(체크토글·체크추가·체크삭제·비용확정·비용추가·비용삭제). `budget_edit_started`는 제외(혼란-이탈 전용).
+- **B. "비용 기록/수정"** = `budget_item_edited`(has_value=true) ∪ `budget_item_added`.
+- **C. 이탈률 버킷** = 0회 / 1–2회 / 3회+.
+- **D. 루프** = 새 세션(visitor의 첫 세션 이후)에서 **체크 완료 또는 비용 입력/수정 중 1개 이상**(둘 중 하나만 해도 인정). 루프 0회 = 그런 세션 0개. ('새 세션'=visitor의 첫 session_id 이후의 session_id)
+- **E. 진입률** = `manage_entered`[source=result] ÷ `result_viewed` (같은 세션, 결과→액션보드 전환만). **이어보기(`source=continue`) 직행은 진입률이 아니라 재진입/재방문/루프 통로**(체크리스트 직행 버튼이 없어 추가된 경로).
 
 ---
 
