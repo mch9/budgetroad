@@ -49,3 +49,11 @@ next-env.d.ts
 .agents/
 skills-lock.json
 .gstack/
+.codex/
+
+# dev/debug logs
+dev-server*.log
+dev-verify.log
+
+# playwright test artifacts
+/test-results/
