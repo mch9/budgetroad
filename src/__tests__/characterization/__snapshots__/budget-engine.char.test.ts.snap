@@ -1,0 +1,364 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`TOGGLE_PRICES data stability — buildItems/enabledToggleLines 공통 입력 > 서울/peak 전체 가격표 snapshot 1`] = `
+{
+  "2부 드레스": 50,
+  "가봉 스냅": 75,
+  "담당자 지정": 17,
+  "드레스 지정": 74,
+  "드레스 추가": 20,
+  "모바일 사진 제공": 10,
+  "본식 도우미": 32,
+  "본식 사회자": 33,
+  "본식 원판 구매": 51,
+  "본식 이후 헤어변형": 35,
+  "본식 헬퍼": 25,
+  "부케": 29,
+  "생화 꽃장식": 501,
+  "서브 스냅": 17,
+  "수정본구매비": 14,
+  "신랑 메이크업": 20,
+  "앨범페이지 추가": 3,
+  "야외 촬영": 11,
+  "얼리스타트": 6,
+  "원본 구매": 39,
+  "웨딩 촬영 헤어변형": 35,
+  "웨딩 케이크": 44,
+  "주례": 20,
+  "촬영 출장비": 15,
+  "촬영 헬퍼": 25,
+  "촬영시간 추가": 11,
+  "축하공연 섭외": 80,
+  "턱시도 대여": 25,
+  "퍼스트웨어": 107,
+  "폐백 수모": 16,
+  "폐백 음식": 38,
+  "포토테이블": 36,
+  "플라워 샤워": 22,
+  "한복 대여": 66,
+  "헤어피스 시술": 11,
+  "혼주 메이크업": 20,
+  "휴무일 진행비": 21,
+}
+`;
+
+exports[`TOGGLE_PRICES data stability — buildItems/enabledToggleLines 공통 입력 > 이외/offPeak 전체 가격표 snapshot 1`] = `
+{
+  "2부 드레스": 36,
+  "가봉 스냅": 58,
+  "담당자 지정": 20,
+  "드레스 지정": 129,
+  "드레스 추가": 20,
+  "모바일 사진 제공": 10,
+  "본식 도우미": 21,
+  "본식 사회자": 30,
+  "본식 원판 구매": 50,
+  "본식 이후 헤어변형": 29,
+  "본식 헬퍼": 24,
+  "부케": 23,
+  "생화 꽃장식": 127,
+  "서브 스냅": 19,
+  "수정본구매비": 20,
+  "신랑 메이크업": 20,
+  "앨범페이지 추가": 3,
+  "야외 촬영": 16,
+  "얼리스타트": 5,
+  "원본 구매": 21,
+  "웨딩 촬영 헤어변형": 29,
+  "웨딩 케이크": 26,
+  "주례": 15,
+  "촬영 출장비": 16,
+  "촬영 헬퍼": 22,
+  "촬영시간 추가": 11,
+  "축하공연 섭외": 57,
+  "턱시도 대여": 15,
+  "퍼스트웨어": 181,
+  "폐백 수모": 10,
+  "폐백 음식": 24,
+  "포토테이블": 37,
+  "플라워 샤워": 10,
+  "한복 대여": 54,
+  "헤어피스 시술": 10,
+  "혼주 메이크업": 14,
+  "휴무일 진행비": 5,
+}
+`;
+
+exports[`diagnose — 서울/성수기 > budget.categories snapshot 1`] = `
+{
+  "스드메": 570,
+  "신혼여행": 400,
+  "예물·예단": 500,
+  "예식장": 2846,
+  "혼수": 600,
+}
+`;
+
+exports[`diagnose — 서울/성수기 > budget.total snapshot 1`] = `4916`;
+
+exports[`diagnose — 서울/성수기 > persona snapshot 1`] = `"전통격식"`;
+
+exports[`diagnose — 서울/성수기 > sdmDetail snapshot 1`] = `
+{
+  "dressBase": 150,
+  "dressToggles": 185,
+  "makeupBase": 86,
+  "makeupToggles": 0,
+  "studioBase": 139,
+  "studioToggles": 10,
+}
+`;
+
+exports[`diagnose — 서울/성수기 > toggleDefaults snapshot 1`] = `
+{
+  "2부 드레스": true,
+  "가봉 스냅": false,
+  "담당자 지정": false,
+  "드레스 지정": true,
+  "드레스 추가": false,
+  "모바일 사진 제공": true,
+  "본식 도우미": true,
+  "본식 사회자": true,
+  "본식 원판 구매": true,
+  "본식 이후 헤어변형": false,
+  "본식 헬퍼": true,
+  "부케": true,
+  "생화 꽃장식": true,
+  "서브 스냅": false,
+  "수정본구매비": false,
+  "신랑 메이크업": false,
+  "앨범페이지 추가": false,
+  "야외 촬영": false,
+  "얼리스타트": false,
+  "원본 구매": false,
+  "웨딩 촬영 헤어변형": false,
+  "웨딩 케이크": true,
+  "주례": true,
+  "촬영 출장비": false,
+  "촬영 헬퍼": false,
+  "촬영시간 추가": false,
+  "축하공연 섭외": true,
+  "턱시도 대여": true,
+  "퍼스트웨어": false,
+  "폐백 수모": true,
+  "폐백 음식": true,
+  "포토테이블": true,
+  "플라워 샤워": false,
+  "한복 대여": true,
+  "헤어피스 시술": true,
+  "혼주 메이크업": true,
+  "휴무일 진행비": false,
+}
+`;
+
+exports[`diagnose — 서울/성수기 > venueDetail snapshot 1`] = `
+{
+  "baseDecoration": 0,
+  "billableGuests": 225,
+  "bonsik": 80,
+  "daegwan": 0,
+  "guests": 225,
+  "meal": 1800,
+  "minGuarantee": 200,
+  "minGuaranteeApplied": false,
+  "perHead": 8,
+  "rentalIsEstimate": false,
+  "rentalNote": "호텔은 대관료가 없어요 (식대에 포함된 구조)",
+  "toggleAddOns": 966,
+  "venueType": "hotel",
+}
+`;
+
+exports[`diagnose — 서울/성수기/toggles all ON > budget.categories with all toggles snapshot 1`] = `
+{
+  "스드메": 1006,
+  "신혼여행": 400,
+  "예물·예단": 500,
+  "예식장": 2903,
+  "혼수": 600,
+}
+`;
+
+exports[`diagnose — 서울/성수기/toggles all ON > budget.total with all toggles snapshot 1`] = `5409`;
+
+exports[`diagnose — 지방/비성수기/소예산 > budget.categories snapshot 1`] = `
+{
+  "스드메": 544,
+  "신혼여행": 400,
+  "예물·예단": 500,
+  "예식장": 1768,
+  "혼수": 600,
+}
+`;
+
+exports[`diagnose — 지방/비성수기/소예산 > budget.total snapshot 1`] = `3812`;
+
+exports[`enabledToggleLines equivalent — 서울/성수기 > single toggle "원본 구매" ON → 1 line with correct price 1`] = `
+{
+  "label": "원본 구매",
+  "price": 39,
+}
+`;
+
+exports[`enabledToggleLines equivalent — 서울/성수기 > 드레스 그룹 toggle lines snapshot 1`] = `
+[
+  {
+    "label": "드레스 지정",
+    "price": 74,
+  },
+  {
+    "label": "본식 헬퍼",
+    "price": 25,
+  },
+  {
+    "label": "2부 드레스",
+    "price": 50,
+  },
+  {
+    "label": "퍼스트웨어",
+    "price": 107,
+  },
+  {
+    "label": "가봉 스냅",
+    "price": 75,
+  },
+  {
+    "label": "턱시도 대여",
+    "price": 25,
+  },
+  {
+    "label": "촬영 헬퍼",
+    "price": 25,
+  },
+  {
+    "label": "헤어피스 시술",
+    "price": 11,
+  },
+]
+`;
+
+exports[`enabledToggleLines equivalent — 서울/성수기 > 스튜디오 그룹 toggle lines snapshot 1`] = `
+[
+  {
+    "label": "원본 구매",
+    "price": 39,
+  },
+  {
+    "label": "담당자 지정",
+    "price": 17,
+  },
+  {
+    "label": "서브 스냅",
+    "price": 17,
+  },
+  {
+    "label": "야외 촬영",
+    "price": 11,
+  },
+  {
+    "label": "얼리스타트",
+    "price": 6,
+  },
+  {
+    "label": "앨범페이지 추가",
+    "price": 3,
+  },
+  {
+    "label": "드레스 추가",
+    "price": 20,
+  },
+  {
+    "label": "모바일 사진 제공",
+    "price": 10,
+  },
+  {
+    "label": "수정본 구매",
+    "price": 14,
+  },
+  {
+    "label": "촬영시간 추가",
+    "price": 11,
+  },
+  {
+    "label": "신랑 메이크업",
+    "price": 20,
+  },
+  {
+    "label": "웨딩 촬영 헤어변형",
+    "price": 35,
+  },
+  {
+    "label": "휴무일 진행비",
+    "price": 21,
+  },
+  {
+    "label": "촬영 출장비",
+    "price": 15,
+  },
+]
+`;
+
+exports[`enabledToggleLines equivalent — 서울/성수기 > 예식장 그룹 toggle lines snapshot 1`] = `
+[
+  {
+    "label": "혼주 메이크업",
+    "price": 20,
+  },
+  {
+    "label": "본식 이후 헤어변형",
+    "price": 35,
+  },
+  {
+    "label": "생화 꽃장식",
+    "price": 501,
+  },
+  {
+    "label": "부케",
+    "price": 29,
+  },
+  {
+    "label": "플라워 샤워",
+    "price": 22,
+  },
+  {
+    "label": "포토테이블",
+    "price": 36,
+  },
+  {
+    "label": "웨딩 케이크",
+    "price": 44,
+  },
+  {
+    "label": "본식 원판 구매",
+    "price": 51,
+  },
+  {
+    "label": "본식 사회자",
+    "price": 33,
+  },
+  {
+    "label": "주례",
+    "price": 20,
+  },
+  {
+    "label": "축하공연 섭외",
+    "price": 80,
+  },
+  {
+    "label": "본식 도우미",
+    "price": 32,
+  },
+  {
+    "label": "폐백 음식",
+    "price": 38,
+  },
+  {
+    "label": "폐백 수모",
+    "price": 16,
+  },
+  {
+    "label": "한복 대여",
+    "price": 66,
+  },
+]
+`;
