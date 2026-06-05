@@ -342,7 +342,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
       {/* Tab content */}
       <main className="mx-auto w-full max-w-[576px] flex-1 pb-[100px]">
         {activeTab === 'comprehensive' && <TabComprehensive result={result} />}
-        {activeTab === 'itemized' && <TabItemized result={result} toggles={toggles} />}
+        {activeTab === 'itemized' && <TabItemized result={result} />}
         {activeTab === 'care' && (
           <TabCare
             result={result}
@@ -426,7 +426,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
               <TabComprehensive result={result} forExport />
             </div>
             <div className="mx-auto max-w-[576px]" style={{ breakAfter: 'page' }}>
-              <TabItemized result={result} toggles={toggles} forceExpand />
+              <TabItemized result={result} forceExpand />
             </div>
             <div className="mx-auto max-w-[576px]">
               <TabCare
