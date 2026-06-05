@@ -17,6 +17,7 @@ import { captureNode, downloadCanvas } from '@/lib/export-result';
 import { trackEvent } from '@/lib/gtag';
 import { saveSession } from '@/hooks/useBudgetTrackingState';
 import { SatisfactionModal } from './satisfaction-modal';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
 
@@ -65,7 +66,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
     if (initialToggles) return initialToggles;
     // manage 페이지에서 뒤로왔을 때 직전 토글 복원 (Bug 2)
     try {
-      const raw = typeof window !== 'undefined' && localStorage.getItem('budgetroad_manage_session');
+      const raw = typeof window !== 'undefined' && localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
       if (raw) {
         const { toggles: saved } = JSON.parse(raw) as { toggles: ToggleState };
         if (saved) return saved;
@@ -231,7 +232,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
   function handleShareClick() {
     trackEvent('share_panel_opened', { persona: result.vars.persona });
     try {
-      if (sessionStorage.getItem('budgetroad_satisfaction_done') === '1') {
+      if (sessionStorage.getItem(STORAGE_KEYS.SATISFACTION_DONE) === '1') {
         setShareOpen(true);
         return;
       }
@@ -244,7 +245,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
   // 답/닫기 공통 → 세션 1회 마킹 후 저장 모달로 진행 (설문 비강제)
   function finishSurvey() {
     try {
-      sessionStorage.setItem('budgetroad_satisfaction_done', '1');
+      sessionStorage.setItem(STORAGE_KEYS.SATISFACTION_DONE, '1');
     } catch {
       /* ignore */
     }

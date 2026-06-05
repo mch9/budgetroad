@@ -6,11 +6,8 @@ import type { ResultPayload, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
 import type { PersonaType, AxisScore } from '@/lib/onboarding-v6';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
-const SESSION_KEY = 'budgetroad_manage_session';
-const ACTUAL_KEY = 'budgetroad_budget_actual';
-const CUSTOM_KEY = 'budgetroad_custom_items';
-const DELETED_KEY = 'budgetroad_deleted_items';
 
 export function filterCategoryToLabel(
   fc: 'venue' | 'studio' | 'dress' | 'makeup' | 'other',
@@ -98,17 +95,17 @@ export function useBudgetTrackingState() {
 
   useEffect(() => {
     try {
-      const sessionRaw = localStorage.getItem(SESSION_KEY);
+      const sessionRaw = localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
       if (sessionRaw) {
         const parsed = JSON.parse(sessionRaw) as SessionData;
         const result = diagnose(parsed.answers, parsed.toggles);
         const presetItems = buildItems(result, parsed.toggles);
 
-        const deletedRaw = localStorage.getItem(DELETED_KEY);
+        const deletedRaw = localStorage.getItem(STORAGE_KEYS.DELETED_ITEMS);
         const deletedIds = new Set<string>(deletedRaw ? (JSON.parse(deletedRaw) as string[]) : []);
         const filteredPresets = presetItems.filter((item) => !deletedIds.has(item.id));
 
-        const customRaw = localStorage.getItem(CUSTOM_KEY);
+        const customRaw = localStorage.getItem(STORAGE_KEYS.CUSTOM_ITEMS);
         const customs: StoredCustomItem[] = customRaw ? (JSON.parse(customRaw) as StoredCustomItem[]) : [];
         const customItems: BudgetItem[] = customs.map((c) => ({
           id: c.id,
@@ -125,7 +122,7 @@ export function useBudgetTrackingState() {
         // 옛 세션에 persona 없으면 한 번 계산해 저장 (이후 복원 시 재계산 불필요)
         if (!parsed.persona) saveSession(parsed.answers, parsed.toggles);
       }
-      const actualRaw = localStorage.getItem(ACTUAL_KEY);
+      const actualRaw = localStorage.getItem(STORAGE_KEYS.BUDGET_ACTUAL);
       if (actualRaw) setActual(JSON.parse(actualRaw) as ActualAmounts);
     } catch {
       /* ignore */
@@ -136,7 +133,7 @@ export function useBudgetTrackingState() {
     setActual((prev) => {
       const next = { ...prev, [itemId]: amount };
       try {
-        localStorage.setItem(ACTUAL_KEY, JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEYS.BUDGET_ACTUAL, JSON.stringify(next));
       } catch {
         /* ignore */
       }
@@ -150,22 +147,22 @@ export function useBudgetTrackingState() {
     setActual((prev) => {
       const next = { ...prev };
       delete next[itemId];
-      try { localStorage.setItem(ACTUAL_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.BUDGET_ACTUAL, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
     if (isCustom) {
       try {
-        const raw = localStorage.getItem(CUSTOM_KEY);
+        const raw = localStorage.getItem(STORAGE_KEYS.CUSTOM_ITEMS);
         const customs: StoredCustomItem[] = raw ? (JSON.parse(raw) as StoredCustomItem[]) : [];
-        localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs.filter((c) => c.id !== itemId)));
+        localStorage.setItem(STORAGE_KEYS.CUSTOM_ITEMS, JSON.stringify(customs.filter((c) => c.id !== itemId)));
       } catch { /* ignore */ }
     } else {
       try {
-        const raw = localStorage.getItem(DELETED_KEY);
+        const raw = localStorage.getItem(STORAGE_KEYS.DELETED_ITEMS);
         const deleted: string[] = raw ? (JSON.parse(raw) as string[]) : [];
         if (!deleted.includes(itemId)) {
           deleted.push(itemId);
-          localStorage.setItem(DELETED_KEY, JSON.stringify(deleted));
+          localStorage.setItem(STORAGE_KEYS.DELETED_ITEMS, JSON.stringify(deleted));
         }
       } catch { /* ignore */ }
     }
@@ -183,14 +180,14 @@ export function useBudgetTrackingState() {
     setItems((prev) => [...prev, newItem]);
     setActual((prev) => {
       const next = { ...prev, [id]: amount };
-      try { localStorage.setItem(ACTUAL_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.BUDGET_ACTUAL, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
     try {
-      const customRaw = localStorage.getItem(CUSTOM_KEY);
+      const customRaw = localStorage.getItem(STORAGE_KEYS.CUSTOM_ITEMS);
       const customs: StoredCustomItem[] = customRaw ? (JSON.parse(customRaw) as StoredCustomItem[]) : [];
       customs.push({ id, name, filterCategory, amount });
-      localStorage.setItem(CUSTOM_KEY, JSON.stringify(customs));
+      localStorage.setItem(STORAGE_KEYS.CUSTOM_ITEMS, JSON.stringify(customs));
     } catch { /* ignore */ }
   }
 
@@ -221,7 +218,7 @@ export function saveSession(
   try {
     const ax = axisScore ?? scoreAxis(answers);
     const p = persona ?? classifyPersona(ax);
-    localStorage.setItem(SESSION_KEY, JSON.stringify({ answers, toggles, persona: p, axisScore: ax }));
+    localStorage.setItem(STORAGE_KEYS.MANAGE_SESSION, JSON.stringify({ answers, toggles, persona: p, axisScore: ax }));
   } catch {
     /* ignore */
   }

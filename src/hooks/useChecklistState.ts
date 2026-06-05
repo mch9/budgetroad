@@ -5,12 +5,8 @@ import type { ToggleState } from '@/lib/budget-engine';
 import { TOGGLE_CHECKLIST_MAP, PERSONA_HIDDEN_DEFAULT } from '@/lib/checklist-data';
 import { scoreAxis, classifyPersona } from '@/lib/onboarding-v6';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
-const STORAGE_KEY = 'budgetroad_checklist';
-const SESSION_KEY = 'budgetroad_manage_session';
-const USER_ITEMS_KEY = 'budgetroad_checklist_user';
-const HIDDEN_KEY = 'budgetroad_checklist_hidden';
-const USER_HIDDEN_KEY = 'budgetroad_checklist_user_hidden';
 
 type CheckedState = Record<string, boolean>;
 
@@ -37,25 +33,25 @@ export function useChecklistState() {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(STORAGE_KEY);
+      const raw = localStorage.getItem(STORAGE_KEYS.CHECKLIST);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setChecked(JSON.parse(raw) as CheckedState);
     } catch { /* ignore */ }
 
     try {
-      const raw = localStorage.getItem(USER_ITEMS_KEY);
+      const raw = localStorage.getItem(STORAGE_KEYS.CHECKLIST_USER);
       // eslint-disable-next-line react-hooks/set-state-in-effect
       if (raw) setUserItems(JSON.parse(raw) as UserChecklistItem[]);
     } catch { /* ignore */ }
 
     try {
-      const raw = localStorage.getItem(HIDDEN_KEY);
+      const raw = localStorage.getItem(STORAGE_KEYS.CHECKLIST_HIDDEN);
       if (raw) {
         // eslint-disable-next-line react-hooks/set-state-in-effect
         setHiddenIds(new Set(JSON.parse(raw) as string[]));
       } else {
         // 첫 방문: 페르소나 기반 기본 숨김 적용
-        const sessionRaw = localStorage.getItem(SESSION_KEY);
+        const sessionRaw = localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
         if (sessionRaw) {
           const parsed = JSON.parse(sessionRaw) as { answers?: OnboardingAnswers; toggles?: ToggleState };
           if (parsed.answers) {
@@ -71,21 +67,21 @@ export function useChecklistState() {
             const initial = new Set(defaults.filter((id) => !activeToggleIds.has(id)));
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setHiddenIds(initial);
-            try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([...initial])); } catch { /* ignore */ }
+            try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_HIDDEN, JSON.stringify([...initial])); } catch { /* ignore */ }
           }
         }
       }
     } catch { /* ignore */ }
 
     try {
-      const session = localStorage.getItem(SESSION_KEY);
+      const session = localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION);
       if (session) {
         const { toggles } = JSON.parse(session) as { toggles: ToggleState };
         if (!toggles) return;
 
         let localChecked: Record<string, boolean> = {};
         try {
-          const raw = localStorage.getItem(STORAGE_KEY);
+          const raw = localStorage.getItem(STORAGE_KEYS.CHECKLIST);
           if (raw) localChecked = JSON.parse(raw) as Record<string, boolean>;
         } catch { /* ignore */ }
 
@@ -125,7 +121,7 @@ export function useChecklistState() {
     setChecked((prev: CheckedState) => {
       const next = { ...prev, [itemId]: !prev[itemId] };
       try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+        localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(next));
       } catch { /* ignore */ }
       return next;
     });
@@ -135,7 +131,7 @@ export function useChecklistState() {
     const id = `user-cl-${Date.now()}`;
     setUserItems((prev) => {
       const next = [...prev, { id, text, groupId }];
-      try { localStorage.setItem(USER_ITEMS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_USER, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
     return id;
@@ -144,13 +140,13 @@ export function useChecklistState() {
   function removeUserItem(id: string) {
     setUserItems((prev) => {
       const next = prev.filter((i) => i.id !== id);
-      try { localStorage.setItem(USER_ITEMS_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_USER, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
     setChecked((prev) => {
       const next = { ...prev };
       delete next[id];
-      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(next)); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(next)); } catch { /* ignore */ }
       return next;
     });
   }
@@ -159,22 +155,22 @@ export function useChecklistState() {
     setHiddenIds((prev) => {
       const next = new Set(prev);
       next.add(id);
-      try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([...next])); } catch { /* ignore */ }
+      try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_HIDDEN, JSON.stringify([...next])); } catch { /* ignore */ }
       return next;
     });
     try {
-      const raw = localStorage.getItem(USER_HIDDEN_KEY);
+      const raw = localStorage.getItem(STORAGE_KEYS.CHECKLIST_USER_HIDDEN);
       const prev: string[] = raw ? (JSON.parse(raw) as string[]) : [];
       if (!prev.includes(id)) {
-        localStorage.setItem(USER_HIDDEN_KEY, JSON.stringify([...prev, id]));
+        localStorage.setItem(STORAGE_KEYS.CHECKLIST_USER_HIDDEN, JSON.stringify([...prev, id]));
       }
     } catch { /* ignore */ }
   }
 
   function unhideAll() {
     setHiddenIds(new Set());
-    try { localStorage.setItem(HIDDEN_KEY, JSON.stringify([])); } catch { /* ignore */ }
-    try { localStorage.setItem(USER_HIDDEN_KEY, JSON.stringify([])); } catch { /* ignore */ }
+    try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_HIDDEN, JSON.stringify([])); } catch { /* ignore */ }
+    try { localStorage.setItem(STORAGE_KEYS.CHECKLIST_USER_HIDDEN, JSON.stringify([])); } catch { /* ignore */ }
   }
 
   return { checked, toggle, dynamicItems, highlightedIds, preservedIds, userItems, addUserItem, removeUserItem, hiddenIds, hideItem, unhideAll };
