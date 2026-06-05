@@ -7,6 +7,7 @@ import { ManageTabBar, type ManageTab } from '@/components/manage/ManageTabBar';
 import { ManageBottomBar } from '@/components/manage/ManageBottomBar';
 import { ChecklistTab } from '@/components/manage/checklist/ChecklistTab';
 import { BudgetTab } from '@/components/manage/budget/BudgetTab';
+import { DataResetNotice } from '@/components/common/DataResetNotice';
 import { useBudgetTrackingState } from '@/hooks/useBudgetTrackingState';
 import { encodeShare } from '@/lib/share-state';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
@@ -113,6 +114,7 @@ export default function ManagePage() {
               totalActual={totalActual}
             />
           )}
+          <DataResetNotice />
         </main>
       )}
 
