@@ -67,7 +67,7 @@ export function ManageLink() {
 
   return (
     <Link
-      href="/manage"
+      href="/manage?from=continue"
       onClick={() => trackEvent('continue_clicked')}
       className="text-sm text-[#7499BA] underline underline-offset-2 transition-opacity hover:opacity-70"
     >

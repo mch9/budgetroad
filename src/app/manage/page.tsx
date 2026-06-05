@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Share2 } from 'lucide-react';
 import { ManageTabBar, type ManageTab } from '@/components/manage/ManageTabBar';
@@ -10,6 +10,8 @@ import { BudgetTab } from '@/components/manage/budget/BudgetTab';
 import { useBudgetTrackingState } from '@/hooks/useBudgetTrackingState';
 import { encodeShare } from '@/lib/share-state';
 import { buildShareText, buildShareClipboard } from '@/lib/share';
+import { trackEvent } from '@/lib/gtag';
+import { STORAGE_KEYS } from '@/lib/storage-keys';
 
 export default function ManagePage() {
   const [activeTab, setActiveTab] = useState<ManageTab>('checklist');
@@ -17,6 +19,39 @@ export default function ManagePage() {
   const [toast, setToast] = useState<string | null>(null);
   const { items, actual, setActualAmount, addCustomItem, removeItem, totalEstimated, totalActual, answers, toggles, hasSession } =
     useBudgetTrackingState();
+
+  // 진입/탭/이탈 계측
+  const exitFired = useRef(false);
+  useEffect(() => {
+    const from = new URLSearchParams(window.location.search).get('from') || 'direct';
+    let hasSess = false;
+    try { hasSess = !!localStorage.getItem(STORAGE_KEYS.MANAGE_SESSION); } catch { /* ignore */ }
+    trackEvent('manage_entered', { source: from, has_session: hasSess ? 1 : 0 });
+    trackEvent('checklist_tab_viewed'); // 기본 탭 = 체크리스트
+    if (from !== 'direct') {
+      try { window.history.replaceState({}, '', '/manage'); } catch { /* ignore */ } // 리로드 오귀속 방지
+    }
+    exitFired.current = false;
+    function fireExit() {
+      if (exitFired.current) return;
+      exitFired.current = true;
+      trackEvent('manage_exited');
+    }
+    function onVis() { if (document.visibilityState === 'hidden') fireExit(); }
+    document.addEventListener('visibilitychange', onVis);
+    window.addEventListener('pagehide', fireExit);
+    return () => {
+      document.removeEventListener('visibilitychange', onVis);
+      window.removeEventListener('pagehide', fireExit);
+      fireExit(); // 다른 화면으로 이동(언마운트)도 이탈로 기록
+    };
+  }, []);
+
+  function handleTabChange(tab: ManageTab) {
+    if (tab === activeTab) return;
+    trackEvent(tab === 'checklist' ? 'checklist_tab_viewed' : 'budget_tab_viewed');
+    setActiveTab(tab);
+  }
 
   function showToast(msg: string) {
     setToast(msg);
@@ -48,7 +83,7 @@ export default function ManagePage() {
         <img src="/brand/logo-ko-nav.png" alt="버짓로드" className="h-6 w-auto" />
       </header>
 
-      <ManageTabBar active={activeTab} onChange={setActiveTab} />
+      <ManageTabBar active={activeTab} onChange={handleTabChange} />
 
       {/* 빈 세션 진입 처리 */}
       {!hasSession ? (

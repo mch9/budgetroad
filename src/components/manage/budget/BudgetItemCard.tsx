@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import type { BudgetItem } from '@/hooks/useBudgetTrackingState';
+import { trackEvent } from '@/lib/gtag';
 
 type Props = {
   item: BudgetItem;
@@ -19,6 +20,7 @@ export function BudgetItemCard({ item, actualAmount, onSetActual, onDelete }: Pr
   const diff = isDone ? actualAmount - item.estimatedAmount : undefined;
 
   function startEdit() {
+    trackEvent('budget_edit_started', { item_id: item.id });
     setInputValue(actualAmount?.toString() ?? '');
     setEditing(true);
   }
