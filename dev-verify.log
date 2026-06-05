@@ -1,0 +1,15 @@
+▲ Next.js 16.1.7 (Turbopack)
+- Local:         http://localhost:3399
+- Network:       http://192.168.0.27:3399
+
+✓ Starting...
+✓ Ready in 997ms
+(node:4816) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+ GET / 200 in 883ms (compile: 720ms, render: 163ms)
+ GET /manage 200 in 232ms (compile: 123ms, render: 109ms)
+ GET /manage 200 in 49ms (compile: 5ms, render: 44ms)
+ GET /manage 200 in 34ms (compile: 2ms, render: 32ms)
+ GET /manage 200 in 28ms (compile: 3ms, render: 25ms)
+ GET /manage 200 in 39ms (compile: 4ms, render: 36ms)
+ GET /manage 200 in 27ms (compile: 4ms, render: 24ms)
