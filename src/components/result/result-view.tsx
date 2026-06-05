@@ -17,6 +17,7 @@ import { captureNode, downloadCanvas } from '@/lib/export-result';
 import { trackEvent } from '@/lib/gtag';
 import { saveSession } from '@/hooks/useBudgetTrackingState';
 import { SatisfactionModal } from './satisfaction-modal';
+import { DataResetNotice } from '@/components/common/DataResetNotice';
 import { STORAGE_KEYS } from '@/lib/storage-keys';
 
 type TabId = 'comprehensive' | 'itemized' | 'care';
@@ -351,6 +352,7 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
             setAllToggles={setAllToggles}
           />
         )}
+        <DataResetNotice />
       </main>
 
       {/* Floating reset button (임시, 디자인엔 없음 — 향후 메뉴로 이동) */}
