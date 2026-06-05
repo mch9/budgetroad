@@ -15,6 +15,8 @@ import type {
   VenueBreakdown,
   ResultCategory,
   VenueType,
+  ToggleLine,
+  ToggleGroup,
 } from '../types';
 import { REGION_PROFILES } from '../data/region-profiles';
 import { CATEGORY_BASE } from '../data/category-base';
@@ -42,18 +44,21 @@ function calcVenueMeal(vars: SetupVars, venueType: VenueType) {
   };
 }
 
-// 토글 ON된 항목 가격을 카테고리별·그룹별로 합산
+// 토글 ON된 항목 가격을 카테고리별·그룹별로 합산하고 개별 라인도 수집
 function sumActiveToggles(vars: SetupVars, toggles: ToggleState) {
   const byGroup = { 스튜디오: 0, 드레스: 0, 예식장: 0 };
+  const lines: Record<ToggleGroup, ToggleLine[]> = { 스튜디오: [], 드레스: [], 예식장: [] };
   for (const meta of TOGGLES_META) {
     if (!toggles[meta.id]) continue;
     const rawPrice = TOGGLE_PRICES[meta.id]?.[vars.region]?.[vars.season] ?? 0;
     if (!rawPrice) continue;
     const price = rawPrice * (meta.priceMultiplier ?? 1);
     byGroup[meta.group] += price;
+    lines[meta.group].push({ id: meta.id, label: meta.label, price });
   }
   return {
     byGroup,
+    lines,
     스드메: byGroup.스튜디오 + byGroup.드레스,
     예식장: byGroup.예식장,
     total: byGroup.스튜디오 + byGroup.드레스 + byGroup.예식장,
@@ -142,5 +147,6 @@ export function calculateBudget(
     toggleDelta,
     venueDetail,
     sdmDetail,
+    toggleLines: toggleSums.lines,
   };
 }
