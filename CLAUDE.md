@@ -166,6 +166,83 @@ budgetroad/
 - **기반**: shadcn `base-nova` (Claude Design). 토큰 = `src/app/globals.css`, 컴포넌트 = `src/components/ui/`
 - **UI 작업 시** → `design/README.md` 참조 (진입점 + 워크플로우)
 
+## 코드 아키텍처 컨벤션
+
+### 1. 컴포넌트 분리 기준
+- 한 컴포넌트는 **UI 렌더링 / 상태 관리 / 계측(트래킹)** 중 하나만 담당한다.
+- 200줄을 넘으면 책임 분리 가능한지 검토한다.
+- 기준 사례:
+  - `result-view.tsx` 445줄 — UI + 공유/PDF 액션 + 스크롤·탭 계측 혼재 → 계측 로직은 `useResultTracking()` 훅으로 분리 대상
+  - `ChecklistGroup.tsx` 297줄 — 아코디언 + DnD 정렬 + 편집 모드 혼재 → 편집 모드는 `checklist-edit-mode.tsx`로 분리 대상
+- 예외: 순수 데이터 파일(`checklist-data.ts` 335줄)은 책임이 단일하면 줄 수 기준 적용 안 함.
+
+### 2. 레이어 규칙 — 계산 vs 표시
+- **계산은 `budget-engine`에서, 뷰는 `ResultPayload`만 읽는다.**
+- `components/`·`hooks/`에서 `TOGGLE_PRICES`, `TOGGLES_META`, `CATEGORY_BASE` 등 원시 엔진 데이터 테이블을 직접 읽는 것을 금지한다.
+- 금지 패턴: `tab-itemized.tsx:enabledToggleLines`와 `useBudgetTrackingState.ts:buildItems` 모두 `TOGGLE_PRICES[id][region][season]`을 직접 순회 — `ResultPayload.budget`에 이미 계산된 결과가 있다.
+- 뷰에서 추가 계산이 필요하면 `ResultPayload`에 필드를 보강하거나 `budget-engine/index.ts`에 헬퍼를 추가한다.
+
+### 3. 체크리스트 3-레이어 규칙
+
+| 레이어 | 소스 | 소유자 | 허용 | 금지 |
+|---|---|---|---|---|
+| 정적 | `CHECKLIST_GROUPS` | `checklist-data.ts` | 읽기 전용. `ChecklistTab`에서만 import | 수정·런타임 변경 |
+| 토글 | `TOGGLE_CHECKLIST_MAP` | `useChecklistState` | hook 내부에서만 소비. highlight/inject 타입 구분 유지 | 컴포넌트가 직접 참조 |
+| 사용자 | `userItems` state | `useChecklistState` | `ChecklistGroup`에 props로 전달 | hook 외부에서 직접 변경 |
+
+- `ChecklistGroup.tsx`는 세 레이어를 props로만 받는다. hook을 직접 호출하지 않는다.
+
+### 4. 스토리지 키 규칙
+- localStorage/sessionStorage 키는 `src/lib/storage-keys.ts`의 `STORAGE_KEYS`를 통해서만 접근한다.
+- 파일에 `'budgetroad_*'` 문자열 리터럴 직접 작성 금지.
+- **키 문자열 값은 절대 변경 금지** — 변경 시 기존 사용자의 로컬 데이터 유실.
+- 새 키 추가 시 `STORAGE_KEYS`에만 추가한 뒤 import해서 사용한다.
+
+### 5. 중복 로직 금지
+- 같은 매핑·변환이 2곳 이상에 나타나면 `src/lib/`의 순수 함수 하나로 추출하고 공유한다.
+- 선례: `filterCategoryToLabel()` — 3항 연산 중복을 제거하고 단일 구현으로 추출.
+- 예외: 우연히 비슷한 코드이고 독립적으로 변경될 가능성이 있으면 추출하지 않는다.
+
+### 6. Prisma 데이터 접근
+- Prisma 클라이언트는 `src/lib/db.ts`에서만 생성한다 (싱글톤 패턴, hot-reload 안전).
+- 현재 규모에서는 쿼리를 `src/app/api/**/route.ts`에 직접 작성한다. 쿼리 복잡도가 커지면 service 레이어 도입을 재검토한다.
+- `globalThis as unknown as { prisma: ... }` 캐스팅은 Next.js 핫리로드 관용 패턴이므로 유지한다.
+
+### 7. UI · 스타일 규칙
+**컴포넌트**: shadcn/ui 컴포넌트는 `src/components/ui/`에만 위치. 기존 컴포넌트를 먼저 재사용한다.
+
+**컬러**: 브랜드 3색은 arbitrary value로 직접 지정한다.
+- `bg-[#AAC7E1]` — 선택 상태
+- `bg-[#373737]` — CTA·헤드라인
+- `bg-[#F9FAFB]` — 배경
+
+`globals.css`의 `--primary` 등 base-nova 토큰은 shadcn 컴포넌트 내부 전용이며 브랜드 컬러와 무관. 새 컬러 추가 금지.
+
+**뷰포트**: `min-h-dvh` 사용. `min-h-screen` 신규 작성 금지.
+
+**dnd-kit**: `ChecklistGroup.tsx` 단독 사용. `PointerSensor(distance:8)` + `verticalListSortingStrategy` + `closestCenter`를 표준으로 유지.
+
+**파일/폴더 네이밍**:
+- 컴포넌트: kebab-case `.tsx` (예: `result-view.tsx`, `checklist-group.tsx`)
+- 훅: `useXxx.ts` camelCase (예: `useChecklistState.ts`)
+- 유틸: kebab-case `.ts` (예: `storage-keys.ts`)
+- App Router 파일: Next.js 규약 그대로 (`page.tsx`, `layout.tsx`)
+- **새 파일은 반드시 kebab-case로 생성한다.** §1에서 분리로 새로 만드는 컴포넌트도 포함 (예: `checklist-edit-mode.tsx`, `use-result-tracking.ts`).
+- ⚠️ 기존 PascalCase 파일(`ChecklistGroup.tsx` 등)의 리네임은 독립 커밋으로 분리한다.
+
+**export**: `page.tsx`·`layout.tsx`는 `export default`, 나머지는 `export function` (named).
+
+### 8. Next 16 'use client' 직렬화 규칙
+- `[71007]`("Props have function types") 경고는 **서버→클라 경계에서만 실제 오류**다.
+- **무시**: 부모·자식 모두 `'use client'`인 경우 — 직렬화 불필요. 현재 발생하는 모든 [71007]이 이에 해당.
+- **수정 필요**: 부모가 진짜 Server Component인데 함수 prop을 넘길 때 → Server Action으로 처리.
+- `'use server'` 파일: 현재 0개. Server Action이 필요한 경우에만 추가한다.
+
+### 9. 분석·트래킹 이벤트
+- **리팩토링 중 절대 제거 금지**: `trackEvent()`, `sendEvent()` 호출은 코드 정리 대상이 아니다.
+- 위치: `src/lib/gtag.ts` (GA4), `@vercel/analytics` 직접 호출, `src/app/api/events/route.ts` (Supabase 수집).
+- 계측 로직을 훅으로 추출할 때 이벤트 호출은 빠짐없이 함께 이동시킨다.
+
 ## 제외 범위 (이번에는 안 만듦)
 - 예산 항목별 금액 직접 수정/관리 기능 (이후 버전)
 - 양방향 전환: 예산 → 유형 추천 (이후 버전)
