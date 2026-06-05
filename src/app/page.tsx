@@ -208,7 +208,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#5d5f5f]">STEP 04</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-[#1b1c1c] sm:text-[48px]">
-              한눈에 파악하는 전체 설계도
+              한눈에 파악하는<br />전체 설계도
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-[#444748]">
               예식장부터 신혼여행까지 전체 흐름을 투명하게 관리하세요. 카테고리 별 비중을 실시간으로 조정하며 최적의 밸런스를 찾을 수 있습니다.
@@ -232,7 +232,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#5d5f5f]">STEP 05</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-[#1b1c1c] sm:text-[48px]">
-              당신의 타입에 맞춘 자동 추천
+              당신의 타입에 맞춘<br />자동 추천
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-[#444748]">
               수많은 업체 중 당신의 스타일에 맞는 핵심 조각만을 모았습니다. 시스템이 자동으로 필수 항목을 구성하여 복잡한 선택의 피로를 줄여줍니다.
@@ -262,7 +262,7 @@ export default function Home() {
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#d6e5ef]">STEP 06</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-white sm:text-[48px]">
-              스마트한 의사결정 전략 진단
+              스마트한 의사결정<br />전략 진단
             </h2>
             <div className="break-keep pt-2 text-base leading-relaxed text-white/80">
               어디에 집중하고 어디서 절감해야 할지 데이터가 가이드를 제공합니다. 만족도와 가성비를 고려한 전략적인 결혼 준비를 경험하세요.
