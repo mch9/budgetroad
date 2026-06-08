@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Sparkles, Check, TrendingUp, Wallet } from 'lucide-react';
 import TrackPageEnter from '@/components/common/TrackPageEnter';
+import TrackLandingExit from '@/components/common/track-landing-exit';
 import { CtaLink, ManageLink } from './cta-link';
 
 // Figma-hosted screenshots (expire 2026-06-11 — replace with /public assets)
@@ -26,6 +27,7 @@ export default function Home() {
   return (
     <div className="flex flex-col bg-[#F9FAFB]">
       <TrackPageEnter eventName="service_entered" />
+      <TrackLandingExit />
 
       {/* Header */}
       <header className="sticky top-0 z-10 flex h-[87px] items-center border-b border-[#e5e7eb] bg-[#F9FAFB] px-8">
