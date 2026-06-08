@@ -75,7 +75,7 @@ export default function Home() {
             어디서부터 시작할까?
           </h1>
           <p className="break-keep text-base text-[#373737] sm:text-[20px]">
-            몇 가지 선택만으로 내 결혼 예산을 바로 확인하세요
+            막연한 결혼 준비는 그만, 단 14개 질문으로 내 취향 맞춤 예산 짜기
           </p>
           <CtaLink />
           <ManageLink />
