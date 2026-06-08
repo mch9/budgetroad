@@ -51,21 +51,18 @@ vi.mock('@/components/result/tabs/tab-care', () => ({
   ),
 }));
 vi.mock('@/components/result/footer', () => ({
-  ResultFooter: ({
-    onShareClick,
-    onManageClick,
-  }: {
-    onShareClick: () => void;
-    onManageClick: () => void;
-  }) => (
-    <div>
-      <button data-testid="share-btn" onClick={onShareClick}>
-        share
-      </button>
-      <button data-testid="manage-btn" onClick={onManageClick}>
-        manage
-      </button>
-    </div>
+  ResultFooter: ({ onShareClick }: { onShareClick: () => void }) => (
+    <button data-testid="share-btn" onClick={onShareClick}>
+      share
+    </button>
+  ),
+}));
+// '준비 시작'(onManageClick) → 하단 탭바 Planner 탭으로 이동. onPlannerClick으로 동일 로직 주입.
+vi.mock('@/components/common/app-bottom-nav', () => ({
+  AppBottomNav: ({ onPlannerClick }: { onPlannerClick?: () => void }) => (
+    <button data-testid="planner-tab" onClick={() => onPlannerClick?.()}>
+      planner
+    </button>
   ),
 }));
 vi.mock('@/components/result/satisfaction-modal', () => ({
@@ -385,14 +382,15 @@ describe('공유/관리 — share_panel_opened / manage_cta_clicked / share_acti
     await findByText('결과 공유하기');
   });
 
-  it('manage 버튼 클릭 → manage_cta_clicked', async () => {
+  // '준비 시작' 버튼 → 하단 탭바 Planner 탭으로 이동했지만, manage_cta_clicked 발화는 동일하게 유지
+  it('Planner 탭 클릭 → manage_cta_clicked', async () => {
     const { getByTestId } = await act(async () =>
       render(<ResultView answers={makeAnswers()} onReset={vi.fn()} />),
     );
     Object.defineProperty(window, 'location', { configurable: true, value: { href: '' } });
     mockTrackEvent.mockClear();
 
-    await act(async () => { fireEvent.click(getByTestId('manage-btn')); });
+    await act(async () => { fireEvent.click(getByTestId('planner-tab')); });
 
     const call = mockTrackEvent.mock.calls.find((c) => c[0] === 'manage_cta_clicked');
     expect(call).toBeDefined();
