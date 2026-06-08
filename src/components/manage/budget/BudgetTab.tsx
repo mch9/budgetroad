@@ -73,7 +73,7 @@ export function BudgetTab({ items, actual, setActualAmount, addCustomItem, remov
       {items.length === 0 ? (
         <div className="px-5 py-8 text-center text-sm text-[#99A1AF]">
           <p>예산 데이터가 없어요.</p>
-          <p className="mt-1">결과 페이지에서 준비 시작하기를 눌러주세요.</p>
+          <p className="mt-1">먼저 예산 결과를 만들어 주세요.</p>
         </div>
       ) : (
         <div className="space-y-3 px-5">

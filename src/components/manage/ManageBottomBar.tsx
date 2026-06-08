@@ -1,21 +1,18 @@
 'use client';
 
-import Link from 'next/link';
-
 type Props = {
   totalEstimated: number;
   totalActual: number;
 };
 
+// 플래너 하단 다크 요약바(정보 전용). 결과 복귀는 하단 탭바의 Result 탭이 담당.
+// 고정 위치·safe-area·탭바와의 스택은 부모 dock이 담당.
 export function ManageBottomBar({ totalEstimated, totalActual }: Props) {
   const delta = totalActual - totalEstimated;
 
   return (
-    <nav
-      className="fixed inset-x-0 bottom-0 z-30 bg-[#373737]"
-      style={{ boxShadow: '0 -4px 20px rgba(0,0,0,0.18)' }}
-    >
-      <div className="mx-auto flex max-w-[576px] items-center justify-between gap-3 px-5 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))]">
+    <div className="bg-[#373737]">
+      <div className="mx-auto flex max-w-[576px] items-center justify-between gap-3 px-5 py-3">
         <div className="flex min-w-0 flex-col gap-0.5">
           <span className="text-[11px] leading-4 text-white/60">
             예상 총 예산보다{' '}
@@ -34,13 +31,7 @@ export function ManageBottomBar({ totalEstimated, totalActual }: Props) {
             </span>
           </div>
         </div>
-        <Link
-          href="/budget-draft?view=result"
-          className="shrink-0 rounded-2xl bg-[#AAC7E1] px-5 py-[10px] text-sm font-semibold text-[#171717] transition-opacity active:opacity-80"
-        >
-          결과페이지로
-        </Link>
       </div>
-    </nav>
+    </div>
   );
 }
