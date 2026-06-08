@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Share2 } from 'lucide-react';
 import { ManageTabBar, type ManageTab } from '@/components/manage/ManageTabBar';
 import { ManageBottomBar } from '@/components/manage/ManageBottomBar';
+import { AppBottomNav } from '@/components/common/app-bottom-nav';
 import { ChecklistTab } from '@/components/manage/checklist/ChecklistTab';
 import { BudgetTab } from '@/components/manage/budget/BudgetTab';
 import { DataResetNotice } from '@/components/common/DataResetNotice';
@@ -88,10 +89,10 @@ export default function ManagePage() {
 
       {/* 빈 세션 진입 처리 */}
       {!hasSession ? (
-        <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+        <div className="flex flex-1 flex-col items-center justify-center gap-4 px-6 pb-[120px] text-center">
           <p className="text-lg font-semibold text-[#1E2939]">아직 예산 결과가 없어요</p>
           <p className="text-sm text-[#6A7282]">
-            결과 페이지에서 예산을 확인한 뒤<br />「준비 시작」을 눌러주세요
+            예산 결과를 만들면 예산안과 체크리스트가<br />여기에 자동으로 채워져요
           </p>
           <Link
             href="/budget-draft"
@@ -101,7 +102,7 @@ export default function ManagePage() {
           </Link>
         </div>
       ) : (
-        <main className="mx-auto w-full max-w-[576px] flex-1 pb-[100px]">
+        <main className="mx-auto w-full max-w-[576px] flex-1 pb-[calc(140px+env(safe-area-inset-bottom))]">
           {activeTab === 'checklist' && <ChecklistTab />}
           {activeTab === 'budget' && (
             <BudgetTab
@@ -118,10 +119,16 @@ export default function ManagePage() {
         </main>
       )}
 
-      <ManageBottomBar
-        totalEstimated={totalEstimated}
-        totalActual={totalActual}
-      />
+      {/* Bottom dock: (세션 있을 때) 다크 요약바 + 글로벌 탭바. 빈 상태엔 Result 탭 비활성 */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-30"
+        style={{ boxShadow: '0 -4px 20px rgba(0,0,0,0.18)' }}
+      >
+        {hasSession && (
+          <ManageBottomBar totalEstimated={totalEstimated} totalActual={totalActual} />
+        )}
+        <AppBottomNav active="planner" resultEnabled={hasSession} />
+      </div>
 
       {/* 공유 모달 */}
       {shareOpen && (
@@ -160,7 +167,7 @@ export default function ManagePage() {
 
       {/* 토스트 */}
       {toast && (
-        <div className="fixed bottom-28 left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#1E2939]/90 px-5 py-2.5 text-sm font-medium text-white shadow-lg">
+        <div className="fixed bottom-[calc(150px+env(safe-area-inset-bottom))] left-1/2 z-50 -translate-x-1/2 rounded-full bg-[#1E2939]/90 px-5 py-2.5 text-sm font-medium text-white shadow-lg">
           {toast}
         </div>
       )}

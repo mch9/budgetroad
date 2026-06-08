@@ -6,6 +6,7 @@ import { diagnose, TOGGLES_META } from '@/lib/budget-engine';
 import type { ToggleId, ToggleState } from '@/lib/budget-engine';
 import type { OnboardingAnswers } from '@/lib/onboarding-v6';
 import { ResultFooter } from './footer';
+import { AppBottomNav } from '@/components/common/app-bottom-nav';
 import { Toast } from './ui/toast';
 import { TabComprehensive } from './tabs/tab-comprehensive';
 import { TabItemized } from './tabs/tab-itemized';
@@ -340,8 +341,8 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
         })}
       </div>
 
-      {/* Tab content */}
-      <main className="mx-auto w-full max-w-[576px] flex-1 pb-[100px]">
+      {/* Tab content — 하단 dock(다크바+탭바) 높이만큼 패딩 */}
+      <main className="mx-auto w-full max-w-[576px] flex-1 pb-[calc(140px+env(safe-area-inset-bottom))]">
         {activeTab === 'comprehensive' && <TabComprehensive result={result} />}
         {activeTab === 'itemized' && <TabItemized result={result} />}
         {activeTab === 'care' && (
@@ -355,17 +356,23 @@ export function ResultView({ answers, onReset, initialToggles }: Props) {
         <DataResetNotice />
       </main>
 
-      {/* Floating reset button (임시, 디자인엔 없음 — 향후 메뉴로 이동) */}
+      {/* Floating reset button (임시, 디자인엔 없음 — 향후 메뉴로 이동). dock 위로 띄움 */}
       <button
         type="button"
         onClick={onReset}
-        className="fixed bottom-[100px] right-5 z-30 rounded-full bg-white px-3 py-2 text-xs font-semibold text-[#6A7282] shadow-md"
+        className="fixed bottom-[calc(150px+env(safe-area-inset-bottom))] right-5 z-30 rounded-full bg-white px-3 py-2 text-xs font-semibold text-[#6A7282] shadow-md"
       >
         다시하기
       </button>
 
-      {/* Footer */}
-      <ResultFooter result={result} onShareClick={handleShareClick} onManageClick={handleManageClick} />
+      {/* Bottom dock: 다크 요약바 + 글로벌 탭바 (고정·그림자·safe-area 담당) */}
+      <div
+        className="fixed inset-x-0 bottom-0 z-30"
+        style={{ boxShadow: '0 -4px 20px rgba(0,0,0,0.18)' }}
+      >
+        <ResultFooter result={result} onShareClick={handleShareClick} />
+        <AppBottomNav active="result" onPlannerClick={handleManageClick} />
+      </div>
       {surveyOpen && (
         <SatisfactionModal
           persona={result.vars.persona}
