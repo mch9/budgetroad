@@ -14,15 +14,6 @@ const IMG_STEP5 = '/landing/step-05.png';
 const IMG_STEP6 = '/landing/step-06.png';
 const IMG_STEP7 = '/landing/step-07.png';
 
-function MockWindow({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative overflow-hidden rounded-lg border-t-[20px] border-[#f0eded] bg-white shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.1)]">
-      <div className="absolute left-3 top-[-14px] size-[6px] rounded-full bg-[#ff5f56] shadow-[12px_0_0_0_#ffbd2e,24px_0_0_0_#27c93f]" />
-      {children}
-    </div>
-  );
-}
-
 export default function Home() {
   return (
     <div className="flex flex-col bg-[#F9FAFB]">
@@ -140,20 +131,16 @@ export default function Home() {
               <span className="text-sm text-[#1b1c1c]">개인 성향 정밀 진단 시스템</span>
             </div>
           </div>
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP1} alt="취향 분석 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP1} alt="취향 분석 화면" className="w-full" />
         </div>
       </section>
 
       {/* Step 2 — dark */}
       <section className="bg-[#454545] px-6 py-24">
         <div className="mx-auto grid max-w-5xl items-center gap-16 sm:grid-cols-2">
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP2} alt="웨딩 스타일 결과 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP2} alt="웨딩 스타일 결과 화면" className="w-full" />
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-white">STEP 02</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-white sm:text-[48px]">
@@ -193,20 +180,16 @@ export default function Home() {
               ))}
             </ul>
           </div>
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP3} alt="예산 내역 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP3} alt="예산 내역 화면" className="w-full" />
         </div>
       </section>
 
       {/* Step 4 — white */}
       <section className="bg-white px-6 py-24">
         <div className="mx-auto grid max-w-5xl items-center gap-16 sm:grid-cols-2">
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP4} alt="전체 설계도 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP4} alt="전체 설계도 화면" className="w-full" />
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#5d5f5f]">STEP 04</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-[#1b1c1c] sm:text-[48px]">
@@ -247,20 +230,16 @@ export default function Home() {
               ))}
             </div>
           </div>
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP5} alt="자동 추천 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP5} alt="자동 추천 화면" className="w-full" />
         </div>
       </section>
 
       {/* Step 6 — dark */}
       <section className="bg-[#454545] px-6 py-24">
         <div className="mx-auto grid max-w-5xl items-center gap-16 sm:grid-cols-2">
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP6} alt="투자 진단 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP6} alt="투자 진단 화면" className="w-full" />
           <div className="flex flex-col gap-4">
             <p className="text-xs font-bold uppercase tracking-[1.4px] text-[#d6e5ef]">STEP 06</p>
             <h2 className="break-keep text-[38px] font-light leading-tight tracking-tight text-white sm:text-[48px]">
@@ -296,10 +275,8 @@ export default function Home() {
               <span className="text-sm text-[#1b1c1c]">나만의 지출 트래킹 시스템</span>
             </div>
           </div>
-          <MockWindow>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG_STEP7} alt="예산 관리 화면" className="w-full" />
-          </MockWindow>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={IMG_STEP7} alt="예산 관리 화면" className="w-full" />
         </div>
       </section>
 
