@@ -5,14 +5,14 @@ import TrackPageEnter from '@/components/common/TrackPageEnter';
 import TrackLandingExit from '@/components/common/track-landing-exit';
 import { CtaLink, ManageLink } from './cta-link';
 
-// Figma-hosted screenshots (expire 2026-06-11 — replace with /public assets)
-const IMG_STEP1 = 'https://www.figma.com/api/mcp/asset/6b407af9-9cd9-470c-8ce8-607f899ba0f1';
-const IMG_STEP2 = 'https://www.figma.com/api/mcp/asset/ec1549a7-1a20-49cb-bba7-a23f181c7c90';
-const IMG_STEP3 = 'https://www.figma.com/api/mcp/asset/30501667-087b-4439-a00e-cac1e35181cb';
-const IMG_STEP4 = 'https://www.figma.com/api/mcp/asset/cbce9984-9c14-43a8-ae93-bcc4825742c9';
-const IMG_STEP5 = 'https://www.figma.com/api/mcp/asset/0f540ace-8c57-4685-9f10-d987468295b8';
-const IMG_STEP6 = 'https://www.figma.com/api/mcp/asset/51d8070e-fcc2-436e-a37b-3f36a28a4a7a';
-const IMG_STEP7 = 'https://www.figma.com/api/mcp/asset/280b39bd-3e93-4466-aa4d-f23c4963d543';
+// 로컬 스크린샷 (public/landing/) — 외부 호스팅 만료 없음
+const IMG_STEP1 = '/landing/step-01.png';
+const IMG_STEP2 = '/landing/step-02.png';
+const IMG_STEP3 = '/landing/step-03.png';
+const IMG_STEP4 = '/landing/step-04.png';
+const IMG_STEP5 = '/landing/step-05.png';
+const IMG_STEP6 = '/landing/step-06.png';
+const IMG_STEP7 = '/landing/step-07.png';
 
 function MockWindow({ children }: { children: React.ReactNode }) {
   return (
